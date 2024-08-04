@@ -1,5 +1,4 @@
-[![Release](https://github.com/fgardt/factorio-mod-template/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/fgardt/factorio-mod-template/actions/workflows/release.yml)
-<!--                           ^======[REPLACE THIS]======^                                                                          ^======[REPLACE THIS]======^  -->
+[![Release](https://github.com/notnotmelon/factorissimo-fork/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/notnotmelon/factorissimo-fork/actions/workflows/release.yml)
 
 ### Fixes several bugs and adds new features to Factorissimo 2
 
