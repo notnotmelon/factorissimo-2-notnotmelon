@@ -47,6 +47,7 @@ Linked belt connections are roughly equal to chest connections in terms of perfo
 This mod reworks fluid connections to be much easier to use. No more "bulk factory input/output" pipes. Instead, all factory fluid connections will have high speed automatically.
 
 ![](https://assets-mod.factorio.com/assets/20c5cf177254c32c078313ff8db63f087a501c6a.png)
+
 Additionally, a pipe connection will now only form if there are pipes on both sides of the Factory building.
 
 ![](https://mods-data.factorio.com/assets/4b89c9d3e7ae1cbb8457f0ae75444976ee64570f.png)
