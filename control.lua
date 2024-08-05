@@ -317,14 +317,20 @@ local function update_destructible(factory)
 	end
 end
 
-local function create_factory_position(layout)
+local function get_surface_name(layout)
+	if layout.surface_override then return layout.surface_override end
 	global.next_factory_surface = global.next_factory_surface + 1
 	if (settings.global['Factorissimo2-same-surface'].value) then
 		global.next_factory_surface = 1
 	end
-	local surface_name = 'factory-floor-' .. global.next_factory_surface
-	local surface = game.surfaces[layout.surface_override or surface_name]
-	if surface == nil then
+	return 'factory-floor-' .. global.next_factory_surface
+end
+
+local function create_factory_position(layout)
+	local surface_name = get_surface_name(layout)
+	local surface = game.surfaces[surface_name]
+
+	if not surface then
         surface = game.create_surface(surface_name, {width = 2, height = 2})
         surface.daytime = 0.5
         surface.freeze_daytime = true
