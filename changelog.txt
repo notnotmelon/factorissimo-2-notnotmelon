@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.3.0
+Date: 2024-08-05
+  Features:
+    - Added automatic portal deployment with via https://github.com/fgardt/factorio-mod-template
+  Changes:
+    - Fix license files
+---------------------------------------------------------------------------------------------------
 Version: 1.0.0
 Date: 2024-08-04
   Features:
