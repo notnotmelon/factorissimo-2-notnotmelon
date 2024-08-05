@@ -19,7 +19,11 @@ end
 local function teleport_safely(e, surface, position, player, leaving)
 	position = {x = position.x or position[1], y = position.y or position[2]}
 	local is_spider = not e.is_player() and e.type == 'spider-vehicle'
-	
+
+	if is_spider and settings.global['Factorissimo2-prevent-spidertron-travel'].value then
+		return
+	end
+
 	if is_spider and e.autopilot_destination then
 		if player then
 			local current_factory = find_surrounding_factory(e.surface, e.position)
@@ -29,23 +33,27 @@ local function teleport_safely(e, surface, position, player, leaving)
 					e.autopilot_destination.x - current_factory.inside_x + destination_factory.inside_x,
 					e.autopilot_destination.y - current_factory.inside_y + destination_factory.inside_y
 				}
-			else e.autopilot_destination = nil end
-		else e.autopilot_destination = nil end
+			else
+				e.autopilot_destination = nil
+			end
+		else
+			e.autopilot_destination = nil
+		end
 	end
-	
+
 	if is_spider and e.surface ~= surface then
 		local remotes = {}
 		for _, player in pairs(player and {player} or game.players) do
 			for _, stack in pairs(find_connected_spidertron_remotes(player, e)) do remotes[#remotes + 1] = stack end
 		end
-		
+
 		if player then player.teleport(position, surface) end
 		e.teleport(leaving and {e.position.x, e.position.y + 1.5} or e.position, surface)
 		if player then e.set_driver(player) end
-		
+
 		for _, stack in pairs(remotes) do stack.connected_entity = e end
 	end
-	
+
 	if is_spider then
 		e.teleport(leaving and {position.x, position.y + 1.5} or position, surface)
 	elseif e.is_player() and not e.character then -- god controller
@@ -58,7 +66,7 @@ local function teleport_safely(e, surface, position, player, leaving)
 		e.teleport({0, 0}, power_middleman_surface()) -- teleport personal robots with the player
 		e.teleport(position, surface)
 	end
-	
+
 	global.last_player_teleport[player and player.index or e.unit_number] = game.tick
 	if player then Camera.update_camera(player) end
 end
@@ -72,9 +80,10 @@ local function leave_factory(e, factory, player)
 end
 
 script.on_event(defines.events.on_spider_command_completed, function(event)
+	if settings.global['Factorissimo2-prevent-spidertron-travel'].value then return end
 	local spider = event.vehicle
 	if not spider.get_driver() then return end
-	for _, building in pairs(spider.surface.find_entities_filtered{type = BUILDING_TYPE, position = spider.position}) do
+	for _, building in pairs(spider.surface.find_entities_filtered {type = BUILDING_TYPE, position = spider.position}) do
 		if has_layout(building.name) then
 			local factory = get_factory_by_building(building)
 			if factory then
@@ -100,6 +109,10 @@ local function is_airborne(jetpacks, player_unit_number)
 	return data.status == 'flying'
 end
 
+local function is_riding_spider(player)
+	return player.driving and player.vehicle and player.vehicle.type == 'spider-vehicle'
+end
+
 local function teleport_players()
 	local tick = game.tick
 	local jetpacks = get_jetpacks()
@@ -110,31 +123,30 @@ local function teleport_players()
 		if not walking_state.walking and not driving then goto continue end
 		if driving and not player.vehicle then goto continue end -- if the player is riding a rocket silo
 		local airborne = jetpacks and player.character ~= nil and is_airborne(jetpacks, player.character.unit_number)
-		
+		local is_spider = is_riding_spider(player)
+
 		if not airborne then
-			if (driving and player.vehicle.type == 'spider-vehicle')
+			if is_spider
 				or walking_state.direction == defines.direction.north
 				or walking_state.direction == defines.direction.northeast
 				or walking_state.direction == defines.direction.northwest then
-					
 				local factory = find_factory_by_building(player.surface, {
 					{player.position.x - 0.2, player.position.y - 0.3},
 					{player.position.x + 0.2, player.position.y}
 				})
-				
+
 				if factory ~= nil and not factory.inactive and player.position.y > factory.outside_y + 1 and math.abs(player.position.x - factory.outside_x) < 0.6 then
 					enter_factory(driving and player.vehicle or player, factory, player)
 					return
 				end
 			end
 		end
-		
-		if (driving and player.vehicle.type == 'spider-vehicle' and player.vehicle.autopilot_destination and player.vehicle.autopilot_destination.y > player.vehicle.position.y)
+
+		if (is_spider and player.vehicle.autopilot_destination and player.vehicle.autopilot_destination.y > player.vehicle.position.y)
 			or walking_state.direction == defines.direction.south
 			or walking_state.direction == defines.direction.southeast
 			or walking_state.direction == defines.direction.southwest
-			then
-				
+		then
 			local factory = find_surrounding_factory(player.surface, player.position)
 			if factory and player.position.y > factory.inside_door_y + (airborne and -0.5 or 1) then
 				if math.abs(player.position.x - factory.inside_door_x) < 4 then
