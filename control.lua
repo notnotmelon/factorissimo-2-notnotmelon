@@ -193,8 +193,10 @@ local function connect_power(factory, pole)
 end
 
 function update_power_connection(factory, pole) -- pole parameter is optional
+	if not factory.outside_energy_receiver or not factory.outside_energy_receiver.valid then return end
 	local electric_network = factory.outside_energy_receiver.electric_network_id
 	if electric_network == nil then return end
+	
 	local surface = factory.outside_surface
 	local x = factory.outside_x
 	local y = factory.outside_y
