@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.2
+Date: 2024-08-06
+  Compatibility:
+    - Added optional dependancy on shall belt config (https://mods.factorio.com/mod/factorissimo-2-notnotmelon/discussion/64e219d0f621bbed514bc3ab)
+---------------------------------------------------------------------------------------------------
 Version: 1.4.1
 Date: 2024-08-05
   Bugfixes:
