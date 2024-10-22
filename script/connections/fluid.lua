@@ -76,7 +76,7 @@ Fluid.connect = function(factory, cid, cpos, outside_entity, inside_entity, sett
 		return nil
 	end
 
-	local p = game.entity_prototypes
+	local p = prototypes.entity
 	local names = {
 		original_inside = inside_entity.name,
 		original_outside = outside_entity.name,

@@ -50,7 +50,7 @@ end
 Belt.connect = function(factory, cid, cpos, outside_entity, inside_entity)
 	local conn_facing = get_conn_facing(outside_entity, inside_entity, cpos.direction_out, cpos.direction_in)
 	if not (conn_facing == cpos.direction_in or conn_facing == cpos.direction_out) then return end
-	if not game.entity_prototypes["factory-linked-" .. inside_entity.name] or not game.entity_prototypes["factory-linked-" .. outside_entity.name] then return end
+	if not prototypes.entity["factory-linked-" .. inside_entity.name] or not prototypes.entity["factory-linked-" .. outside_entity.name] then return end
 
 	local inside_link = inside_entity.surface.create_entity {
 		name = "factory-linked-" .. inside_entity.name,
