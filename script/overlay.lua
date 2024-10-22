@@ -32,7 +32,10 @@ local function draw_overlay_sprite(signal, target_entity, offset, scale, id_tabl
 			sprite = sprite_name,
 			x_scale = scale,
 			y_scale = scale,
-			target = target_entity,
+			target = {
+				entity = target_entity,
+				offset = offset,
+			},
 			surface = target_entity.surface,
 			only_in_alt_mode = true,
 			render_layer = "entity-info-icon",
@@ -41,12 +44,12 @@ local function draw_overlay_sprite(signal, target_entity, offset, scale, id_tabl
 		local shadow_radius = 0.07 * scale
 		for _, shadow_offset in pairs {{0, shadow_radius}, {0, -shadow_radius}, {shadow_radius, 0}, {-shadow_radius, 0}} do
 			sprite_data.tint = {0, 0, 0, 0.5} -- Transparent black
-			sprite_data.target_offset = {offset[1] + shadow_offset[1], offset[2] + shadow_offset[2]}
+			sprite_data.target.offset = {offset[1] + shadow_offset[1], offset[2] + shadow_offset[2]}
 			table.insert(id_table, rendering.draw_sprite(sprite_data).id)
 		end
 		-- Proper sprite
 		sprite_data.tint = nil
-		sprite_data.target_offset = offset
+		sprite_data.target.offset = offset
 		table.insert(id_table, rendering.draw_sprite(sprite_data).id)
 	end
 end
