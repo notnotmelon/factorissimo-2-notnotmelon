@@ -38,13 +38,6 @@ data:extend {
 	},
 	{
 		type = "bool-setting",
-		name = "Factorissimo2-same-surface",
-		setting_type = "runtime-global",
-		default_value = true,
-		order = "a-d",
-	},
-	{
-		type = "bool-setting",
 		name = "Factorissimo2-indestructible-buildings",
 		setting_type = "runtime-global",
 		default_value = false,

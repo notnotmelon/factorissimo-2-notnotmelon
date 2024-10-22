@@ -3,10 +3,13 @@ Compat = Compat or {}
 local function cleanup_entities_for_factoriomaps()
 	print("Starting factoriomaps-factorissimo integration script")
 
-	for surface, factoryList in pairs(storage.surface_factories) do
-		remote.call("factoriomaps", "surface_set_hidden", surface, true)
+	for surface_index, factory_list in pairs(storage.surface_factories) do
+		local surface = game.get_surface(surface_index)
+		if not surface then goto continue end
 
-		for _, factory in pairs(factoryList) do
+		remote.call("factoriomaps", "surface_set_hidden", surface.name, true)
+
+		for _, factory in pairs(factory_list) do
 			if factory.built then
 				for _, id in pairs(factory.outside_overlay_displays) do
 					local object = rendering.get_object_by_id(id)
@@ -27,6 +30,7 @@ local function cleanup_entities_for_factoriomaps()
 				})
 			end
 		end
+		::continue::
 	end
 end
 

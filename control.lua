@@ -1,9 +1,7 @@
 require "util"
 
 local remote_api = require "script.lib"
-local get_factory_by_entity = remote_api.get_factory_by_entity
 local get_factory_by_building = remote_api.get_factory_by_building
-local find_factory_by_building = remote_api.find_factory_by_building
 local find_surrounding_factory = remote_api.find_surrounding_factory
 local power_middleman_surface = remote_api.power_middleman_surface
 local BUILDING_TYPE = BUILDING_TYPE
@@ -35,10 +33,8 @@ local function init_globals()
 	storage.pending_saves = storage.pending_saves or {}
 	-- Map: Entity unit number -> Factory it is a part of
 	storage.factories_by_entity = storage.factories_by_entity or {}
-	-- Map: Surface name -> list of factories on it
+	-- Map: Surface index -> list of factories on it
 	storage.surface_factories = storage.surface_factories or {}
-	-- Map: Surface name -> number of used factory spots on it
-	storage.surface_factory_counters = storage.surface_factory_counters or {}
 	-- Scalar
 	storage.next_factory_surface = storage.next_factory_surface or 0
 	-- Map: Player index -> Last teleport time
@@ -90,11 +86,14 @@ script.on_configuration_changed(function(config_changed_data)
 	Camera.init()
 	power_middleman_surface()
 	activate_factories()
+
 	if remote.interfaces["RSO"] then -- RSO compatibility
-		for surface_name, _ in pairs(storage.surface_factories or {}) do
-			pcall(remote.call, "RSO", "ignoreSurface", surface_name)
+		for surface_index, _ in pairs(storage.surface_factories or {}) do
+			local surface = game.get_surface(surface_index)
+			if surface then pcall(remote.call, "RSO", "ignoreSurface", surface.name) end
 		end
 	end
+	
 	storage.items_with_metadata = nil
 end)
 
@@ -117,15 +116,12 @@ end
 local function get_surface_name(layout)
 	if layout.surface_override then return layout.surface_override end
 	storage.next_factory_surface = storage.next_factory_surface + 1
-	if (settings.global["Factorissimo2-same-surface"].value) then
-		storage.next_factory_surface = 1
-	end
 	return "factory-floor-" .. storage.next_factory_surface
 end
 
 local function create_factory_position(layout)
 	local surface_name = get_surface_name(layout)
-	local surface = game.surfaces[surface_name]
+	local surface = game.get_surface(surface_name)
 
 	if not surface then
 		surface = game.create_surface(surface_name, {width = 2, height = 2})
@@ -135,39 +131,25 @@ local function create_factory_position(layout)
 			pcall(remote.call, "RSO", "ignoreSurface", surface_name)
 		end
 	end
-	local n = storage.surface_factory_counters[surface_name] or 0
-	storage.surface_factory_counters[surface_name] = n + 1
-	local cx = 16 * (n % 8)
-	local cy = 16 * math.floor(n / 8)
 
 	-- To make void chunks show up on the map, you need to tell them they've finished generating.
-	surface.set_chunk_generated_status({cx - 2, cy - 2}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx - 1, cy - 2}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx + 0, cy - 2}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx + 1, cy - 2}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx - 2, cy - 1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx - 1, cy - 1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx + 0, cy - 1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx + 1, cy - 1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx - 2, cy + 0}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx - 1, cy + 0}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx + 0, cy + 0}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx + 1, cy + 0}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx - 2, cy + 1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx - 1, cy + 1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx + 0, cy + 1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx + 1, cy + 1}, defines.chunk_generated_status.entities)
-	surface.destroy_decoratives {area = {{32 * (cx - 2), 32 * (cy - 2)}, {32 * (cx + 2), 32 * (cy + 2)}}}
+	for xx = -2, 2 do
+		for yy = -2, 2 do
+			surface.set_chunk_generated_status({xx, yy}, defines.chunk_generated_status.entities)
+		end
+	end
+	surface.destroy_decoratives {area = {{-64, -64}, {64, 64}}}
 
 	local factory = {}
 	factory.inside_surface = surface
-	factory.inside_x = 32 * cx
-	factory.inside_y = 32 * cy
+	factory.inside_x = 0 -- Yes these are constant, but they will remain here for migration purposes
+	factory.inside_y = 0
 	factory.stored_pollution = 0
 	factory.upgrades = {}
 
-	storage.surface_factories[surface_name] = storage.surface_factories[surface_name] or {}
-	storage.surface_factories[surface_name][n + 1] = factory
+	storage.surface_factories[surface.index] = storage.surface_factories[surface.index] or {}
+	storage.surface_factories[surface.index][#storage.surface_factories[surface.index] + 1] = factory
+
 	local fn = #(storage.factories) + 1
 	storage.factories[fn] = factory
 	factory.id = fn
@@ -501,7 +483,7 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
 	elseif entity.type == "electric-pole" then
 		Electricity.power_pole_placed(entity)
 	elseif entity.type == "solar-panel" or entity.name == "bi-solar-boiler" then
-		if storage.surface_factory_counters[entity.surface.name] then
+		if storage.surface_factories[entity.surface_index] then
 			cancel_creation(entity, event.player_index, {"factory-connection-text.invalid-placement"})
 		else
 			entity.force.technologies["factory-interior-upgrade-lights"].researched = true
@@ -532,7 +514,7 @@ local function generate_factory_item_description(factory)
 			end
 		end
 	end
-	params = table.concat(params, " ")
+	local params = table.concat(params, " ")
 	if params ~= "" then return "[font=heading-2]" .. params .. "[/font]" end
 end
 
@@ -683,13 +665,13 @@ script.on_nth_tick(CONNECTION_UPDATE_RATE, Connections.update)
 script.on_nth_tick(180, function(event)
 	local has_players = {}
 	for _, player in pairs(game.players) do
-		if storage.surface_factory_counters[player.surface.name] and (player.render_mode == defines.render_mode.chart or player.render_mode == defines.render_mode.chart_zoomed_in) then
+		if storage.surface_factories[player.surface_index] and (player.render_mode == defines.render_mode.chart or player.render_mode == defines.render_mode.chart_zoomed_in) then
 			has_players[player.surface.name] = true
 		end
 	end
 
-	for surface, _ in pairs(storage.surface_factory_counters) do
-		surface = game.get_surface(surface)
+	for surface_index, _ in pairs(storage.surface_factories) do
+		local surface = game.get_surface(surface_index)
 		local players = not not has_players[surface.name]
 		if players ~= storage.hidden_radars[surface.name] then
 			for _, factory in pairs(storage.factories) do

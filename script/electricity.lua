@@ -41,7 +41,7 @@ local function update_power_connection(factory, pole) -- pole parameter is optio
 	local x = factory.outside_x
 	local y = factory.outside_y
 
-	if storage.surface_factory_counters[surface.name] then
+	if storage.surface_factories[surface.index] then
 		local surrounding = find_surrounding_factory(surface, {x = x, y = y})
 		if surrounding then
 			connect_power(factory, get_or_create_inside_power_pole(surrounding))

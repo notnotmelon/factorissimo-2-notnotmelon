@@ -12,6 +12,9 @@ for _, factory in pairs(storage.factories) do
     end
     factory.inside_power_poles = nil
     factory.middleman_id = nil
+    factory.direct_connection = nil
 
     Electricity.update_power_connection(factory)
 end
+
+storage.surface_factory_counters = nil
