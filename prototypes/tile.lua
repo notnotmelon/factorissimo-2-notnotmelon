@@ -13,11 +13,7 @@ local function make_tile(tinfo)
 			layer = tinfo.layer or 50,
 			variants = {
 				main = tinfo.pictures,
-				inner_corner = { picture = F..'/graphics/nothing.png', count = 0 },
-				outer_corner = { picture = F..'/graphics/nothing.png', count = 0 },
-				side = { picture = F..'/graphics/nothing.png', count = 0 },
-				u_transition = { picture = F..'/graphics/nothing.png', count = 0 },
-				o_transition = { picture = F..'/graphics/nothing.png', count = 0 },
+				empty_transitions = true
 			},
 			walking_speed_modifier = 1.3,
 			walking_sound = {
@@ -46,32 +42,38 @@ end
 
 local function wall_mask()
 	return {
-		'ground-tile',
-		'water-tile',
-		'resource-layer',
-		'floor-layer',
-		'item-layer',
-		'object-layer',
-		'player-layer',
-		'doodad-layer'
+		layers = {
+			ground_tile = true,
+			water_tile = true,
+			resource_layer = true,
+			floor_layer = true,
+			item_layer = true,
+			object_layer = true,
+			player_layer = true,
+			doodad_layer = true,
+		}
 	}
 end
 
 local function edge_mask()
 	return {
-		'ground-tile',
-		'water-tile',
-		'resource-layer',
-		'floor-layer',
-		'item-layer',
-		'object-layer',
-		'doodad-layer'
+		layers = {
+			ground_tile = true,
+			water_tile = true,
+			resource_layer = true,
+			floor_layer = true,
+			item_layer = true,
+			object_layer = true,
+			doodad_layer = true,
+		}
 	}
 end
 
 local function floor_mask()
 	return {
-		'ground-tile'
+		layers = {
+			ground_tile = true,
+		}
 	}
 end
 
