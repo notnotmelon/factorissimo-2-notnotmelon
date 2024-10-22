@@ -103,22 +103,12 @@ end)
 local function remove_direct_connection(factory)
 	local dc = factory.direct_connection
 	if not dc or not dc.valid then return end
+	local dc_wire_connector = dc.get_wire_connector(defines.wire_connector_id.pole_copper)
 
 	for _, pole in pairs(factory.inside_power_poles) do
-		for _, neighbour in pairs(pole.neighbours.copper) do
-			if neighbour == dc then
-				local old = {}
-				for _, neighbour in ipairs(dc.neighbours.copper) do
-					if neighbour ~= pole and neighbour.type ~= "power-switch" then
-						old[#old + 1] = neighbour
-					end
-				end
-				dc.disconnect_neighbour()
-				for _, neighbour in ipairs(old) do dc.connect_neighbour(neighbour) end
-				factory.direct_connection = nil
-				return
-			end
-		end
+		local wire_connector = pole.get_wire_connector(defines.wire_connector_id.pole_copper)
+		wire_connector.disconnect_from(dc_wire_connector)
+		factory.direct_connection = nil
 	end
 end
 
