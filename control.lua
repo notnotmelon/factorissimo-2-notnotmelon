@@ -1,5 +1,12 @@
 require "util"
 
+create_flying_text = function(args)
+	args.create_at_cursor = false
+	for _, player in pairs(game.connected_players) do
+		player.create_local_flying_text(args)
+	end
+end
+
 local remote_api = require "script.lib"
 local get_factory_by_building = remote_api.get_factory_by_building
 local find_surrounding_factory = remote_api.find_surrounding_factory
@@ -380,11 +387,11 @@ local function can_place_factory_here(tier, surface, position)
 		return true
 	end
 	if outer_tier > tier then
-		surface.create_entity {name = "flying-text", position = position, text = {"factory-connection-text.invalid-placement-recursion-1"}, force = factory.force}
+		create_flying_text{position = position, text = {"factory-connection-text.invalid-placement-recursion-1"}}
 	elseif (outer_tier >= tier or settings.global["Factorissimo2-better-recursion-2"].value) then
-		surface.create_entity {name = "flying-text", position = position, text = {"factory-connection-text.invalid-placement-recursion-2"}, force = factory.force}
+		create_flying_text{position = position, text = {"factory-connection-text.invalid-placement-recursion-2"}}
 	else
-		surface.create_entity {name = "flying-text", position = position, text = {"factory-connection-text.invalid-placement"}, force = factory.force}
+		create_flying_text{position = position, text = {"factory-connection-text.invalid-placement"}}
 	end
 	return false
 end
@@ -458,7 +465,7 @@ local function handle_factory_placed(entity, tags)
 		Blueprint.copy_entity_ghosts(storage.factories[tags.id], factory)
 		Overlay.update_overlay(factory)
 	else
-		entity.surface.create_entity {name = "flying-text", position = entity.position, text = {"factory-connection-text.invalid-factory-data"}}
+		create_flying_text{position = entity.position, text = {"factory-connection-text.invalid-factory-data"}}
 		entity.destroy()
 	end
 end
@@ -562,7 +569,7 @@ local function rebuild_factory(entity)
 		factory.outside_port_markers = {}
 		toggle_port_markers(factory)
 	end
-	entity.surface.create_entity {name = "flying-text", position = entity.position, text = {"factory-cant-be-mined"}}
+	create_flying_text{position = entity.position, text = {"factory-cant-be-mined"}}
 end
 
 local fake_robots = {["repair-block-robot"] = true} -- Modded construction robots with heavy control scripting

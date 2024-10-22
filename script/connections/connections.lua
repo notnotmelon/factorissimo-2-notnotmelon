@@ -138,8 +138,8 @@ local function init_connection(factory, cid, cpos) -- Only call this when factor
 							return
 						end
 					else
-						factory.inside_surface.create_entity {name = "flying-text", position = inside_entity.position, text = {"research-required"}}
-						factory.outside_surface.create_entity {name = "flying-text", position = outside_entity.position, text = {"research-required"}}
+						create_flying_text{position = inside_entity.position, text = {"research-required"}}
+						create_flying_text{position = outside_entity.position, text = {"research-required"}}
 					end
 				end
 			end
@@ -237,7 +237,7 @@ local function rotate(factory, indicator)
 			if (ind2.unit_number == indicator.unit_number) then
 				local conn = factory.connections[cid]
 				local text = c_rotate[conn._type](conn)
-				factory.inside_surface.create_entity {name = "flying-text", position = indicator.position, color = c_color[conn._type], text = text}
+				create_flying_text{position = indicator.position, color = c_color[conn._type], text = text}
 				local setting, dir = c_direction[conn._type](conn)
 				set_connection_indicator(factory, cid, conn._type, setting, dir)
 				return
@@ -253,7 +253,7 @@ local function adjust(factory, indicator, positive)
 			if (ind2.unit_number == indicator.unit_number) then
 				local conn = factory.connections[cid]
 				local text = c_adjust[conn._type](conn, positive)
-				factory.inside_surface.create_entity {name = "flying-text", position = indicator.position, color = c_color[conn._type], text = text}
+				create_flying_text{position = indicator.position, color = c_color[conn._type], text = text}
 				local setting, dir = c_direction[conn._type](conn)
 				set_connection_indicator(factory, cid, conn._type, setting, dir)
 				return
