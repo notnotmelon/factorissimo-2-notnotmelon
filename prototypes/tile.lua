@@ -13,35 +13,7 @@ local function make_tile(tinfo)
 			layer = tinfo.layer or 50,
 			variants = {
 				main = tinfo.pictures,
-				transition = {
-					overlay_layout = {
-						inner_corner = {
-							spritesheet = F..'/graphics/nothing.png',
-							count = 0,
-							scale = 0,
-						},
-						outer_corner = {
-							spritesheet = F..'/graphics/nothing.png',
-							count = 0,
-							scale = 0,
-						},
-						side = {
-							spritesheet = F..'/graphics/nothing.png',
-							count = 0,
-							scale = 0,
-						},
-						u_transition = {
-							spritesheet = F..'/graphics/nothing.png',
-							count = 0,
-							scale = 0,
-						},
-						o_transition = {
-							spritesheet = F..'/graphics/nothing.png',
-							count = 0,
-							scale = 0,
-						}
-					}
-				}
+				empty_transitions = true
 			},
 			walking_speed_modifier = 1.3,
 			walking_sound = {
