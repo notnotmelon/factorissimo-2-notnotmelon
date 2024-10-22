@@ -87,7 +87,7 @@ script.on_configuration_changed(function(config_changed_data)
 	power_middleman_surface()
 	activate_factories()
 
-	if remote.interfaces["RSO"] then -- RSO compatibility
+	if remote.interfaces["RSO"] then
 		for surface_index, _ in pairs(storage.surface_factories or {}) do
 			local surface = game.get_surface(surface_index)
 			if surface then pcall(remote.call, "RSO", "ignoreSurface", surface.name) end
@@ -127,6 +127,9 @@ local function create_factory_position(layout)
 		surface = game.create_surface(surface_name, {width = 2, height = 2})
 		surface.daytime = 0.5
 		surface.freeze_daytime = true
+		surface.create_global_electric_network()
+		---surface.pollutant_type = parent_surface.pollutant_type  @wube pls fix modding api :(
+
 		if remote.interfaces["RSO"] then -- RSO compatibility
 			pcall(remote.call, "RSO", "ignoreSurface", surface_name)
 		end

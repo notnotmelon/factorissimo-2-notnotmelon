@@ -17,4 +17,19 @@ for _, factory in pairs(storage.factories) do
     Electricity.update_power_connection(factory)
 end
 
+local new_surface_factories = {}
+for surface_name, factory_list in pairs(storage.surface_factories or {}) do
+    if type(surface_name) == "string" then
+        local surface = game.get_surface(surface_name)
+        new_surface_factories[surface.index] = factory_list
+    else
+        new_surface_factories[surface_name] = factory_list
+    end        
+end
+
 storage.surface_factory_counters = nil
+
+for surface_index in pairs(storage.surface_factories or {}) do
+    local surface = game.get_surface(surface_index)
+    surface.create_global_electric_network()
+end

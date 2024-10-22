@@ -51,8 +51,11 @@ local function update_power_connection(factory, pole) -- pole parameter is optio
 
 	-- find the nearest connected power pole
 	local D = game.max_electric_pole_supply_area_distance + factory.layout.outside_size / 2
+	local area = {{x - D, y - D}, {x + D, y + D}}
+	if surface.has_global_electric_network then area = nil end
+
 	local candidates = {}
-	for _, entity in ipairs(surface.find_entities_filtered {type = "electric-pole", area = {{x - D, y - D}, {x + D, y + D}}}) do
+	for _, entity in ipairs(surface.find_entities_filtered {type = "electric-pole", area = area}) do
 		if entity.electric_network_id == electric_network and entity ~= pole and not entity.prototype.hidden then
 			candidates[#candidates + 1] = entity
 		end
@@ -64,15 +67,19 @@ end
 Electricity.update_power_connection = update_power_connection
 
 local function get_factories_near_pole(pole)
+	local surface = pole.surface
+
 	local D = pole.prototype.get_supply_area_distance(pole.quality)
 	if D == 0 then return {} end
 	D = D + 1
 	local position = pole.position
 	local x = position.x
 	local y = position.y
+	local area = {{x - D, y - D}, {x + D, y + D}}
+	if surface.has_global_electric_network then area = nil end
 
 	local result = {}
-	for _, candidate in ipairs(pole.surface.find_entities_filtered {type = BUILDING_TYPE, area = {{x - D, y - D}, {x + D, y + D}}}) do
+	for _, candidate in pairs(surface.find_entities_filtered {type = BUILDING_TYPE, area = area}) do
 		if has_layout(candidate.name) then result[#result + 1] = get_factory_by_building(candidate) end
 	end
 	return result

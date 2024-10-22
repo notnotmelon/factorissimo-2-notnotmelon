@@ -275,7 +275,7 @@ data:extend {
 		flags = {"not-on-map"},
 		hidden = true,
 		maximum_wire_distance = 1,
-		supply_area_distance = 63,
+		supply_area_distance = 1,
 		pictures = table.deepcopy(data.raw["electric-pole"]["substation"].pictures),
 		drawing_box = table.deepcopy(data.raw["electric-pole"]["substation"].drawing_box),
 		radius_visualisation_picture = blank(),
