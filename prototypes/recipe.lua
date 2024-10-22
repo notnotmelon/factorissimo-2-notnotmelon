@@ -10,8 +10,8 @@ data:extend{
             {type = 'item', name = 'iron-plate', amount = 500},
             {type = 'item', name = 'copper-plate', amount = 200}
         },
-        products = {{type = "item", name = 'factory-1-raw', amount = 1}},
-        icon = '__factorissimo-2-notnotmelon__/graphics/icons/factory-1.png',
+        results = {{type = "item", name = 'factory-1-raw', amount = 1}},
+        icon = '__factorissimo-2-notnotmelon__/graphics/icon/factory-1.png',
         icon_size = 32
     },
     {
@@ -24,7 +24,7 @@ data:extend{
             {type = 'item', name = 'steel-plate', amount = 250},
             {type = 'item', name = 'big-electric-pole', amount = 50}
         },
-        products = {{type = "item", name = 'factory-2-raw', amount = 1}},
+        results = {{type = "item", name = 'factory-2-raw', amount = 1}},
     },
     {
         type = 'recipe',
@@ -36,7 +36,7 @@ data:extend{
             {type = 'item', name = 'steel-plate', amount = 2000},
             {type = 'item', name = 'substation', amount = 100}
         },
-        products = {{type = "item", name = 'factory-3-raw', amount = 1}},
+        results = {{type = "item", name = 'factory-3-raw', amount = 1}},
     },
     -- Utilities
     {
@@ -48,6 +48,6 @@ data:extend{
             {type = 'item', name = 'electronic-circuit', amount = 2},
             {type = 'item', name = 'copper-cable', amount = 5}
         },
-        products = {{type = "item", name = 'factory-circuit-connector', amount = 1}},
+        results = {{type = "item", name = 'factory-circuit-connector', amount = 1}},
     }
 }

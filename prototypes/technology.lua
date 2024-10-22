@@ -123,7 +123,7 @@ data:extend{
 		name = 'factory-interior-upgrade-lights',
 		icon = F..'/graphics/technology/factory-interior-upgrade-lights.png',
 		icon_size = 128,
-		prerequisites = {'factory-architecture-t1', 'optics'},
+		prerequisites = {'factory-architecture-t1', 'lamp'},
 		effects = {},
 		unit = {
 			count = 50,
@@ -137,7 +137,7 @@ data:extend{
 		name = 'factory-interior-upgrade-display',
 		icon = F..'/graphics/technology/factory-interior-upgrade-display.png',
 		icon_size = 128,
-		prerequisites = {'factory-architecture-t1', 'optics'},
+		prerequisites = {'factory-architecture-t1', 'lamp'},
 		effects = {},
 		unit = {
 			count = 100,
