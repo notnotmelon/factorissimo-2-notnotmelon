@@ -25,8 +25,6 @@ data:extend{
             {type = 'item', name = 'big-electric-pole', amount = 50}
         },
         products = {{type = "item", name = 'factory-2-raw', amount = 1}},
-        icon = '__factorissimo-2-notnotmelon__/graphics/icons/factory-2.png',
-        icon_size = 32
     },
     {
         type = 'recipe',
@@ -39,8 +37,6 @@ data:extend{
             {type = 'item', name = 'substation', amount = 100}
         },
         products = {{type = "item", name = 'factory-3-raw', amount = 1}},
-        icon = '__factorissimo-2-notnotmelon__/graphics/icons/factory-3.png',
-        icon_size = 32
     },
     -- Utilities
     {
@@ -53,8 +49,5 @@ data:extend{
             {type = 'item', name = 'copper-cable', amount = 5}
         },
         products = {{type = "item", name = 'factory-circuit-connector', amount = 1}},
-        flags = {'not-stackable', 'only-in-cursor'},
-        icon = '__factorissimo-2-notnotmelon__/graphics/icons/factory-circuit-connector.png',
-        icon_size = 32
     }
 }
