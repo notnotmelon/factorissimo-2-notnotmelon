@@ -294,8 +294,9 @@ script.on_event({defines.events.on_selected_entity_changed, defines.events.on_pl
 		end
 
 		local has_cross_surface_connections = false
-		for _, neighbour in pairs(pole.neighbours.copper) do
-			if neighbour.surface ~= pole.surface then
+		for _, connection in pairs(pole.get_wire_connector(defines.wire_connector_id.pole_copper).connections) do
+			local owner = connection.target.owner
+			if owner.surface ~= pole.surface then
 				has_cross_surface_connections = true
 				break
 			end
