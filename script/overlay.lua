@@ -1,12 +1,12 @@
 Overlay = {}
 
 local function build_display_upgrade(factory)
-	if not factory.force.technologies['factory-interior-upgrade-display'].researched then return end
+	if not factory.force.technologies["factory-interior-upgrade-display"].researched then return end
 	if factory.inside_overlay_controller and factory.inside_overlay_controller.valid then return end
 
 	local pos = factory.layout.overlays
-	local controller = factory.inside_surface.create_entity{
-		name = 'factory-overlay-controller',
+	local controller = factory.inside_surface.create_entity {
+		name = "factory-overlay-controller",
 		position = {
 			factory.inside_x + pos.inside_x,
 			factory.inside_y + pos.inside_y
@@ -21,12 +21,12 @@ end
 Overlay.build_display_upgrade = build_display_upgrade
 
 local sprite_path_translation = {
-	item = 'item',
-	fluid = 'fluid',
-	virtual = 'virtual-signal',
+	item = "item",
+	fluid = "fluid",
+	virtual = "virtual-signal",
 }
 local function draw_overlay_sprite(signal, target_entity, offset, scale, id_table)
-	local sprite_name = sprite_path_translation[signal.type] .. '/' .. signal.name
+	local sprite_name = sprite_path_translation[signal.type] .. "/" .. signal.name
 	if target_entity.valid then
 		local sprite_data = {
 			sprite = sprite_name,
@@ -35,11 +35,11 @@ local function draw_overlay_sprite(signal, target_entity, offset, scale, id_tabl
 			target = target_entity,
 			surface = target_entity.surface,
 			only_in_alt_mode = true,
-			render_layer = 'entity-info-icon',
+			render_layer = "entity-info-icon",
 		}
 		-- Fake shadows
 		local shadow_radius = 0.07 * scale
-		for _, shadow_offset in pairs({{0,shadow_radius}, {0, -shadow_radius}, {shadow_radius, 0}, {-shadow_radius, 0}}) do
+		for _, shadow_offset in pairs {{0, shadow_radius}, {0, -shadow_radius}, {shadow_radius, 0}, {-shadow_radius, 0}} do
 			sprite_data.tint = {0, 0, 0, 0.5} -- Transparent black
 			sprite_data.target_offset = {offset[1] + shadow_offset[1], offset[2] + shadow_offset[2]}
 			table.insert(id_table, rendering.draw_sprite(sprite_data).id)
@@ -61,8 +61,8 @@ local function get_nice_overlay_arrangement(width, height, amount)
 	-- Determine the optimal number of rows to use
 	-- This assumes width >= height
 	for rows = 1, math.ceil(math.sqrt(amount)) do
-		local cols = math.ceil(amount/rows)
-		local scale = math.min(width/cols, height/rows)
+		local cols = math.ceil(amount / rows)
+		local scale = math.min(width / cols, height / rows)
 		if scale > opt_scale then
 			opt_rows = rows
 			opt_cols = cols
@@ -73,7 +73,7 @@ local function get_nice_overlay_arrangement(width, height, amount)
 	opt_scale = (opt_scale ^ 0.8) * (1.5 ^ (0.8 - 1))
 	-- Create evenly spaced coordinates
 	local result = {}
-	for i = 0, amount-1 do
+	for i = 0, amount - 1 do
 		local col = i % opt_cols
 		local row = math.floor(i / opt_cols)
 		local cols_in_row = (row < opt_rows - 1 and opt_cols or (amount - 1) % opt_cols + 1)

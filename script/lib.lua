@@ -1,6 +1,6 @@
 remote_api = {}
 
-BUILDING_TYPE = 'storage-tank'
+BUILDING_TYPE = "storage-tank"
 
 --[[
 factory = {
@@ -41,7 +41,7 @@ factory = {
 
 	+upgrades = {},
 }
-]]--
+]] --
 
 remote_api.get_global = function(path)
 	if not path then return global end
@@ -59,7 +59,7 @@ remote_api.set_global = function(path, v)
 	end
 	g[path[#path]] = v
 end
-	
+
 remote_api.get_factory_by_entity = function(entity)
 	if entity == nil then return nil end
 	return storage.factories_by_entity[entity.unit_number]
@@ -68,14 +68,14 @@ end
 remote_api.get_factory_by_building = function(entity)
 	local factory = storage.factories_by_entity[entity.unit_number]
 	if factory == nil then
-		game.print('ERROR: Unbound factory building: ' .. entity.name .. '@' .. entity.surface.name .. '(' .. entity.position.x .. ', ' .. entity.position.y .. ')')
+		game.print("ERROR: Unbound factory building: " .. entity.name .. "@" .. entity.surface.name .. "(" .. entity.position.x .. ", " .. entity.position.y .. ")")
 	end
 	return factory
 end
 
 local bt = BUILDING_TYPE
 remote_api.find_factory_by_building = function(surface, area)
-	for _,entity in pairs(surface.find_entities_filtered{area = area, type = bt}) do
+	for _, entity in pairs(surface.find_entities_filtered {area = area, type = bt}) do
 		if Layout.has_layout(entity.name) then return remote_api.get_factory_by_building(entity) end
 	end
 	return nil
@@ -84,30 +84,30 @@ end
 remote_api.find_surrounding_factory = function(surface, position)
 	local factories = storage.surface_factories[surface.name]
 	if factories == nil then return nil end
-	local x = math.floor(0.5+position.x/(16*32))
-	local y = math.floor(0.5+position.y/(16*32))
+	local x = math.floor(0.5 + position.x / (16 * 32))
+	local y = math.floor(0.5 + position.y / (16 * 32))
 	if (x > 7 or x < 0) then return nil end
-	return factories[8*y+x+1]
+	return factories[8 * y + x + 1]
 end
 
 remote_api.power_middleman_surface = function()
-	if game.surfaces['factory-power-connection'] then
-		return game.surfaces['factory-power-connection']
+	if game.surfaces["factory-power-connection"] then
+		return game.surfaces["factory-power-connection"]
 	end
-	
-	local map_gen_settings = {height=1, width=1, property_expression_names={}}
+
+	local map_gen_settings = {height = 1, width = 1, property_expression_names = {}}
 	map_gen_settings.autoplace_settings = {
-		['decorative'] = {treat_missing_as_default=false, settings={}},
-		['entity'] = {treat_missing_as_default=false, settings={}},
-		['tile'] = {treat_missing_as_default=false, settings={['out-of-map']={}}},
+		["decorative"] = {treat_missing_as_default = false, settings = {}},
+		["entity"] = {treat_missing_as_default = false, settings = {}},
+		["tile"] = {treat_missing_as_default = false, settings = {["out-of-map"] = {}}},
 	}
-	
-	local surface = game.create_surface('factory-power-connection', map_gen_settings)
+
+	local surface = game.create_surface("factory-power-connection", map_gen_settings)
 	surface.set_chunk_generated_status({0, 0}, defines.chunk_generated_status.entities)
 	surface.set_chunk_generated_status({-1, 0}, defines.chunk_generated_status.entities)
 	surface.set_chunk_generated_status({0, -1}, defines.chunk_generated_status.entities)
 	surface.set_chunk_generated_status({-1, -1}, defines.chunk_generated_status.entities)
-	
+
 	return surface
 end
 

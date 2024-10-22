@@ -1,6 +1,6 @@
-require 'util'
+require "util"
 
-local remote_api = require 'script.lib'
+local remote_api = require "script.lib"
 local get_factory_by_entity = remote_api.get_factory_by_entity
 local get_factory_by_building = remote_api.get_factory_by_building
 local find_factory_by_building = remote_api.find_factory_by_building
@@ -8,19 +8,19 @@ local find_surrounding_factory = remote_api.find_surrounding_factory
 local power_middleman_surface = remote_api.power_middleman_surface
 local BUILDING_TYPE = BUILDING_TYPE
 
-require 'script.layout'
+require "script.layout"
 local has_layout = Layout.has_layout
-require 'script.connections.connections'
-require 'script.updates'
-require 'script.blueprint'
-require 'script.camera'
-require 'script.travel'
-require 'script.overlay'
-require 'script.pollution'
-require 'compat.factoriomaps'
+require "script.connections.connections"
+require "script.updates"
+require "script.blueprint"
+require "script.camera"
+require "script.travel"
+require "script.overlay"
+require "script.pollution"
+require "compat.factoriomaps"
 
 local update_hidden_techs = nil -- Function stub
-local activate_factories = nil -- Function stub
+local activate_factories = nil  -- Function stub
 
 -- INITIALIZATION --
 
@@ -52,18 +52,18 @@ local function init_globals()
 	-- List of all spidertrons
 	storage.spidertrons = {}
 	for _, surface in pairs(game.surfaces) do
-		for _, spider in pairs(surface.find_entities_filtered{type = 'spider-vehicle'}) do
-			if spider.name ~= 'companion' then
+		for _, spider in pairs(surface.find_entities_filtered {type = "spider-vehicle"}) do
+			if spider.name ~= "companion" then
 				storage.spidertrons[#storage.spidertrons + 1] = spider
 				script.register_on_entity_destroyed(spider)
 			end
 		end
 	end
-	
-	if remote.interfaces['PickerDollies'] then
-		remote.call('PickerDollies', 'add_blacklist_name', 'factory-1', true)
-		remote.call('PickerDollies', 'add_blacklist_name', 'factory-2', true)
-		remote.call('PickerDollies', 'add_blacklist_name', 'factory-3', true)
+
+	if remote.interfaces["PickerDollies"] then
+		remote.call("PickerDollies", "add_blacklist_name", "factory-1", true)
+		remote.call("PickerDollies", "add_blacklist_name", "factory-2", true)
+		remote.call("PickerDollies", "add_blacklist_name", "factory-3", true)
 	end
 end
 
@@ -89,9 +89,9 @@ script.on_configuration_changed(function(config_changed_data)
 	Camera.init()
 	power_middleman_surface()
 	activate_factories()
-	if remote.interfaces['RSO'] then -- RSO compatibility
+	if remote.interfaces["RSO"] then -- RSO compatibility
 		for surface_name, _ in pairs(storage.surface_factories or {}) do
-			pcall(remote.call, 'RSO', 'ignoreSurface', surface_name)
+			pcall(remote.call, "RSO", "ignoreSurface", surface_name)
 		end
 	end
 	storage.items_with_metadata = nil
@@ -109,7 +109,7 @@ local function remove_direct_connection(factory)
 			if neighbour == dc then
 				local old = {}
 				for _, neighbour in ipairs(dc.neighbours.copper) do
-					if neighbour ~= pole and neighbour.type ~= 'power-switch' then
+					if neighbour ~= pole and neighbour.type ~= "power-switch" then
 						old[#old + 1] = neighbour
 					end
 				end
@@ -143,7 +143,7 @@ end
 local function available_pole(factory)
 	local poles = factory.inside_power_poles
 	for i, pole in ipairs(poles) do
-		local next = poles[i+1]
+		local next = poles[i + 1]
 		if next then
 			next.connect_neighbour(pole)
 		end
@@ -154,7 +154,7 @@ local function available_pole(factory)
 	end
 
 	local layout = factory.layout
-	local pole = factory.inside_surface.create_entity{name='factory-overflow-pole', position=poles[1].position, force=poles[1].force}
+	local pole = factory.inside_surface.create_entity {name = "factory-overflow-pole", position = poles[1].position, force = poles[1].force}
 	pole.destructible = false
 	pole.disconnect_neighbour()
 	pole.connect_neighbour(poles[#poles])
@@ -164,7 +164,7 @@ end
 
 local function connect_power(factory, pole)
 	if #pole.neighbours.copper == 5 then
-		pole.surface.create_entity{name = 'flying-text', position = pole.position, text = {'electric-pole-wire-limit-reached'}}
+		pole.surface.create_entity {name = "flying-text", position = pole.position, text = {"electric-pole-wire-limit-reached"}}
 		return
 	end
 	factory.outside_power_pole = pole
@@ -175,14 +175,17 @@ local function connect_power(factory, pole)
 		return
 	end
 
-    local n
+	local n
 	for i, pole in ipairs(storage.middleman_power_poles) do
-		if pole == 0 then n = i break end
+		if pole == 0 then
+			n = i
+			break
+		end
 	end
 	n = n or #storage.middleman_power_poles + 1
 
 	local surface = power_middleman_surface()
-	local middleman = surface.create_entity{name = 'factory-power-connection', position = {2*(n%32), 2*math.floor(n/32)}, force = 'neutral'}
+	local middleman = surface.create_entity {name = "factory-power-connection", position = {2 * (n % 32), 2 * math.floor(n / 32)}, force = "neutral"}
 	middleman.destructible = false
 	storage.middleman_power_poles[n] = middleman
 
@@ -196,12 +199,12 @@ function update_power_connection(factory, pole) -- pole parameter is optional
 	if not factory.outside_energy_receiver or not factory.outside_energy_receiver.valid then return end
 	local electric_network = factory.outside_energy_receiver.electric_network_id
 	if electric_network == nil then return end
-	
+
 	local surface = factory.outside_surface
 	local x = factory.outside_x
 	local y = factory.outside_y
 
-    if not script.active_mods['factorissimo-power-pole-addon'] and storage.surface_factory_counters[surface.name] then
+	if not script.active_mods["factorissimo-power-pole-addon"] and storage.surface_factory_counters[surface.name] then
 		local surrounding = find_surrounding_factory(surface, {x = x, y = y})
 		if surrounding then
 			connect_power(factory, available_pole(surrounding))
@@ -212,9 +215,9 @@ function update_power_connection(factory, pole) -- pole parameter is optional
 	-- find the nearest connected power pole
 	local D = game.max_electric_pole_supply_area_distance + factory.layout.outside_size / 2
 	local candidates = {}
-	for _, entity in ipairs(surface.find_entities_filtered{type='electric-pole', area={{x-D, y-D}, {x+D,y+D}}}) do
+	for _, entity in ipairs(surface.find_entities_filtered {type = "electric-pole", area = {{x - D, y - D}, {x + D, y + D}}}) do
 		if entity.electric_network_id == electric_network and entity ~= pole then
-			candidates[#candidates+1] = entity
+			candidates[#candidates + 1] = entity
 		end
 	end
 
@@ -224,14 +227,14 @@ end
 
 local function get_factories_near_pole(pole)
 	local D = pole.prototype.supply_area_distance
-    if D == 0 then return {} end
-    D = D + 1
+	if D == 0 then return {} end
+	D = D + 1
 	local position = pole.position
 	local x = position.x
 	local y = position.y
 
 	local result = {}
-	for _, candidate in ipairs(pole.surface.find_entities_filtered{type=BUILDING_TYPE, area={{x-D, y-D}, {x+D,y+D}}}) do
+	for _, candidate in ipairs(pole.surface.find_entities_filtered {type = BUILDING_TYPE, area = {{x - D, y - D}, {x + D, y + D}}}) do
 		if has_layout(candidate.name) then result[#result + 1] = get_factory_by_building(candidate) end
 	end
 	return result
@@ -252,7 +255,7 @@ end
 local function power_pole_destroyed(pole)
 	local old_neighbours = {}
 	for _, neighbour in pairs(pole.neighbours.copper) do
-		if neighbour.surface == pole.surface and neighbour.type ~= 'power-switch' then
+		if neighbour.surface == pole.surface and neighbour.type ~= "power-switch" then
 			old_neighbours[#old_neighbours + 1] = neighbour
 		end
 	end
@@ -269,7 +272,7 @@ local function power_pole_destroyed(pole)
 end
 
 script.on_event(defines.events.on_player_selected_area, function(event)
-	if event.item == 'power-grid-comb' then
+	if event.item == "power-grid-comb" then
 		for _, building in pairs(event.entities) do
 			if has_layout(building.name) then
 				local factory = get_factory_by_building(building)
@@ -283,7 +286,7 @@ end)
 script.on_event({defines.events.on_selected_entity_changed, defines.events.on_player_cursor_stack_changed}, function(event)
 	local player = game.get_player(event.player_index)
 	local pole = player.selected
-	if pole and pole.type == 'electric-pole' then
+	if pole and pole.type == "electric-pole" then
 		local permission = player.permission_group
 		if not permission then
 			permission = game.permissions.create_group()
@@ -315,17 +318,17 @@ end
 
 local function update_destructible(factory)
 	if factory.built and factory.building.valid then
-		factory.building.destructible = not settings.global['Factorissimo2-indestructible-buildings'].value
+		factory.building.destructible = not settings.global["Factorissimo2-indestructible-buildings"].value
 	end
 end
 
 local function get_surface_name(layout)
 	if layout.surface_override then return layout.surface_override end
 	storage.next_factory_surface = storage.next_factory_surface + 1
-	if (settings.global['Factorissimo2-same-surface'].value) then
+	if (settings.global["Factorissimo2-same-surface"].value) then
 		storage.next_factory_surface = 1
 	end
-	return 'factory-floor-' .. storage.next_factory_surface
+	return "factory-floor-" .. storage.next_factory_surface
 end
 
 local function create_factory_position(layout)
@@ -333,47 +336,47 @@ local function create_factory_position(layout)
 	local surface = game.surfaces[surface_name]
 
 	if not surface then
-        surface = game.create_surface(surface_name, {width = 2, height = 2})
-        surface.daytime = 0.5
-        surface.freeze_daytime = true
-        if remote.interfaces['RSO'] then -- RSO compatibility
-            pcall(remote.call, 'RSO', 'ignoreSurface', surface_name)
-        end
+		surface = game.create_surface(surface_name, {width = 2, height = 2})
+		surface.daytime = 0.5
+		surface.freeze_daytime = true
+		if remote.interfaces["RSO"] then -- RSO compatibility
+			pcall(remote.call, "RSO", "ignoreSurface", surface_name)
+		end
 	end
 	local n = storage.surface_factory_counters[surface_name] or 0
-	storage.surface_factory_counters[surface_name] = n+1
-	local cx = 16*(n % 8)
-	local cy = 16*math.floor(n / 8)
+	storage.surface_factory_counters[surface_name] = n + 1
+	local cx = 16 * (n % 8)
+	local cy = 16 * math.floor(n / 8)
 
 	-- To make void chunks show up on the map, you need to tell them they've finished generating.
-	surface.set_chunk_generated_status({cx-2, cy-2}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx-1, cy-2}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx+0, cy-2}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx+1, cy-2}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx-2, cy-1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx-1, cy-1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx+0, cy-1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx+1, cy-1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx-2, cy+0}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx-1, cy+0}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx+0, cy+0}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx+1, cy+0}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx-2, cy+1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx-1, cy+1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx+0, cy+1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({cx+1, cy+1}, defines.chunk_generated_status.entities)
-	surface.destroy_decoratives{area={{32*(cx-2),32*(cy-2)},{32*(cx+2),32*(cy+2)}}}
+	surface.set_chunk_generated_status({cx - 2, cy - 2}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx - 1, cy - 2}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx + 0, cy - 2}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx + 1, cy - 2}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx - 2, cy - 1}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx - 1, cy - 1}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx + 0, cy - 1}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx + 1, cy - 1}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx - 2, cy + 0}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx - 1, cy + 0}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx + 0, cy + 0}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx + 1, cy + 0}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx - 2, cy + 1}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx - 1, cy + 1}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx + 0, cy + 1}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({cx + 1, cy + 1}, defines.chunk_generated_status.entities)
+	surface.destroy_decoratives {area = {{32 * (cx - 2), 32 * (cy - 2)}, {32 * (cx + 2), 32 * (cy + 2)}}}
 
 	local factory = {}
 	factory.inside_surface = surface
-	factory.inside_x = 32*cx
-	factory.inside_y = 32*cy
+	factory.inside_x = 32 * cx
+	factory.inside_y = 32 * cy
 	factory.stored_pollution = 0
 	factory.upgrades = {}
 
 	storage.surface_factories[surface_name] = storage.surface_factories[surface_name] or {}
-	storage.surface_factories[surface_name][n+1] = factory
-	local fn = #(storage.factories)+1
+	storage.surface_factories[surface_name][n + 1] = factory
+	local fn = #(storage.factories) + 1
 	storage.factories[fn] = factory
 	factory.id = fn
 
@@ -382,8 +385,8 @@ end
 
 local function add_tile_rect(tiles, tile_name, xmin, ymin, xmax, ymax) -- tiles is rw
 	local i = #tiles
-	for x = xmin, xmax-1 do
-		for y = ymin, ymax-1 do
+	for x = xmin, xmax - 1 do
+		for y = ymin, ymax - 1 do
 			i = i + 1
 			tiles[i] = {name = tile_name, position = {x, y}}
 		end
@@ -392,11 +395,11 @@ end
 
 local function add_tile_mosaic(tiles, tile_name, xmin, ymin, xmax, ymax, pattern) -- tiles is rw
 	local i = #tiles
-	for x = 0, xmax-xmin-1 do
-		for y = 0, ymax-ymin-1 do
-			if (string.sub(pattern[y+1],x+1, x+1) == '+') then
+	for x = 0, xmax - xmin - 1 do
+		for y = 0, ymax - ymin - 1 do
+			if (string.sub(pattern[y + 1], x + 1, x + 1) == "+") then
 				i = i + 1
-				tiles[i] = {name = tile_name, position = {x+xmin, y+ymin}}
+				tiles[i] = {name = tile_name, position = {x + xmin, y + ymin}}
 			end
 		end
 	end
@@ -420,30 +423,30 @@ local function create_factory_interior(layout, force)
 	end
 	factory.inside_surface.set_tiles(tiles)
 
-	local power_pole = factory.inside_surface.create_entity{
-        name = 'factory-power-pole',
-        position = {factory.inside_x + layout.inside_energy_x, factory.inside_y + layout.inside_energy_y},
-        force = force
-    }
+	local power_pole = factory.inside_surface.create_entity {
+		name = "factory-power-pole",
+		position = {factory.inside_x + layout.inside_energy_x, factory.inside_y + layout.inside_energy_y},
+		force = force
+	}
 	power_pole.destructible = false
 	factory.inside_power_poles = {power_pole}
 
-    local radar = factory.inside_surface.create_entity{
-        name = 'factory-hidden-radar',
-        position = {factory.inside_x, factory.inside_y},
-        force = force
-    }
-    radar.destructible = false
+	local radar = factory.inside_surface.create_entity {
+		name = "factory-hidden-radar",
+		position = {factory.inside_x, factory.inside_y},
+		force = force
+	}
+	radar.destructible = false
 	radar.active = false
 	factory.radar = radar
 
-	if force.technologies['factory-interior-upgrade-lights'].researched then
+	if force.technologies["factory-interior-upgrade-lights"].researched then
 		build_lights_upgrade(factory)
 	end
 
 	factory.inside_overlay_controllers = {}
 
-	if force.technologies['factory-interior-upgrade-display'].researched then
+	if force.technologies["factory-interior-upgrade-display"].researched then
 		Overlay.build_display_upgrade(factory)
 	end
 
@@ -463,7 +466,7 @@ local function create_factory_exterior(factory, building)
 	factory.outside_door_y = factory.outside_y + layout.outside_door_y
 	factory.outside_surface = building.surface
 
-	local oer = factory.outside_surface.create_entity{name = layout.outside_energy_receiver_type, position = {factory.outside_x, factory.outside_y}, force = force}
+	local oer = factory.outside_surface.create_entity {name = layout.outside_energy_receiver_type, position = {factory.outside_x, factory.outside_y}, force = force}
 	oer.destructible = false
 	oer.operable = false
 	oer.rotatable = false
@@ -488,13 +491,13 @@ local function toggle_port_markers(factory)
 	if #(factory.outside_port_markers) == 0 then
 		for id, cpos in pairs(factory.layout.connections) do
 			local sprite_data = {
-				sprite = 'utility/indication_arrow',
-				orientation = cpos.direction_out/8,
+				sprite = "utility/indication_arrow",
+				orientation = cpos.direction_out / 8,
 				target = factory.building,
 				surface = factory.building.surface,
 				target_offset = {cpos.outside_x - 0.5 * cpos.indicator_dx, cpos.outside_y - 0.5 * cpos.indicator_dy},
 				only_in_alt_mode = true,
-				render_layer = 'entity-info-icon',
+				render_layer = "entity-info-icon",
 			}
 			table.insert(factory.outside_port_markers, rendering.draw_sprite(sprite_data).id)
 		end
@@ -529,16 +532,16 @@ end
 
 -- FACTORY SAVING AND LOADING --
 
-commands.add_command('give-lost-factory-buildings', {'command-help-message.give-lost-factory-buildings'}, function(event)
+commands.add_command("give-lost-factory-buildings", {"command-help-message.give-lost-factory-buildings"}, function(event)
 	local player = game.players[event.player_index]
 	if not (player and player.connected and player.admin) then return end
 	local inventory = player.get_main_inventory()
 	for id, factory in pairs(storage.saved_factories) do
 		for i = 1, #inventory do
 			local stack = inventory[i]
-			if stack.valid_for_read and stack.name == factory.layout.name and stack.type == 'item-with-tags' and stack.tags.id == id then goto found end
+			if stack.valid_for_read and stack.name == factory.layout.name and stack.type == "item-with-tags" and stack.tags.id == id then goto found end
 		end
-		player.insert{name = factory.layout.name, count = 1, tags = {id = id}}
+		player.insert {name = factory.layout.name, count = 1, tags = {id = id}}
 		::found::
 	end
 end)
@@ -563,15 +566,15 @@ local function cancel_creation(entity, player_index, message)
 		end
 	end
 
-	entity.destroy{raise_destroy = true}
+	entity.destroy {raise_destroy = true}
 
 	if inserted == 0 and item_to_place then
 		surface.spill_item_stack(position, item_to_place, true, force, false)
 	end
 
 	if message then
-		surface.create_entity{
-			name = 'flying-text',
+		surface.create_entity {
+			name = "flying-text",
 			position = position,
 			text = message,
 			render_player_index = player_index
@@ -583,15 +586,17 @@ local function can_place_factory_here(tier, surface, position)
 	local factory = find_surrounding_factory(surface, position)
 	if not factory then return true end
 	local outer_tier = factory.layout.tier
-	if outer_tier > tier and (factory.force.technologies['factory-recursion-t1'].researched or settings.global['Factorissimo2-free-recursion'].value) then return true end
-	if (outer_tier >= tier or settings.global['Factorissimo2-better-recursion-2'].value)
-		and (factory.force.technologies['factory-recursion-t2'].researched or settings.global['Factorissimo2-free-recursion'].value) then return true end
+	if outer_tier > tier and (factory.force.technologies["factory-recursion-t1"].researched or settings.global["Factorissimo2-free-recursion"].value) then return true end
+	if (outer_tier >= tier or settings.global["Factorissimo2-better-recursion-2"].value)
+		and (factory.force.technologies["factory-recursion-t2"].researched or settings.global["Factorissimo2-free-recursion"].value) then
+		return true
+	end
 	if outer_tier > tier then
-		surface.create_entity{name='flying-text', position=position, text={'factory-connection-text.invalid-placement-recursion-1'}, force = factory.force}
-	elseif (outer_tier >= tier or settings.global['Factorissimo2-better-recursion-2'].value) then
-		surface.create_entity{name='flying-text', position=position, text={'factory-connection-text.invalid-placement-recursion-2'}, force = factory.force}
+		surface.create_entity {name = "flying-text", position = position, text = {"factory-connection-text.invalid-placement-recursion-1"}, force = factory.force}
+	elseif (outer_tier >= tier or settings.global["Factorissimo2-better-recursion-2"].value) then
+		surface.create_entity {name = "flying-text", position = position, text = {"factory-connection-text.invalid-placement-recursion-2"}, force = factory.force}
 	else
-		surface.create_entity{name='flying-text', position=position, text={'factory-connection-text.invalid-placement'}, force = factory.force}
+		surface.create_entity {name = "flying-text", position = position, text = {"factory-connection-text.invalid-placement"}, force = factory.force}
 	end
 	return false
 end
@@ -599,11 +604,11 @@ end
 -- When a connection piece is placed or destroyed, check if can be connected to a factory building
 local function recheck_nearby_connections(entity, delayed)
 	local surface = entity.surface
-    local pos = entity.position
+	local pos = entity.position
 
 	local sbox = table.deepcopy(entity.prototype.selection_box)
 	local orientation = entity.orientation
-	if orientation == 0 then -- north
+	if orientation == 0 then     -- north
 		-- sbox is fine
 	elseif orientation == 0.5 then -- south
 		sbox.left_top.y, sbox.right_bottom.y = -sbox.right_bottom.y, -sbox.left_top.y
@@ -620,7 +625,7 @@ local function recheck_nearby_connections(entity, delayed)
 		right_bottom = {x = pos.x + 0.3 + sbox.right_bottom.x, y = pos.y + 0.3 + sbox.right_bottom.y}
 	}
 
-	for _, candidate in pairs(surface.find_entities_filtered{area = bbox, type = BUILDING_TYPE}) do
+	for _, candidate in pairs(surface.find_entities_filtered {area = bbox, type = BUILDING_TYPE}) do
 		if candidate ~= entity and has_layout(candidate.name) then
 			local factory = get_factory_by_building(candidate)
 			if factory then
@@ -665,7 +670,7 @@ local function handle_factory_placed(entity, tags)
 		Blueprint.copy_entity_ghosts(storage.factories[tags.id], factory)
 		Overlay.update_overlay(factory)
 	else
-		entity.surface.create_entity{name='flying-text', position=entity.position, text={'factory-connection-text.invalid-factory-data'}}
+		entity.surface.create_entity {name = "flying-text", position = entity.position, text = {"factory-connection-text.invalid-factory-data"}}
 		entity.destroy()
 	end
 end
@@ -674,45 +679,45 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
 	local entity = event.created_entity or event.entity
 	if has_layout(entity.name) then
 		local stack = event.stack
-		if stack and stack.valid_for_read and stack.type == 'item-with-tags' then
+		if stack and stack.valid_for_read and stack.type == "item-with-tags" then
 			handle_factory_placed(entity, stack.tags)
 		else
 			handle_factory_placed(entity, event.tags)
 		end
-    elseif Connections.is_connectable(entity) then
-		if entity.name == 'factory-circuit-connector' then
+	elseif Connections.is_connectable(entity) then
+		if entity.name == "factory-circuit-connector" then
 			entity.operable = false
 		else
-			local _, _, pipe_name_input = entity.name:find('^factory%-(.*)%-input$')
-			local _, _, pipe_name_output = entity.name:find('^factory%-(.*)%-output$')
+			local _, _, pipe_name_input = entity.name:find("^factory%-(.*)%-input$")
+			local _, _, pipe_name_output = entity.name:find("^factory%-(.*)%-output$")
 			local pipe_name = pipe_name_input or pipe_name_output
 			if pipe_name then entity = remote_api.replace_entity(entity, pipe_name) end
 		end
 
 		recheck_nearby_connections(entity)
-	elseif entity.type == 'electric-pole' then
+	elseif entity.type == "electric-pole" then
 		power_pole_placed(entity)
-    elseif entity.type == 'solar-panel' or entity.name == 'bi-solar-boiler' then
+	elseif entity.type == "solar-panel" or entity.name == "bi-solar-boiler" then
 		if storage.surface_factory_counters[entity.surface.name] then
-			cancel_creation(entity, event.player_index, {'factory-connection-text.invalid-placement'})
+			cancel_creation(entity, event.player_index, {"factory-connection-text.invalid-placement"})
 		else
-			entity.force.technologies['factory-interior-upgrade-lights'].researched = true
+			entity.force.technologies["factory-interior-upgrade-lights"].researched = true
 		end
-	elseif entity.type == 'entity-ghost' and Connections.indicator_names[entity.ghost_name] then
+	elseif entity.type == "entity-ghost" and Connections.indicator_names[entity.ghost_name] then
 		Blueprint.unpack_connection_settings_from_blueprint(entity)
 		entity.destroy()
-	elseif entity.type == 'entity-ghost' and (entity.ghost_name == 'factory-overlay-controller' or entity.ghost_name == 'factory-blueprint-anchor') then
+	elseif entity.type == "entity-ghost" and (entity.ghost_name == "factory-overlay-controller" or entity.ghost_name == "factory-blueprint-anchor") then
 		entity.destroy()
-	elseif entity.type == 'spider-vehicle' and entity.name ~= 'companion' then
+	elseif entity.type == "spider-vehicle" and entity.name ~= "companion" then
 		storage.spidertrons[entity.unit_number] = entity
 		script.register_on_entity_destroyed(entity)
 	end
 end)
 
 local sprite_path_translation = {
-	item = 'item',
-	fluid = 'fluid',
-	virtual = 'virtual-signal',
+	item = "item",
+	fluid = "fluid",
+	virtual = "virtual-signal",
 }
 local function generate_factory_item_description(factory)
 	local overlay = factory.inside_overlay_controller
@@ -720,12 +725,12 @@ local function generate_factory_item_description(factory)
 	if overlay and overlay.valid then
 		for _, param in pairs(overlay.get_or_create_control_behavior().parameters) do
 			if param and param.signal and param.signal.name then
-				table.insert(params, '[' .. sprite_path_translation[param.signal.type] .. '=' .. param.signal.name .. ']')
+				table.insert(params, "[" .. sprite_path_translation[param.signal.type] .. "=" .. param.signal.name .. "]")
 			end
 		end
 	end
-	params = table.concat(params, ' ')
-	if params ~= '' then return '[font=heading-2]' .. params .. '[/font]' end
+	params = table.concat(params, " ")
+	if params ~= "" then return "[font=heading-2]" .. params .. "[/font]" end
 end
 
 -- How players pick up factories
@@ -739,13 +744,13 @@ script.on_event({defines.events.on_player_mined_entity, defines.events.on_robot_
 		storage.saved_factories[factory.id] = factory
 		local buffer = event.buffer
 		buffer.clear()
-		buffer.insert{name = factory.layout.name}
+		buffer.insert {name = factory.layout.name}
 		buffer[1].tags = {id = factory.id}
 		local description = generate_factory_item_description(factory)
 		if description then buffer[1].custom_description = description end
 	elseif Connections.is_connectable(entity) then
 		recheck_nearby_connections(entity, true) -- Delay
-	elseif entity.type == 'electric-pole' then
+	elseif entity.type == "electric-pole" then
 		power_pole_destroyed(entity)
 	end
 end)
@@ -754,7 +759,7 @@ local function rebuild_factory(entity)
 	local factory = get_factory_by_building(entity)
 	if not factory then return end
 	storage.factories_by_entity[entity.unit_number] = nil
-	local entity = entity.surface.create_entity{
+	local entity = entity.surface.create_entity {
 		name = entity.name,
 		position = entity.position,
 		force = entity.force,
@@ -769,10 +774,10 @@ local function rebuild_factory(entity)
 		factory.outside_port_markers = {}
 		toggle_port_markers(factory)
 	end
-	entity.surface.create_entity{name = 'flying-text', position = entity.position, text = {'factory-cant-be-mined'}}
+	entity.surface.create_entity {name = "flying-text", position = entity.position, text = {"factory-cant-be-mined"}}
 end
 
-local fake_robots = {['repair-block-robot'] = true} -- Modded construction robots with heavy control scripting
+local fake_robots = {["repair-block-robot"] = true} -- Modded construction robots with heavy control scripting
 script.on_event(defines.events.on_robot_pre_mined, function(event)
 	local entity = event.entity
 	if has_layout(entity.name) and fake_robots[event.robot.name] then
@@ -780,7 +785,7 @@ script.on_event(defines.events.on_robot_pre_mined, function(event)
 		entity.destroy()
 	elseif Connections.is_connectable(entity) then
 		recheck_nearby_connections(entity, true) -- Delay
-	elseif entity.type == 'item-entity' and entity.stack.valid_for_read and has_layout(entity.stack.name) then
+	elseif entity.type == "item-entity" and entity.stack.valid_for_read and has_layout(entity.stack.name) then
 		event.robot.destructible = false
 	end
 end)
@@ -795,8 +800,8 @@ script.on_event(defines.events.on_entity_died, function(event)
 		storage.saved_factories[factory.id] = factory
 		cleanup_factory_exterior(factory, entity)
 
-		local item = entity.surface.create_entity{
-			name = 'item-on-ground',
+		local item = entity.surface.create_entity {
+			name = "item-on-ground",
 			position = entity.position,
 			stack = {name = factory.layout.name, tags = {id = factory.id}}
 		}
@@ -806,7 +811,7 @@ script.on_event(defines.events.on_entity_died, function(event)
 		if description then item.stack.custom_description = description end
 	elseif Connections.is_connectable(entity) then
 		recheck_nearby_connections(entity, true) -- Delay
-	elseif entity.type == 'electric-pole' then
+	elseif entity.type == "electric-pole" then
 		power_pole_destroyed(entity)
 	end
 end)
@@ -825,7 +830,7 @@ script.on_event(defines.events.script_raised_destroy, function(event)
 		rebuild_factory(entity)
 	elseif Connections.is_connectable(entity) then
 		recheck_nearby_connections(entity, true) -- Delay
-	elseif entity.type == 'electric-pole' then
+	elseif entity.type == "electric-pole" then
 		power_pole_destroyed(entity)
 	end
 end)
@@ -833,16 +838,16 @@ end)
 -- How to clone your factory
 -- This implementation will not actually clone factory buildings, but move them to where they were cloned.
 local clone_forbidden_prefixes = {
-	'factory-1-',
-	'factory-2-',
-	'factory-3-',
-	'factory-power-input-',
-	'factory-connection-indicator-',
-	'factory-power-pole',
-	'factory-overlay-controller',
-	'factory-overlay-display',
-	'factory-port-marker',
-	'factory-fluid-dummy-connector'
+	"factory-1-",
+	"factory-2-",
+	"factory-3-",
+	"factory-power-input-",
+	"factory-connection-indicator-",
+	"factory-power-pole",
+	"factory-overlay-controller",
+	"factory-overlay-display",
+	"factory-port-marker",
+	"factory-fluid-dummy-connector"
 }
 
 local function is_entity_clone_forbidden(name)
@@ -902,7 +907,7 @@ script.on_event(defines.events.on_player_rotated_entity, function(event)
 		entity.direction = event.previous_direction
 	elseif Connections.is_connectable(entity) then
 		recheck_nearby_connections(entity)
-		if entity.valid and entity.type == 'underground-belt' then
+		if entity.valid and entity.type == "underground-belt" then
 			local neighbour = entity.neighbours
 			if neighbour then
 				recheck_nearby_connections(neighbour)
@@ -911,7 +916,7 @@ script.on_event(defines.events.on_player_rotated_entity, function(event)
 	end
 end)
 
-script.on_event('factory-rotate', function(event)
+script.on_event("factory-rotate", function(event)
 	local player = game.players[event.player_index]
 	local entity = player.selected
 	if not entity then return end
@@ -928,7 +933,7 @@ script.on_event('factory-rotate', function(event)
 	end
 end)
 
-script.on_event('factory-increase', function(event)
+script.on_event("factory-increase", function(event)
 	local entity = game.players[event.player_index].selected
 	if not entity then return end
 	if Connections.indicator_names[entity.name] then
@@ -939,7 +944,7 @@ script.on_event('factory-increase', function(event)
 	end
 end)
 
-script.on_event('factory-decrease', function(event)
+script.on_event("factory-decrease", function(event)
 	local entity = game.players[event.player_index].selected
 	if not entity then return end
 	if Connections.indicator_names[entity.name] then
@@ -953,25 +958,25 @@ end)
 -- MISC --
 
 update_hidden_techs = function(force)
-	if settings.global['Factorissimo2-hide-recursion'] and settings.global['Factorissimo2-hide-recursion'].value then
-		force.technologies['factory-recursion-t1'].enabled = false
-		force.technologies['factory-recursion-t2'].enabled = false
-	elseif settings.global['Factorissimo2-hide-recursion-2'] and settings.global['Factorissimo2-hide-recursion-2'].value then
-		force.technologies['factory-recursion-t1'].enabled = true
-		force.technologies['factory-recursion-t2'].enabled = false
+	if settings.global["Factorissimo2-hide-recursion"] and settings.global["Factorissimo2-hide-recursion"].value then
+		force.technologies["factory-recursion-t1"].enabled = false
+		force.technologies["factory-recursion-t2"].enabled = false
+	elseif settings.global["Factorissimo2-hide-recursion-2"] and settings.global["Factorissimo2-hide-recursion-2"].value then
+		force.technologies["factory-recursion-t1"].enabled = true
+		force.technologies["factory-recursion-t2"].enabled = false
 	else
-		force.technologies['factory-recursion-t1'].enabled = true
-		force.technologies['factory-recursion-t2'].enabled = true
+		force.technologies["factory-recursion-t1"].enabled = true
+		force.technologies["factory-recursion-t2"].enabled = true
 	end
 end
 
 script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
 	local setting = event.setting
-	if setting == 'Factorissimo2-hide-recursion' or setting == 'Factorissimo2-hide-recursion-2' then
+	if setting == "Factorissimo2-hide-recursion" or setting == "Factorissimo2-hide-recursion-2" then
 		for _, force in pairs(game.forces) do
 			update_hidden_techs(force)
 		end
-	elseif setting == 'Factorissimo2-indestructible-buildings' then
+	elseif setting == "Factorissimo2-indestructible-buildings" then
 		for _, factory in pairs(storage.factories) do
 			update_destructible(factory)
 		end
@@ -986,7 +991,7 @@ end)
 script.on_event(defines.events.on_forces_merging, function(event)
 	for _, factory in pairs(storage.factories) do
 		if not factory.force.valid then
-			factory.force = game.forces['player']
+			factory.force = game.forces["player"]
 		end
 		if factory.force.name == event.source.name then
 			factory.force = event.destination
@@ -1008,25 +1013,25 @@ script.on_event(defines.events.on_research_finished, function(event)
 	if not storage.factories then return end -- In case any mod or scenario script calls LuaForce.research_all_technologies() during its on_init
 	local research = event.research
 	local name = research.name
-	if name == 'factory-connection-type-fluid' or name == 'factory-connection-type-chest' or name == 'factory-connection-type-circuit' then
+	if name == "factory-connection-type-fluid" or name == "factory-connection-type-chest" or name == "factory-connection-type-circuit" then
 		for _, factory in pairs(storage.factories) do
 			if factory.built then Connections.recheck_factory(factory, nil, nil) end
 		end
-	elseif name == 'factory-interior-upgrade-lights' then
+	elseif name == "factory-interior-upgrade-lights" then
 		for _, factory in pairs(storage.factories) do build_lights_upgrade(factory) end
-	elseif name == 'factory-interior-upgrade-display' then
+	elseif name == "factory-interior-upgrade-display" then
 		for _, factory in pairs(storage.factories) do Overlay.build_display_upgrade(factory) end
-	elseif name == 'factory-interior-upgrade-roboport' then
+	elseif name == "factory-interior-upgrade-roboport" then
 		for _, factory in pairs(storage.factories) do build_roboport_upgrade(factory) end
-	elseif name == 'factory-recursion-t1' or name == 'factory-recursion-t2' then
+	elseif name == "factory-recursion-t1" or name == "factory-recursion-t2" then
 		activate_factories()
-	elseif name == 'factory-preview' then
+	elseif name == "factory-preview" then
 		for _, player in pairs(game.players) do Camera.get_camera_toggle_button(player) end
 	end
 end)
 
 script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
-	if event.setting_type == 'runtime-global' then activate_factories() end
+	if event.setting_type == "runtime-global" then activate_factories() end
 end)
 
-remote.add_interface('factorissimo', remote_api)
+remote.add_interface("factorissimo", remote_api)

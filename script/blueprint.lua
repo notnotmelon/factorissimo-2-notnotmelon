@@ -6,7 +6,7 @@ local function setup_blueprint_tags(blueprint, mapping)
 	for i, entity in pairs(mapping) do
 		local factory = storage.factories_by_entity[entity.unit_number]
 		if factory and has_layout(entity.name) then
-			blueprint.set_blueprint_entity_tag(i, 'id', factory.id)
+			blueprint.set_blueprint_entity_tag(i, "id", factory.id)
 		elseif Connections.indicator_names[entity.name] then
 			local factory = remote_api.find_surrounding_factory(entity.surface, entity.position)
 			if factory then
@@ -26,13 +26,13 @@ end
 
 function Blueprint.copy_entity_ghosts(source, destination)
 	local j = 60
-	local first_anchor = source.inside_surface.create_entity{name = 'factory-blueprint-anchor', position = {source.inside_x - j, source.inside_y - j}, force = source.force}
-	local second_anchor = source.inside_surface.create_entity{name = 'factory-blueprint-anchor', position = {source.inside_x + j, source.inside_y + j}, force = source.force}
-	
+	local first_anchor = source.inside_surface.create_entity {name = "factory-blueprint-anchor", position = {source.inside_x - j, source.inside_y - j}, force = source.force}
+	local second_anchor = source.inside_surface.create_entity {name = "factory-blueprint-anchor", position = {source.inside_x + j, source.inside_y + j}, force = source.force}
+
 	local inventory = game.create_inventory(1)
-	inventory.insert{name = 'blueprint', count = 1}
+	inventory.insert {name = "blueprint", count = 1}
 	local stack = inventory[1]
-	local mapping = stack.create_blueprint{
+	local mapping = stack.create_blueprint {
 		surface = source.inside_surface,
 		force = source.force,
 		area = {first_anchor.position, second_anchor.position},
@@ -41,7 +41,7 @@ function Blueprint.copy_entity_ghosts(source, destination)
 		include_station_names = true
 	}
 	setup_blueprint_tags(stack, mapping)
-	stack.build_blueprint{
+	stack.build_blueprint {
 		surface = destination.inside_surface,
 		force = destination.force,
 		position = {destination.inside_x - 1, destination.inside_y - 1},
@@ -49,7 +49,7 @@ function Blueprint.copy_entity_ghosts(source, destination)
 		skip_fog_of_war = true,
 		raise_built = true
 	}
-	
+
 	stack.clear()
 	inventory.destroy()
 	first_anchor.destroy()
@@ -62,7 +62,7 @@ script.on_event(defines.events.on_player_setup_blueprint, function(event)
 	local blueprint = player.blueprint_to_setup
 	if not blueprint.valid_for_read then blueprint = player.cursor_stack end
 	if not blueprint or not blueprint.valid_for_read then return end
-               
+
 	local entities = blueprint.get_blueprint_entities()
 	if not entities then return end
 	local mapping = event.mapping.get()
@@ -70,7 +70,7 @@ script.on_event(defines.events.on_player_setup_blueprint, function(event)
 		local map = mapping[i]
 		if not map or map.name ~= entity.name then return end -- Another mod has broken the mapping, abort
 	end
-               
+
 	setup_blueprint_tags(blueprint, mapping)
 end)
 
@@ -89,7 +89,7 @@ local function unpack_connection_settings_from_blueprint(entity)
 	local position = entity.position
 	local factory = remote_api.find_surrounding_factory(surface, position)
 	if not factory then return end
-	
+
 	local ctype = Connections.indicator_names[entity.ghost_name]
 	local cpos = get_cpos(factory, position)
 	if cpos then

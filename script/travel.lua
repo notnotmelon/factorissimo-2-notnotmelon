@@ -9,7 +9,7 @@ local function find_connected_spidertron_remotes(player, e)
 	local result = {}
 	for i = 0, #inventory do
 		local stack; if i == 0 then stack = player.cursor_stack else stack = inventory[i] end
-		if stack and stack.valid_for_read and stack.type == 'spidertron-remote' and stack.connected_entity == e then
+		if stack and stack.valid_for_read and stack.type == "spidertron-remote" and stack.connected_entity == e then
 			result[#result + 1] = stack
 		end
 	end
@@ -18,9 +18,9 @@ end
 
 local function teleport_safely(e, surface, position, player, leaving)
 	position = {x = position.x or position[1], y = position.y or position[2]}
-	local is_spider = not e.is_player() and e.type == 'spider-vehicle'
+	local is_spider = not e.is_player() and e.type == "spider-vehicle"
 
-	if is_spider and settings.global['Factorissimo2-prevent-spidertron-travel'].value then
+	if is_spider and settings.global["Factorissimo2-prevent-spidertron-travel"].value then
 		return
 	end
 
@@ -80,7 +80,7 @@ local function leave_factory(e, factory, player)
 end
 
 script.on_event(defines.events.on_spider_command_completed, function(event)
-	if settings.global['Factorissimo2-prevent-spidertron-travel'].value then return end
+	if settings.global["Factorissimo2-prevent-spidertron-travel"].value then return end
 	local spider = event.vehicle
 	if not spider.get_driver() then return end
 	for _, building in pairs(spider.surface.find_entities_filtered {type = BUILDING_TYPE, position = spider.position}) do
@@ -98,7 +98,7 @@ end)
 local function get_jetpacks()
 	local jetpack = script.active_mods.jetpack
 	if jetpack then
-		return remote.call('jetpack', 'get_jetpacks', {})
+		return remote.call("jetpack", "get_jetpacks", {})
 	end
 	return nil
 end
@@ -106,11 +106,11 @@ end
 local function is_airborne(jetpacks, player_unit_number)
 	local data = jetpacks[player_unit_number]
 	if data == nil then return false end
-	return data.status == 'flying'
+	return data.status == "flying"
 end
 
 local function is_riding_spider(player)
-	return player.driving and player.vehicle and player.vehicle.type == 'spider-vehicle'
+	return player.driving and player.vehicle and player.vehicle.type == "spider-vehicle"
 end
 
 local function teleport_players()
