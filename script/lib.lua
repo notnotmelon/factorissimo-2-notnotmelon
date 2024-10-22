@@ -27,11 +27,8 @@ factory = {
 	+outside_port_markers = {*},
 
 	+inside_overlay_controller = *,
-	+inside_power_poles = {*},
+	+_inside_power_pole = *,
 	(+)outside_power_pole = *,
-
-	(+)middleman_id = *,
-	(+)direct_connection = *,
 
 	+stored_pollution = *,
 
