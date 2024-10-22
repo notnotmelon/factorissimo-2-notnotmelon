@@ -1,36 +1,60 @@
 data:extend{
-	-- Factory buildings
-	{
-		type = 'recipe',
-		name = 'factory-1',
-		enabled = false,
-		energy_required = 30,
-		ingredients = {{'stone', 500}, {'iron-plate', 500}, {'copper-plate', 200}},
-		result = 'factory-1-raw'
-	},
-	{
-		type = 'recipe',
-		name = 'factory-2',
-		enabled = false,
-		energy_required = 45,
-		ingredients = {{'stone-brick', 1000}, {'steel-plate', 250}, {'big-electric-pole', 50}},
- 		result = 'factory-2-raw'
-	},
-	{
-		type = 'recipe',
-		name = 'factory-3',
-		enabled = false,
-		energy_required = 60,
-		ingredients = {{'concrete', 5000}, {'steel-plate', 2000}, {'substation', 100}},
-		result = 'factory-3-raw'
-	},
-	-- Utilities
-	{
-		type = 'recipe',
-		name = 'factory-circuit-connector',
-		enabled = false,
-		energy_required = 1,
-		ingredients = {{'electronic-circuit', 2}, {'copper-cable', 5}},
-		result = 'factory-circuit-connector'
-	}
+    -- Factory buildings
+    {
+        type = 'recipe',
+        name = 'factory-1',
+        enabled = false,
+        energy_required = 30,
+        ingredients = {
+            {type = 'item', name = 'stone', amount = 500},
+            {type = 'item', name = 'iron-plate', amount = 500},
+            {type = 'item', name = 'copper-plate', amount = 200}
+        },
+        products = {{type = "item", name = 'factory-1-raw', amount = 1}},
+        icon = '__factorissimo-2-notnotmelon__/graphics/icons/factory-1.png',
+        icon_size = 32
+    },
+    {
+        type = 'recipe',
+        name = 'factory-2',
+        enabled = false,
+        energy_required = 45,
+        ingredients = {
+            {type = 'item', name = 'stone-brick', amount = 1000},
+            {type = 'item', name = 'steel-plate', amount = 250},
+            {type = 'item', name = 'big-electric-pole', amount = 50}
+        },
+        products = {{type = "item", name = 'factory-2-raw', amount = 1}},
+        icon = '__factorissimo-2-notnotmelon__/graphics/icons/factory-2.png',
+        icon_size = 32
+    },
+    {
+        type = 'recipe',
+        name = 'factory-3',
+        enabled = false,
+        energy_required = 60,
+        ingredients = {
+            {type = 'item', name = 'concrete', amount = 5000},
+            {type = 'item', name = 'steel-plate', amount = 2000},
+            {type = 'item', name = 'substation', amount = 100}
+        },
+        products = {{type = "item", name = 'factory-3-raw', amount = 1}},
+        icon = '__factorissimo-2-notnotmelon__/graphics/icons/factory-3.png',
+        icon_size = 32
+    },
+    -- Utilities
+    {
+        type = 'recipe',
+        name = 'factory-circuit-connector',
+        enabled = false,
+        energy_required = 1,
+        ingredients = {
+            {type = 'item', name = 'electronic-circuit', amount = 2},
+            {type = 'item', name = 'copper-cable', amount = 5}
+        },
+        products = {{type = "item", name = 'factory-circuit-connector', amount = 1}},
+        flags = {'not-stackable', 'only-in-cursor'},
+        icon = '__factorissimo-2-notnotmelon__/graphics/icons/factory-circuit-connector.png',
+        icon_size = 32
+    }
 }
