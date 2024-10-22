@@ -272,23 +272,23 @@ local layout_generators = {
 }
 
 local function init()
-	global.layout_generators = global.layout_generators or layout_generators
+	storage.layout_generators = storage.layout_generators or layout_generators
 end
 Layout.init = init
 
 remote_api.add_layout = function(layout)
 	init()
-	global.layout_generators[layout.name] = layout
+	storage.layout_generators[layout.name] = layout
 end
 
 function has_layout(name)
-	return global.layout_generators[name] ~= nil
+	return storage.layout_generators[name] ~= nil
 end
 remote_api.has_layout = has_layout
 Layout.has_layout = has_layout
 
 local function create_layout(name)
-	local layout = global.layout_generators[name]
+	local layout = storage.layout_generators[name]
 	if layout then
 		return table.deepcopy(layout)
 	else

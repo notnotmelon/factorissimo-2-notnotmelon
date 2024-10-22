@@ -39,12 +39,12 @@ local function migrate_from_original_mod()
 end
 
 Updates.init = function()
-	global.update_version = 2
+	storage.update_version = 2
 	migrate_from_original_mod()
 end
 
 local function fix_common_issues()
-	for _, factory in pairs(global.factories) do
+	for _, factory in pairs(storage.factories) do
 		-- Fix issues when forces are deleted
 		if not factory.force.valid then
 			factory.force = game.forces["player"]
@@ -54,19 +54,19 @@ end
 
 Updates.run = function()
 	fix_common_issues()
-	if global.update_version == 1 and global.saved_factories then
+	if storage.update_version == 1 and storage.saved_factories then
 		local changed = false
 		local bad, good = {}, {}
-		for name, factory in pairs(global.saved_factories) do
+		for name, factory in pairs(storage.saved_factories) do
 			if type(name) ~= 'number' then
 				changed = true
 				bad[#bad+1] = name
 				good[#good+1] = factory
 			end
 		end
-		for _, v in pairs(bad) do global.saved_factories[v] = nil end
-		for _, v in pairs(good) do global.saved_factories[#global.saved_factories + 1] = v end
+		for _, v in pairs(bad) do storage.saved_factories[v] = nil end
+		for _, v in pairs(good) do storage.saved_factories[#storage.saved_factories + 1] = v end
 		if changed then game.print('Some factory items were deleted because of a Factorissimo update. Please use /give-lost-factory-buildings') end
 	end
-	global.update_version = 2
+	storage.update_version = 2
 end

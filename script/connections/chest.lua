@@ -105,7 +105,7 @@ end
 
 local basic_item_types = {['item'] = true, ['capsule'] = true, ['gun'] = true, ['rail-planner'] = true, ['module'] = true}
 local function check_for_basic_item(item)
-	local items_with_metadata = global.items_with_metadata
+	local items_with_metadata = storage.items_with_metadata
 	if not items_with_metadata then
 		items_with_metadata = {}
 		for item_name, prototype in pairs(game.item_prototypes) do
@@ -113,7 +113,7 @@ local function check_for_basic_item(item)
 				items_with_metadata[item_name] = true
 			end
 		end
-		global.items_with_metadata = items_with_metadata
+		storage.items_with_metadata = items_with_metadata
 	end
 	return not items_with_metadata[item]
 end

@@ -62,11 +62,11 @@ end
 	
 remote_api.get_factory_by_entity = function(entity)
 	if entity == nil then return nil end
-	return global.factories_by_entity[entity.unit_number]
+	return storage.factories_by_entity[entity.unit_number]
 end
 
 remote_api.get_factory_by_building = function(entity)
-	local factory = global.factories_by_entity[entity.unit_number]
+	local factory = storage.factories_by_entity[entity.unit_number]
 	if factory == nil then
 		game.print('ERROR: Unbound factory building: ' .. entity.name .. '@' .. entity.surface.name .. '(' .. entity.position.x .. ', ' .. entity.position.y .. ')')
 	end
@@ -82,7 +82,7 @@ remote_api.find_factory_by_building = function(surface, area)
 end
 
 remote_api.find_surrounding_factory = function(surface, position)
-	local factories = global.surface_factories[surface.name]
+	local factories = storage.surface_factories[surface.name]
 	if factories == nil then return nil end
 	local x = math.floor(0.5+position.x/(16*32))
 	local y = math.floor(0.5+position.y/(16*32))

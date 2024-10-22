@@ -4,7 +4,7 @@ local has_layout = Layout.has_layout
 
 local function setup_blueprint_tags(blueprint, mapping)
 	for i, entity in pairs(mapping) do
-		local factory = global.factories_by_entity[entity.unit_number]
+		local factory = storage.factories_by_entity[entity.unit_number]
 		if factory and has_layout(entity.name) then
 			blueprint.set_blueprint_entity_tag(i, 'id', factory.id)
 		elseif Connections.indicator_names[entity.name] then

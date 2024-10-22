@@ -3,7 +3,7 @@ Compat = Compat or {}
 local function cleanup_entities_for_factoriomaps()
 	print("Starting factoriomaps-factorissimo integration script")
 
-	for surface, factoryList in pairs(global.surface_factories) do
+	for surface, factoryList in pairs(storage.surface_factories) do
 
 		remote.call("factoriomaps", "surface_set_hidden", surface, true)
 

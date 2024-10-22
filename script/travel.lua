@@ -67,7 +67,7 @@ local function teleport_safely(e, surface, position, player, leaving)
 		e.teleport(position, surface)
 	end
 
-	global.last_player_teleport[player and player.index or e.unit_number] = game.tick
+	storage.last_player_teleport[player and player.index or e.unit_number] = game.tick
 	if player then Camera.update_camera(player) end
 end
 
@@ -117,7 +117,7 @@ local function teleport_players()
 	local tick = game.tick
 	local jetpacks = get_jetpacks()
 	for player_index, player in pairs(game.connected_players) do
-		if tick - (global.last_player_teleport[player_index] or 0) < 45 then goto continue end
+		if tick - (storage.last_player_teleport[player_index] or 0) < 45 then goto continue end
 		local walking_state = player.walking_state
 		local driving = player.driving
 		if not walking_state.walking and not driving then goto continue end

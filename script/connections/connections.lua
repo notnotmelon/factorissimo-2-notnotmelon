@@ -44,17 +44,17 @@ Connections.is_connectable = is_connectable
 
 local CYCLIC_BUFFER_SIZE = 600
 local function init_data_structure()
-	global.connections = global.connections or {}
-	global.delayed_connection_checks = global.delayed_connection_checks or {}
+	storage.connections = storage.connections or {}
+	storage.delayed_connection_checks = storage.delayed_connection_checks or {}
 	for i = 0, CYCLIC_BUFFER_SIZE - 1 do
-		global.connections[i] = global.connections[i] or {}
+		storage.connections[i] = storage.connections[i] or {}
 	end
 end
 Connections.init_data_structure = init_data_structure
 
 local function add_connection_to_queue(conn)
 	local current_pos = (math.floor(game.tick / CONNECTION_UPDATE_RATE) + 1) * CONNECTION_UPDATE_RATE % CYCLIC_BUFFER_SIZE
-	table.insert(global.connections[current_pos], conn)
+	table.insert(storage.connections[current_pos], conn)
 end
 
 -- Connection settings --
@@ -187,7 +187,7 @@ Connections.recheck_factory = recheck_factory
 -- Delaying the recheck causes these connections to be properly deconstructed immediately, instead of having to wait until the connection ticks again.
 local function recheck_factory_delayed(factory, outside_area, inside_area)
 	-- Note that connections should still be designed such that absolutely nothing would break even if this function was empty!
-	global.delayed_connection_checks[1+#(global.delayed_connection_checks)] = {
+	storage.delayed_connection_checks[1+#(storage.delayed_connection_checks)] = {
 		factory = factory,
 		outside_area = outside_area, 
 		inside_area = inside_area
@@ -206,13 +206,13 @@ Connections.disconnect_factory = disconnect_factory
 
 local function update()
 	-- First let's run all them delayed connection checks
-	for _, check in ipairs(global.delayed_connection_checks) do
+	for _, check in ipairs(storage.delayed_connection_checks) do
 		recheck_factory(check.factory, check.outside_area, check.inside_area)
 	end
-	global.delayed_connection_checks = {}
+	storage.delayed_connection_checks = {}
 	
 	local current_pos = game.tick % CYCLIC_BUFFER_SIZE
-	local connections = global.connections
+	local connections = storage.connections
 	local current_slot = connections[current_pos]
 	connections[current_pos] = {}
 	for _, conn in pairs(current_slot) do

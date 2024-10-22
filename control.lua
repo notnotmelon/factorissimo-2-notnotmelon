@@ -27,34 +27,34 @@ local activate_factories = nil -- Function stub
 local function init_globals()
 	Layout.init()
 	-- List of all factories
-	global.factories = global.factories or {}
+	storage.factories = storage.factories or {}
 	-- Map: Id from item-with-tags -> Factory
-	global.saved_factories = global.saved_factories or {}
+	storage.saved_factories = storage.saved_factories or {}
 	-- Map: Player or robot -> Save name to give him on the next relevant event
-	global.pending_saves = global.pending_saves or {}
+	storage.pending_saves = storage.pending_saves or {}
 	-- Map: Entity unit number -> Factory it is a part of
-	global.factories_by_entity = global.factories_by_entity or {}
+	storage.factories_by_entity = storage.factories_by_entity or {}
 	-- Map: Surface name -> list of factories on it
-	global.surface_factories = global.surface_factories or {}
+	storage.surface_factories = storage.surface_factories or {}
 	-- Map: Surface name -> number of used factory spots on it
-	global.surface_factory_counters = global.surface_factory_counters or {}
+	storage.surface_factory_counters = storage.surface_factory_counters or {}
 	-- Scalar
-	global.next_factory_surface = global.next_factory_surface or 0
+	storage.next_factory_surface = storage.next_factory_surface or 0
 	-- Map: Player index -> Last teleport time
-	global.last_player_teleport = global.last_player_teleport or {}
+	storage.last_player_teleport = storage.last_player_teleport or {}
 	-- Map: Player index -> Whether preview is activated
-	global.player_preview_active = global.player_preview_active or {}
+	storage.player_preview_active = storage.player_preview_active or {}
 	-- List of all factory power pole middlemen
-	global.middleman_power_poles = global.middleman_power_poles or {}
+	storage.middleman_power_poles = storage.middleman_power_poles or {}
 	-- Map: Surface name -> Whether radars are active
-	global.hidden_radars = global.hidden_radars or {}
+	storage.hidden_radars = storage.hidden_radars or {}
 
 	-- List of all spidertrons
-	global.spidertrons = {}
+	storage.spidertrons = {}
 	for _, surface in pairs(game.surfaces) do
 		for _, spider in pairs(surface.find_entities_filtered{type = 'spider-vehicle'}) do
 			if spider.name ~= 'companion' then
-				global.spidertrons[#global.spidertrons + 1] = spider
+				storage.spidertrons[#storage.spidertrons + 1] = spider
 				script.register_on_entity_destroyed(spider)
 			end
 		end
@@ -90,11 +90,11 @@ script.on_configuration_changed(function(config_changed_data)
 	power_middleman_surface()
 	activate_factories()
 	if remote.interfaces['RSO'] then -- RSO compatibility
-		for surface_name, _ in pairs(global.surface_factories or {}) do
+		for surface_name, _ in pairs(storage.surface_factories or {}) do
 			pcall(remote.call, 'RSO', 'ignoreSurface', surface_name)
 		end
 	end
-	global.items_with_metadata = nil
+	storage.items_with_metadata = nil
 end)
 
 -- POWER MANAGEMENT --
@@ -123,11 +123,11 @@ local function remove_direct_connection(factory)
 end
 
 local function delete_middleman(i)
-	local pole = global.middleman_power_poles[i]
+	local pole = storage.middleman_power_poles[i]
 	if pole == 0 then return end
-	global.middleman_power_poles[i] = i < #global.middleman_power_poles and 0 or nil
+	storage.middleman_power_poles[i] = i < #storage.middleman_power_poles and 0 or nil
 	pole.destroy()
-	for _, factory in pairs(global.factories) do
+	for _, factory in pairs(storage.factories) do
 		if factory.middleman_id == i then
 			factory.middleman_id = nil
 		end
@@ -135,7 +135,7 @@ local function delete_middleman(i)
 end
 
 local function cleanup_middlemen()
-	for i, pole in ipairs(global.middleman_power_poles) do
+	for i, pole in ipairs(storage.middleman_power_poles) do
 		if pole ~= 0 and #pole.neighbours.copper < 2 then delete_middleman(i) end
 	end
 end
@@ -176,15 +176,15 @@ local function connect_power(factory, pole)
 	end
 
     local n
-	for i, pole in ipairs(global.middleman_power_poles) do
+	for i, pole in ipairs(storage.middleman_power_poles) do
 		if pole == 0 then n = i break end
 	end
-	n = n or #global.middleman_power_poles + 1
+	n = n or #storage.middleman_power_poles + 1
 
 	local surface = power_middleman_surface()
 	local middleman = surface.create_entity{name = 'factory-power-connection', position = {2*(n%32), 2*math.floor(n/32)}, force = 'neutral'}
 	middleman.destructible = false
-	global.middleman_power_poles[n] = middleman
+	storage.middleman_power_poles[n] = middleman
 
 	middleman.connect_neighbour(available_pole(factory))
 	middleman.connect_neighbour(pole)
@@ -201,7 +201,7 @@ function update_power_connection(factory, pole) -- pole parameter is optional
 	local x = factory.outside_x
 	local y = factory.outside_y
 
-    if not script.active_mods['factorissimo-power-pole-addon'] and global.surface_factory_counters[surface.name] then
+    if not script.active_mods['factorissimo-power-pole-addon'] and storage.surface_factory_counters[surface.name] then
 		local surrounding = find_surrounding_factory(surface, {x = x, y = y})
 		if surrounding then
 			connect_power(factory, available_pole(surrounding))
@@ -321,11 +321,11 @@ end
 
 local function get_surface_name(layout)
 	if layout.surface_override then return layout.surface_override end
-	global.next_factory_surface = global.next_factory_surface + 1
+	storage.next_factory_surface = storage.next_factory_surface + 1
 	if (settings.global['Factorissimo2-same-surface'].value) then
-		global.next_factory_surface = 1
+		storage.next_factory_surface = 1
 	end
-	return 'factory-floor-' .. global.next_factory_surface
+	return 'factory-floor-' .. storage.next_factory_surface
 end
 
 local function create_factory_position(layout)
@@ -340,8 +340,8 @@ local function create_factory_position(layout)
             pcall(remote.call, 'RSO', 'ignoreSurface', surface_name)
         end
 	end
-	local n = global.surface_factory_counters[surface_name] or 0
-	global.surface_factory_counters[surface_name] = n+1
+	local n = storage.surface_factory_counters[surface_name] or 0
+	storage.surface_factory_counters[surface_name] = n+1
 	local cx = 16*(n % 8)
 	local cy = 16*math.floor(n / 8)
 
@@ -371,10 +371,10 @@ local function create_factory_position(layout)
 	factory.stored_pollution = 0
 	factory.upgrades = {}
 
-	global.surface_factories[surface_name] = global.surface_factories[surface_name] or {}
-	global.surface_factories[surface_name][n+1] = factory
-	local fn = #(global.factories)+1
-	global.factories[fn] = factory
+	storage.surface_factories[surface_name] = storage.surface_factories[surface_name] or {}
+	storage.surface_factories[surface_name][n+1] = factory
+	local fn = #(storage.factories)+1
+	storage.factories[fn] = factory
 	factory.id = fn
 
 	return factory
@@ -472,7 +472,7 @@ local function create_factory_exterior(factory, building)
 	factory.outside_overlay_displays = {}
 	factory.outside_port_markers = {}
 
-	global.factories_by_entity[building.unit_number] = factory
+	storage.factories_by_entity[building.unit_number] = factory
 	factory.building = building
 	factory.built = true
 
@@ -524,7 +524,7 @@ commands.add_command('give-lost-factory-buildings', {'command-help-message.give-
 	local player = game.players[event.player_index]
 	if not (player and player.connected and player.admin) then return end
 	local inventory = player.get_main_inventory()
-	for id, factory in pairs(global.saved_factories) do
+	for id, factory in pairs(storage.saved_factories) do
 		for i = 1, #inventory do
 			local stack = inventory[i]
 			if stack.valid_for_read and stack.name == factory.layout.name and stack.type == 'item-with-tags' and stack.tags.id == id then goto found end
@@ -644,16 +644,16 @@ end
 local function handle_factory_placed(entity, tags)
 	if not tags or not tags.id then
 		create_fresh_factory(entity)
-	elseif global.saved_factories[tags.id] then
+	elseif storage.saved_factories[tags.id] then
 		-- This is a saved factory, we need to unpack it
-		local factory = global.saved_factories[tags.id]
-		global.saved_factories[tags.id] = nil
+		local factory = storage.saved_factories[tags.id]
+		storage.saved_factories[tags.id] = nil
 		create_factory_exterior(factory, entity)
 		factory.inactive = not can_place_factory_here(factory.layout.tier, entity.surface, entity.position)
-	elseif global.factories[tags.id] then
+	elseif storage.factories[tags.id] then
 		-- This factory was copied from somewhere else. Clone all contained entities
 		local factory = create_fresh_factory(entity)
-		Blueprint.copy_entity_ghosts(global.factories[tags.id], factory)
+		Blueprint.copy_entity_ghosts(storage.factories[tags.id], factory)
 		Overlay.update_overlay(factory)
 	else
 		entity.surface.create_entity{name='flying-text', position=entity.position, text={'factory-connection-text.invalid-factory-data'}}
@@ -684,7 +684,7 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
 	elseif entity.type == 'electric-pole' then
 		power_pole_placed(entity)
     elseif entity.type == 'solar-panel' or entity.name == 'bi-solar-boiler' then
-		if global.surface_factory_counters[entity.surface.name] then
+		if storage.surface_factory_counters[entity.surface.name] then
 			cancel_creation(entity, event.player_index, {'factory-connection-text.invalid-placement'})
 		else
 			entity.force.technologies['factory-interior-upgrade-lights'].researched = true
@@ -695,7 +695,7 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
 	elseif entity.type == 'entity-ghost' and (entity.ghost_name == 'factory-overlay-controller' or entity.ghost_name == 'factory-blueprint-anchor') then
 		entity.destroy()
 	elseif entity.type == 'spider-vehicle' and entity.name ~= 'companion' then
-		global.spidertrons[entity.unit_number] = entity
+		storage.spidertrons[entity.unit_number] = entity
 		script.register_on_entity_destroyed(entity)
 	end
 end)
@@ -727,7 +727,7 @@ script.on_event({defines.events.on_player_mined_entity, defines.events.on_robot_
 		local factory = get_factory_by_building(entity)
 		if not factory then return end
 		cleanup_factory_exterior(factory, entity)
-		global.saved_factories[factory.id] = factory
+		storage.saved_factories[factory.id] = factory
 		local buffer = event.buffer
 		buffer.clear()
 		buffer.insert{name = factory.layout.name}
@@ -744,7 +744,7 @@ end)
 local function rebuild_factory(entity)
 	local factory = get_factory_by_building(entity)
 	if not factory then return end
-	global.factories_by_entity[entity.unit_number] = nil
+	storage.factories_by_entity[entity.unit_number] = nil
 	local entity = entity.surface.create_entity{
 		name = entity.name,
 		position = entity.position,
@@ -753,7 +753,7 @@ local function rebuild_factory(entity)
 		create_build_effect_smoke = false,
 		player = entity.last_user
 	}
-	global.factories_by_entity[entity.unit_number] = factory
+	storage.factories_by_entity[entity.unit_number] = factory
 	factory.building = entity
 	Overlay.update_overlay(factory)
 	if #factory.outside_port_markers ~= 0 then
@@ -783,7 +783,7 @@ script.on_event(defines.events.on_entity_died, function(event)
 	if has_layout(entity.name) then
 		local factory = get_factory_by_building(entity)
 		if not factory then return end
-		global.saved_factories[factory.id] = factory
+		storage.saved_factories[factory.id] = factory
 		cleanup_factory_exterior(factory, entity)
 
 		local item = entity.surface.create_entity{
@@ -804,7 +804,7 @@ end)
 
 script.on_event(defines.events.on_post_entity_died, function(event)
 	if not has_layout(event.prototype.name) or not event.ghost then return end
-	local factory = global.factories_by_entity[event.unit_number]
+	local factory = storage.factories_by_entity[event.unit_number]
 	if not factory then return end
 	event.ghost.tags = {id = factory.id}
 end)
@@ -866,21 +866,21 @@ script.on_nth_tick(CONNECTION_UPDATE_RATE, Connections.update)
 script.on_nth_tick(180, function(event)
 	local has_players = {}
 	for _, player in pairs(game.players) do
-		if global.surface_factory_counters[player.surface.name] and (player.render_mode == defines.render_mode.chart or player.render_mode == defines.render_mode.chart_zoomed_in) then
+		if storage.surface_factory_counters[player.surface.name] and (player.render_mode == defines.render_mode.chart or player.render_mode == defines.render_mode.chart_zoomed_in) then
 			has_players[player.surface.name] = true
 		end
 	end
 
-	for surface, _ in pairs(global.surface_factory_counters) do
+	for surface, _ in pairs(storage.surface_factory_counters) do
 		surface = game.get_surface(surface)
 		local players = not not has_players[surface.name]
-		if players ~= global.hidden_radars[surface.name] then
-			for _, factory in pairs(global.factories) do
+		if players ~= storage.hidden_radars[surface.name] then
+			for _, factory in pairs(storage.factories) do
 				if factory.radar.valid and factory.inside_surface == surface then
 					factory.radar.active = players
 				end
 			end
-			global.hidden_radars[surface.name] = players
+			storage.hidden_radars[surface.name] = players
 		end
 	end
 end)
@@ -963,7 +963,7 @@ script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
 			update_hidden_techs(force)
 		end
 	elseif setting == 'Factorissimo2-indestructible-buildings' then
-		for _, factory in pairs(global.factories) do
+		for _, factory in pairs(storage.factories) do
 			update_destructible(factory)
 		end
 	end
@@ -975,7 +975,7 @@ script.on_event(defines.events.on_force_created, function(event)
 end)
 
 script.on_event(defines.events.on_forces_merging, function(event)
-	for _, factory in pairs(global.factories) do
+	for _, factory in pairs(storage.factories) do
 		if not factory.force.valid then
 			factory.force = game.forces['player']
 		end
@@ -986,7 +986,7 @@ script.on_event(defines.events.on_forces_merging, function(event)
 end)
 
 activate_factories = function()
-	for _, factory in pairs(global.factories) do
+	for _, factory in pairs(storage.factories) do
 		factory.inactive = factory.outside_surface.valid and not can_place_factory_here(
 			factory.layout.tier,
 			factory.outside_surface,
@@ -996,19 +996,19 @@ activate_factories = function()
 end
 
 script.on_event(defines.events.on_research_finished, function(event)
-	if not global.factories then return end -- In case any mod or scenario script calls LuaForce.research_all_technologies() during its on_init
+	if not storage.factories then return end -- In case any mod or scenario script calls LuaForce.research_all_technologies() during its on_init
 	local research = event.research
 	local name = research.name
 	if name == 'factory-connection-type-fluid' or name == 'factory-connection-type-chest' or name == 'factory-connection-type-circuit' then
-		for _, factory in pairs(global.factories) do
+		for _, factory in pairs(storage.factories) do
 			if factory.built then Connections.recheck_factory(factory, nil, nil) end
 		end
 	elseif name == 'factory-interior-upgrade-lights' then
-		for _, factory in pairs(global.factories) do build_lights_upgrade(factory) end
+		for _, factory in pairs(storage.factories) do build_lights_upgrade(factory) end
 	elseif name == 'factory-interior-upgrade-display' then
-		for _, factory in pairs(global.factories) do Overlay.build_display_upgrade(factory) end
+		for _, factory in pairs(storage.factories) do Overlay.build_display_upgrade(factory) end
 	elseif name == 'factory-interior-upgrade-roboport' then
-		for _, factory in pairs(global.factories) do build_roboport_upgrade(factory) end
+		for _, factory in pairs(storage.factories) do build_roboport_upgrade(factory) end
 	elseif name == 'factory-recursion-t1' or name == 'factory-recursion-t2' then
 		activate_factories()
 	elseif name == 'factory-preview' then

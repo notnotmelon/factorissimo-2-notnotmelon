@@ -9,8 +9,8 @@ Circuit.connect = function(factory, cid, cpos, outside_entity, inside_entity)
 	
 	local n
 	if outside_entity.surface == inside_entity.surface then
-		global.middleman_circuit_connectors = global.middleman_circuit_connectors or {}
-		local middle = global.middleman_circuit_connectors
+		storage.middleman_circuit_connectors = storage.middleman_circuit_connectors or {}
+		local middle = storage.middleman_circuit_connectors
 		n = #middle + 1
 		for i, pole in ipairs(middle) do if pole == 0 then n = i end end
 		
@@ -46,7 +46,7 @@ Circuit.recheck = function(conn)
 	if not conn.outside_entity.valid or not conn.inside_entity.valid then return false end
 	
 	if conn.middleman_id then
-		local middleman = global.middleman_circuit_connectors[conn.middleman_id]
+		local middleman = storage.middleman_circuit_connectors[conn.middleman_id]
 		if not middleman or middleman == 0 or not middleman.valid then return false end
 		return are_connected(conn.outside_entity, middleman) and are_connected(conn.inside_entity, middleman)
 	else
@@ -67,7 +67,7 @@ Circuit.adjust = Connections.beep
 Circuit.destroy = function(conn)
 	local id = conn.middleman_id
 	if id then
-		local middle = global.middleman_circuit_connectors
+		local middle = storage.middleman_circuit_connectors
 		local middleman = middle[id]
 		if #middle == id then middle[id] = nil else middle[id] = 0 end
 		if middleman and middleman ~= 0 and middleman.valid then middleman.destroy() return end

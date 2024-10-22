@@ -35,7 +35,7 @@ local function update_pollution(factory)
 end
 
 script.on_nth_tick(15, function(event)
-	local factories = global.factories
+	local factories = storage.factories
 	for i = (event.tick%4+1), #factories, 4 do
 		local factory = factories[i]
 		if factory ~= nil then update_pollution(factory) end

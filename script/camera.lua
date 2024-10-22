@@ -76,22 +76,22 @@ local function unset_camera(player)
 end
 
 local function update_camera(player)
-	if not global.player_preview_active[player.index] then return end
+	if not storage.player_preview_active[player.index] then return end
 	if not player.force.technologies['factory-preview'].researched then return end
 	local cursor_stack = player.cursor_stack
 	if cursor_stack and
 		cursor_stack.valid_for_read and
 		cursor_stack.type == 'item-with-tags' and
 		cursor_stack.tags and
-		global.saved_factories[cursor_stack.tags.id] then
-		local factory = global.saved_factories[cursor_stack.tags.id]
+		storage.saved_factories[cursor_stack.tags.id] then
+		local factory = storage.saved_factories[cursor_stack.tags.id]
 		if not factory.inactive then set_camera(player, factory, true) return end
 	end
 	local selected = player.selected
 	if selected then
 		local factory
 		if selected.type == 'item-entity' and selected.stack.type == 'item-with-tags' and Layout.has_layout(selected.stack.name) then
-			factory = global.saved_factories[selected.stack.tags.id]
+			factory = storage.saved_factories[selected.stack.tags.id]
 		else
 			factory = get_factory_by_entity(player.selected)
 		end
@@ -118,13 +118,13 @@ end)
 script.on_event(defines.events.on_gui_click, function(event)
 	local player = game.players[event.player_index]
 	if event.element.valid and event.element.name == 'factory_camera_toggle_button' then
-		if global.player_preview_active[player.index] then
+		if storage.player_preview_active[player.index] then
 			get_camera_toggle_button(player).sprite = 'technology/factory-architecture-t1'
-			global.player_preview_active[player.index] = false
+			storage.player_preview_active[player.index] = false
 			unset_camera(player)
 		else
 			get_camera_toggle_button(player).sprite = 'technology/factory-preview'
-			global.player_preview_active[player.index] = true
+			storage.player_preview_active[player.index] = true
 			update_camera(player)
 		end
 	end
