@@ -16,7 +16,8 @@ local function get_camera_frame(player)
 	local frameflow = mod_gui.get_frame_flow(player)
 	local camera_frame = frameflow.factory_camera_frame
 	if not camera_frame then
-		camera_frame = frameflow.add{type = 'frame', name = 'factory_camera_frame', style = 'captionless_frame'}
+		camera_frame = frameflow.add{type = 'frame', name = 'factory_camera_frame', style = 'frame'}
+		camera_frame.style.padding = 3
 		camera_frame.visible = false
 	end
 	return camera_frame

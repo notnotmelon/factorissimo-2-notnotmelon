@@ -10,7 +10,8 @@ local function cleanup_entities_for_factoriomaps()
 		for _, factory in pairs(factoryList) do
 			if factory.built then
 				for _, id in pairs(factory.outside_overlay_displays) do
-					rendering.destroy(id)
+					local object = rendering.get_object_by_id(id)
+					if object then object.destroy() end
 				end
 
 				remote.call("factoriomaps", "link_renderbox_area", {

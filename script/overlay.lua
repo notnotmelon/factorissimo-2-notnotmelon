@@ -42,12 +42,12 @@ local function draw_overlay_sprite(signal, target_entity, offset, scale, id_tabl
 		for _, shadow_offset in pairs({{0,shadow_radius}, {0, -shadow_radius}, {shadow_radius, 0}, {-shadow_radius, 0}}) do
 			sprite_data.tint = {0, 0, 0, 0.5} -- Transparent black
 			sprite_data.target_offset = {offset[1] + shadow_offset[1], offset[2] + shadow_offset[2]}
-			table.insert(id_table, rendering.draw_sprite(sprite_data))
+			table.insert(id_table, rendering.draw_sprite(sprite_data).id)
 		end
 		-- Proper sprite
 		sprite_data.tint = nil
 		sprite_data.target_offset = offset
-		table.insert(id_table, rendering.draw_sprite(sprite_data))
+		table.insert(id_table, rendering.draw_sprite(sprite_data).id)
 	end
 end
 
@@ -88,17 +88,21 @@ end
 
 local function update_overlay(factory)
 	for _, id in pairs(factory.outside_overlay_displays) do
-		rendering.destroy(id)
+		local object = rendering.get_object_by_id(id)
+		if object then object.destroy() end
 	end
 	factory.outside_overlay_displays = {}
 	if factory.built and factory.inside_overlay_controller and factory.inside_overlay_controller.valid then
-		local params = factory.inside_overlay_controller.get_or_create_control_behavior().parameters
 		local nonempty_params = {}
-		for _, param in pairs(params) do
-			if param and param.signal and param.signal.name then
-				table.insert(nonempty_params, param)
+
+		for _, section in pairs(factory.inside_overlay_controller.get_or_create_control_behavior().sections) do
+			for _, filter in pairs(section.filters) do
+				if filter.value then
+					table.insert(nonempty_params, filter.value)
+				end
 			end
 		end
+
 		local sprite_positions = get_nice_overlay_arrangement(
 			factory.layout.overlays.outside_w,
 			factory.layout.overlays.outside_h,
@@ -108,7 +112,7 @@ local function update_overlay(factory)
 		for _, param in pairs(nonempty_params) do
 			i = i + 1
 			draw_overlay_sprite(
-				param.signal,
+				param,
 				factory.building,
 				{sprite_positions[i].x + factory.layout.overlays.outside_x, sprite_positions[i].y + factory.layout.overlays.outside_y},
 				sprite_positions[i].scale,

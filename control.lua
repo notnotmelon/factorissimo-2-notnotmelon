@@ -496,10 +496,13 @@ local function toggle_port_markers(factory)
 				only_in_alt_mode = true,
 				render_layer = 'entity-info-icon',
 			}
-			table.insert(factory.outside_port_markers, rendering.draw_sprite(sprite_data))
+			table.insert(factory.outside_port_markers, rendering.draw_sprite(sprite_data).id)
 		end
 	else
-		for _, sprite in pairs(factory.outside_port_markers) do rendering.destroy(sprite) end
+		for _, sprite in pairs(factory.outside_port_markers) do
+			local object = rendering.get_object_by_id(sprite)
+			if object then object.destroy() end
+		end
 		factory.outside_port_markers = {}
 	end
 end
@@ -510,9 +513,15 @@ local function cleanup_factory_exterior(factory, building)
 	remove_direct_connection(factory)
 
 	Connections.disconnect_factory(factory)
-	for _, render_id in pairs(factory.outside_overlay_displays) do rendering.destroy(render_id) end
+	for _, render_id in pairs(factory.outside_overlay_displays) do
+		local object = rendering.get_object_by_id(render_id)
+		if object then object.destroy() end
+	end
 	factory.outside_overlay_displays = {}
-	for _, render_id in pairs(factory.outside_port_markers) do rendering.destroy(render_id) end
+	for _, render_id in pairs(factory.outside_port_markers) do
+		local object = rendering.get_object_by_id(render_id)
+		if object then object.destroy() end
+	end
 	factory.outside_port_markers = {}
 	factory.building = nil
 	factory.built = false
