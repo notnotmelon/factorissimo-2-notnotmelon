@@ -70,16 +70,15 @@ remote_api.get_factory_by_building = function(entity)
 	return factory
 end
 
-local bt = BUILDING_TYPE
 remote_api.find_factory_by_building = function(surface, area)
-	for _, entity in pairs(surface.find_entities_filtered {area = area, type = bt}) do
+	for _, entity in pairs(surface.find_entities_filtered {area = area, type = BUILDING_TYPE}) do
 		if Layout.has_layout(entity.name) then return remote_api.get_factory_by_building(entity) end
 	end
 	return nil
 end
 
 remote_api.find_surrounding_factory = function(surface, position)
-	local factories = storage.surface_factories[surface.name]
+	local factories = storage.surface_factories[surface.index]
 	if factories == nil then return nil end
 	local x = math.floor(0.5 + position.x / (16 * 32))
 	local y = math.floor(0.5 + position.y / (16 * 32))

@@ -135,17 +135,21 @@ local function create_factory_position(layout)
 		surface.daytime = 0.5
 		surface.freeze_daytime = true
 		surface.create_global_electric_network()
-		---surface.pollutant_type = parent_surface.pollutant_type  @wube pls fix modding api :(
 
 		if remote.interfaces["RSO"] then -- RSO compatibility
 			pcall(remote.call, "RSO", "ignoreSurface", surface_name)
 		end
 	end
 
-	local n = #(storage.surface_factories[surface.index] or {})
-	local cx = 16 * (n % 8)
-	local cy = 16 * math.floor(n / 8)
-	-- To make void chunks show up on the map, you need to tell them they've finished generating.
+	local n = 0
+	for _, factory in pairs(storage.factories) do
+		if factory.inside_surface.valid and factory.inside_surface == surface then n = n + 1 end
+	end
+	
+	local FACTORISSIMO_CHUNK_SPACING = 16
+	local cx = FACTORISSIMO_CHUNK_SPACING * (n % 8)
+	local cy = FACTORISSIMO_CHUNK_SPACING * math.floor(n / 8)
+	-- To make void chnks show up on the map, you need to tell them they've finished generating.
 	for xx = -2, 2 do
 		for yy = -2, 2 do
 			surface.set_chunk_generated_status({cx + xx, cy + yy}, defines.chunk_generated_status.entities)
@@ -163,7 +167,7 @@ local function create_factory_position(layout)
 	storage.surface_factories[surface.index] = storage.surface_factories[surface.index] or {}
 	storage.surface_factories[surface.index][n + 1] = factory
 
-	local fn = #(storage.factories) + 1
+	local fn = table_size(storage.factories) + 1
 	storage.factories[fn] = factory
 	factory.id = fn
 
