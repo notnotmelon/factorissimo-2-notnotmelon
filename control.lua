@@ -525,9 +525,11 @@ local function generate_factory_item_description(factory)
 	local overlay = factory.inside_overlay_controller
 	local params = {}
 	if overlay and overlay.valid then
-		for _, param in pairs(overlay.get_or_create_control_behavior().parameters) do
-			if param and param.signal and param.signal.name then
-				table.insert(params, "[" .. sprite_path_translation[param.signal.type] .. "=" .. param.signal.name .. "]")
+		for _, section in pairs(overlay.get_or_create_control_behavior().sections) do
+			for _, filter in pairs(section.filters) do
+				if filter.value and filter.value.name then
+					table.insert(params, "[" .. sprite_path_translation[filter.value.type] .. "=" .. filter.value.name .. "]")
+				end
 			end
 		end
 	end
