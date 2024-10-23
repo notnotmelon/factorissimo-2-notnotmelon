@@ -1,4 +1,4 @@
-require "__factorissimo-2-notnotmelon__.script.electricty"
+require "__factorissimo-2-notnotmelon__.script.electricity"
 
 for _, pole in ipairs(storage.middleman_power_poles) do
     if pole ~= 0 then pole.destroy() end
