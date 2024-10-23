@@ -8,23 +8,6 @@ end
 local function cc0()
 	return get_circuit_connector_sprites({0, 0}, nil, 1)
 end
-local function blank()
-	return {
-		filename = F .. "/graphics/nothing.png",
-		priority = "high",
-		width = 1,
-		height = 1,
-	}
-end
-local function ablank()
-	return {
-		filename = F .. "/graphics/nothing.png",
-		priority = "high",
-		width = 1,
-		height = 1,
-		frame_count = 1,
-	}
-end
 
 data:extend {
 	{
@@ -32,8 +15,9 @@ data:extend {
 		name = "factory-1",
 		icon = F .. "/graphics/icon/factory-1.png",
 		icon_size = 64,
-		flags = {"player-creation"},
+		flags = {"player-creation", "placeable-player"},
 		minable = {mining_time = 1, result = "factory-1", count = 1},
+		placeable_by = {item = "factory-1", count = 1},
 		max_health = 2000,
 		collision_box = {{-3.8, -3.8}, {3.8, 3.8}},
 		selection_box = {{-3.8, -3.8}, {3.8, 3.8}},
@@ -56,10 +40,6 @@ data:extend {
 					}
 				}
 			},
-			fluid_background = blank(),
-			window_background = blank(),
-			flow_sprite = blank(),
-			gas_flow = ablank(),
 		},
 		window_bounding_box = {{0, 0}, {0, 0}},
 		fluid_box = {
@@ -82,7 +62,8 @@ data:extend {
 		subgroup = "factorissimo2",
 		order = "a-a",
 		place_result = "factory-1",
-		stack_size = 1
+		stack_size = 1,
+		flags = {"not-stackable"},
 	},
 	{
 		type = "item",
@@ -93,7 +74,7 @@ data:extend {
 		order = "a-a",
 		place_result = "factory-1",
 		stack_size = 1,
-		flags = {"primary-place-result"}
+		flags = {"primary-place-result", "not-stackable"}
 	}
 }
 
@@ -103,7 +84,7 @@ data:extend {
 		name = "factory-2",
 		icon = F .. "/graphics/icon/factory-2.png",
 		icon_size = 64,
-		flags = {"player-creation"},
+		flags = {"player-creation", "placeable-player"},
 		minable = {mining_time = 1, result = "factory-2", count = 1},
 		max_health = 3500,
 		collision_box = {{-5.8, -5.8}, {5.8, 5.8}},
@@ -127,10 +108,6 @@ data:extend {
 					}
 				}
 			},
-			fluid_background = blank(),
-			window_background = blank(),
-			flow_sprite = blank(),
-			gas_flow = ablank(),
 		},
 		window_bounding_box = {{0, 0}, {0, 0}},
 		fluid_box = {
@@ -153,7 +130,8 @@ data:extend {
 		subgroup = "factorissimo2",
 		order = "a-b",
 		place_result = "factory-2",
-		stack_size = 1
+		stack_size = 1,
+		flags = {"not-stackable"},
 	},
 	{
 		type = "item",
@@ -164,7 +142,7 @@ data:extend {
 		order = "a-b",
 		place_result = "factory-2",
 		stack_size = 1,
-		flags = {"primary-place-result"}
+		flags = {"primary-place-result", "not-stackable"}
 	}
 }
 
@@ -174,7 +152,7 @@ data:extend {
 		name = "factory-3",
 		icon = F .. "/graphics/icon/factory-3.png",
 		icon_size = 64,
-		flags = {"player-creation"},
+		flags = {"player-creation", "placeable-player"},
 		minable = {mining_time = 1, result = "factory-3", count = 1},
 		max_health = 5000,
 		collision_box = {{-7.8, -7.8}, {7.8, 7.8}},
@@ -198,10 +176,6 @@ data:extend {
 					}
 				}
 			},
-			fluid_background = blank(),
-			window_background = blank(),
-			flow_sprite = blank(),
-			gas_flow = ablank(),
 		},
 		window_bounding_box = {{0, 0}, {0, 0}},
 		fluid_box = {
@@ -224,7 +198,8 @@ data:extend {
 		subgroup = "factorissimo2",
 		order = "a-c",
 		place_result = "factory-3",
-		stack_size = 1
+		stack_size = 1,
+		flags = {"not-stackable"},
 	},
 	{
 		type = "item",
@@ -235,6 +210,6 @@ data:extend {
 		order = "a-c",
 		place_result = "factory-3",
 		stack_size = 1,
-		flags = {"primary-place-result"}
+		flags = {"primary-place-result", "not-stackable"}
 	}
 }
