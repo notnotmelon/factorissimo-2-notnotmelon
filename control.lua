@@ -142,23 +142,26 @@ local function create_factory_position(layout)
 		end
 	end
 
+	local n = #(storage.surface_factories[surface.index] or {})
+	local cx = 16 * (n % 8)
+	local cy = 16 * math.floor(n / 8)
 	-- To make void chunks show up on the map, you need to tell them they've finished generating.
 	for xx = -2, 2 do
 		for yy = -2, 2 do
-			surface.set_chunk_generated_status({xx, yy}, defines.chunk_generated_status.entities)
+			surface.set_chunk_generated_status({cx + xx, cy + yy}, defines.chunk_generated_status.entities)
 		end
 	end
-	surface.destroy_decoratives {area = {{-64, -64}, {64, 64}}}
+	surface.destroy_decoratives {area = {{32 * (cx - 2), 32 * (cy - 2)}, {32 * (cx + 2), 32 * (cy + 2)}}}
 
 	local factory = {}
 	factory.inside_surface = surface
-	factory.inside_x = 0 -- Yes these are constant, but they will remain here for migration purposes
-	factory.inside_y = 0
+	factory.inside_x = 32 * cx
+	factory.inside_y = 32 * cy
 	factory.stored_pollution = 0
 	factory.upgrades = {}
 
 	storage.surface_factories[surface.index] = storage.surface_factories[surface.index] or {}
-	storage.surface_factories[surface.index][#storage.surface_factories[surface.index] + 1] = factory
+	storage.surface_factories[surface.index][n + 1] = factory
 
 	local fn = #(storage.factories) + 1
 	storage.factories[fn] = factory
