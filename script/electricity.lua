@@ -50,7 +50,7 @@ local function update_power_connection(factory, pole) -- pole parameter is optio
 	end
 
 	-- find the nearest connected power pole
-	local D = game.max_electric_pole_supply_area_distance + factory.layout.outside_size / 2
+	local D = prototypes.max_electric_pole_supply_area_distance + factory.layout.outside_size / 2
 	local area = {{x - D, y - D}, {x + D, y + D}}
 	if surface.has_global_electric_network then area = nil end
 
@@ -107,7 +107,7 @@ function Electricity.power_pole_destroyed(pole)
 	end
 
 	for _, connection in pairs(old_connections) do
-		wire_connector.connect_to(connection)
+		wire_connector.connect_to(connection.target)
 	end
 end
 
