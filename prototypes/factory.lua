@@ -63,7 +63,7 @@ data:extend {
 		order = "a-a",
 		place_result = "factory-1",
 		stack_size = 1,
-		flags = {"not-stackable"},
+		flags = {"primary-place-result", "not-stackable"},
 	},
 	{
 		type = "item",
@@ -131,7 +131,7 @@ data:extend {
 		order = "a-b",
 		place_result = "factory-2",
 		stack_size = 1,
-		flags = {"not-stackable"},
+		flags = {"primary-place-result", "not-stackable"},
 	},
 	{
 		type = "item",
@@ -199,7 +199,7 @@ data:extend {
 		order = "a-c",
 		place_result = "factory-3",
 		stack_size = 1,
-		flags = {"not-stackable"},
+		flags = {"primary-place-result", "not-stackable"},
 	},
 	{
 		type = "item",
