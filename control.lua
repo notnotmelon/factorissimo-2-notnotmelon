@@ -59,7 +59,7 @@ local function init_globals()
 		for _, spider in pairs(surface.find_entities_filtered {type = "spider-vehicle"}) do
 			if spider.name ~= "companion" then
 				storage.spidertrons[#storage.spidertrons + 1] = spider
-				script.register_on_entity_destroyed(spider)
+				script.register_on_object_destroyed(spider)
 			end
 		end
 	end
@@ -438,7 +438,13 @@ local function handle_factory_placed(entity, tags)
 	end
 end
 
-script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_entity, defines.events.script_raised_built, defines.events.script_raised_revive}, function(event)
+script.on_event({
+	defines.events.on_built_entity,
+	defines.events.on_robot_built_entity,
+	defines.events.on_space_platform_built_entity,
+	defines.events.script_raised_built,
+	defines.events.script_raised_revive
+}, function(event)
 	local entity = event.created_entity or event.entity
 	if has_layout(entity.name) then
 		handle_factory_placed(entity, event.tags)
@@ -462,7 +468,7 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
 		entity.destroy()
 	elseif entity.type == "spider-vehicle" and entity.name ~= "companion" then
 		storage.spidertrons[entity.unit_number] = entity
-		script.register_on_entity_destroyed(entity)
+		script.register_on_object_destroyed(entity)
 	end
 end)
 
@@ -489,7 +495,11 @@ end
 
 -- How players pick up factories
 -- Working factory buildings don't return items, so we have to manually give the player an item
-script.on_event({defines.events.on_player_mined_entity, defines.events.on_robot_mined_entity}, function(event)
+script.on_event({
+	defines.events.on_player_mined_entity,
+	defines.events.on_robot_mined_entity,
+	defines.events.on_space_platform_mined_entity
+}, function(event)
 	local entity = event.entity
 	if has_layout(entity.name) then
 		local factory = get_factory_by_building(entity)
