@@ -131,3 +131,20 @@ data.raw.technology["factory-interior-upgrade-display"].unit = {
 data.raw.technology["factory-interior-upgrade-display"].prerequisites = {
     "factory-architecture-t2",
 }
+
+data.raw["storage-tank"]["factory-1"].surface_conditions = {{
+    property = "gravity",
+    min = 3
+}}
+data.raw["storage-tank"]["factory-2"].surface_conditions = {{
+    property = "gravity",
+    min = 3
+}}
+data.raw["storage-tank"]["factory-3"].surface_conditions = {{
+    property = "gravity",
+    min = 3
+}}
+data.raw["electric-pole"]["factory-circuit-connector"].surface_conditions = {{
+    property = "gravity",
+    min = 3
+}}
