@@ -11,15 +11,16 @@ for _, prototype in pairs(banned_from_being_placed_indoors) do
     for _, entity in pairs(data.raw[prototype]) do
         entity.surface_conditions = entity.surface_conditions or {}
         table.insert(entity.surface_conditions, {
-            property = "indoors",
-            max = 0,
+            property = "ceiling",
+            min = 1,
         })
     end
 end
 
 data:extend{{
-    name = "indoors",
+    name = "ceiling",
     type = "surface-property",
-    default_value = 0,
-    is_time = true
+    default_value = 1,
+    is_time = true,
+    hidden = true
 }}

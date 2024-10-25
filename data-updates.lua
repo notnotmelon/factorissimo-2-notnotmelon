@@ -1,5 +1,5 @@
 require "prototypes.space-location"
-require "prototypes.indoors"
+require "prototypes.ceiling"
 
 local F = "__factorissimo-2-notnotmelon__"
 
