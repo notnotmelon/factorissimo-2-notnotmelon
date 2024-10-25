@@ -137,7 +137,7 @@ data:extend {{
 	corpse = "small-remnants",
 	hidden = true,
 	fluid_box = {
-		volume = 500,
+		volume = 8000,
 		hide_connection_info = true,
 		pipe_connections = {
 			{position = {0, 0}, direction = defines.direction.north, flow_direction = "output", connection_type = "normal"},
