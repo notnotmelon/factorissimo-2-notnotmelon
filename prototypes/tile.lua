@@ -29,7 +29,6 @@ local function make_tile(tinfo)
 		variants = {
 			main = tinfo.pictures,
 			transition = {
-				to_tiles = {"out-of-map", "empty-space", "oil-ocean-shallow"},
 				transition_group = out_of_map_transition_group_id,
 
 				background_layer_offset = 1,
@@ -38,18 +37,6 @@ local function make_tile(tinfo)
 
 				spritesheet = "__factorissimo-2-notnotmelon__/graphics/tile/out-of-map-transition.png",
 				layout = tile_spritesheet_layout.transition_4_4_8_1_1,
-				overlay_enabled = false
-			},
-			transitions_between_transitions = {
-				transition_group1 = default_transition_group_id,
-				transition_group2 = out_of_map_transition_group_id,
-
-				background_layer_offset = 1,
-				background_layer_group = "zero",
-				offset_background_layer_by_tile_layer = true,
-
-				spritesheet = "__factorissimo-2-notnotmelon__/graphics/tile/out-of-map-transition-transition.png",
-				layout = tile_spritesheet_layout.transition_3_3_3_1_0,
 				overlay_enabled = false
 			}
 		},
@@ -62,7 +49,6 @@ local function make_tile(tinfo)
 		vehicle_friction_modifier = concrete_vehicle_speed_modifier,
 		trigger_effect = tile_trigger_effects.concrete_trigger_effect(),
 		map_color = tinfo.map_color or {r = 1},
-		absorption_per_second = 0.0006
 	}}
 end
 

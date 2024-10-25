@@ -6,15 +6,6 @@ local function cwc0c()
 	return {shadow = {red = {0, 0}, green = {0, 0}, copper = {0, 0}}, wire = {red = {0, 0}, green = {0, 0}, copper = {0, 0}}}
 end
 
-local function blank()
-	return {
-		filename = F .. "/graphics/nothing.png",
-		priority = "high",
-		width = 1,
-		height = 1,
-	}
-end
-
 -- Factory power I/O
 
 local function create_energy_interfaces(size, icon)
@@ -95,8 +86,7 @@ local function create_indicator(ctype, suffix, image)
 		flow_length_in_ticks           = 100,
 		circuit_wire_connection_points = table.deepcopy(circuit_connector_definitions["storage-tank"].points),
 		circuit_connector_sprites      = table.deepcopy(circuit_connector_definitions["storage-tank"].sprites),
-		circuit_wire_max_distance      = 0,
-		se_allow_in_space              = true
+		circuit_wire_max_distance      = 0
 	}}
 end
 
@@ -154,7 +144,6 @@ data:extend {{
 	supply_area_distance = 63,
 	pictures = table.deepcopy(data.raw["electric-pole"]["substation"].pictures),
 	drawing_box = table.deepcopy(data.raw["electric-pole"]["substation"].drawing_box),
-	radius_visualisation_picture = blank(),
 	connection_points = {cwc0c(), cwc0c(), cwc0c(), cwc0c()},
 }}
 

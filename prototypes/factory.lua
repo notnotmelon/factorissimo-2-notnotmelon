@@ -21,7 +21,6 @@ data:extend {
 		max_health = 2000,
 		collision_box = {{-3.8, -3.8}, {3.8, 3.8}},
 		selection_box = {{-3.8, -3.8}, {3.8, 3.8}},
-		vehicle_impact_sound = {filename = "__base__/sound/car-stone-impact.ogg", volume = 1.0},
 		pictures = {
 			picture = {
 				layers = {
@@ -93,7 +92,6 @@ data:extend {
 		max_health = 3500,
 		collision_box = {{-5.8, -5.8}, {5.8, 5.8}},
 		selection_box = {{-5.8, -5.8}, {5.8, 5.8}},
-		vehicle_impact_sound = {filename = "__base__/sound/car-stone-impact.ogg", volume = 1.0},
 		pictures = {
 			picture = {
 				layers = {
@@ -165,7 +163,6 @@ data:extend {
 		max_health = 5000,
 		collision_box = {{-7.8, -7.8}, {7.8, 7.8}},
 		selection_box = {{-7.8, -7.8}, {7.8, 7.8}},
-		vehicle_impact_sound = {filename = "__base__/sound/car-stone-impact.ogg", volume = 1.0},
 		pictures = {
 			picture = {
 				layers = {
