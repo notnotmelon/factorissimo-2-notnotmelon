@@ -40,7 +40,7 @@ for _, planet in pairs(data.raw.planet) do
     local original_localised_name = planet.localised_name or {"space-location-name." .. planet.name}
     factory_floor.name = planet.name .. "-factory-floor"
     factory_floor.localised_name = ""
-    factory_floor.localised_description = {"space-location-description.factory-floor", original_localised_name}
+    factory_floor.localised_description = {"space-location-description.factory-floor", original_localised_name, planet.name}
     factory_floor.lightning_properties = nil
     factory_floor.distance = factory_floor.distance - (1.25 * factory_floor.magnitude)
     factory_floor.draw_orbit = false
@@ -48,7 +48,7 @@ for _, planet in pairs(data.raw.planet) do
     factory_floor.fly_condition = true
     factory_floor.auto_save_on_first_trip = false
     factory_floor.asteroid_spawn_definitions = nil
-    factory_floor.order = (planet.order or planet.name) .. "-f[factory-floor]"
+    factory_floor.order = "z-[factory-floor]" .. (planet.order or planet.name)
     factory_floor.map_gen_settings = nil
     factory_floor.surface_properties = factory_floor.surface_properties or {}
     factory_floor.surface_properties["solar-power"] = 0
