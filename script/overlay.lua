@@ -95,33 +95,41 @@ local function update_overlay(factory)
 		if object then object.destroy() end
 	end
 	factory.outside_overlay_displays = {}
-	if factory.built and factory.inside_overlay_controller and factory.inside_overlay_controller.valid then
-		local nonempty_params = {}
 
-		for _, section in pairs(factory.inside_overlay_controller.get_or_create_control_behavior().sections) do
+	if not factory.built then return end
+	local controller = factory.inside_overlay_controller
+	if not controller then return end
+	if not controller.valid then return end
+	local control_behavior = controller.get_or_create_control_behavior()
+	if not control_behavior.enabled then return end
+
+	local nonempty_params = {}
+
+	for _, section in pairs(control_behavior.sections) do
+		if section.active then
 			for _, filter in pairs(section.filters) do
 				if filter.value then
 					table.insert(nonempty_params, filter.value)
 				end
 			end
 		end
+	end
 
-		local sprite_positions = get_nice_overlay_arrangement(
-			factory.layout.overlays.outside_w,
-			factory.layout.overlays.outside_h,
-			#nonempty_params
+	local sprite_positions = get_nice_overlay_arrangement(
+		factory.layout.overlays.outside_w,
+		factory.layout.overlays.outside_h,
+		#nonempty_params
+	)
+	local i = 0
+	for _, param in pairs(nonempty_params) do
+		i = i + 1
+		draw_overlay_sprite(
+			param,
+			factory.building,
+			{sprite_positions[i].x + factory.layout.overlays.outside_x, sprite_positions[i].y + factory.layout.overlays.outside_y},
+			sprite_positions[i].scale,
+			factory.outside_overlay_displays
 		)
-		local i = 0
-		for _, param in pairs(nonempty_params) do
-			i = i + 1
-			draw_overlay_sprite(
-				param,
-				factory.building,
-				{sprite_positions[i].x + factory.layout.overlays.outside_x, sprite_positions[i].y + factory.layout.overlays.outside_y},
-				sprite_positions[i].scale,
-				factory.outside_overlay_displays
-			)
-		end
 	end
 end
 Overlay.update_overlay = update_overlay

@@ -286,9 +286,9 @@ data:extend {{
 data:extend {{
 	type = "item",
 	name = "factory-overlay-controller-settings",
-	icon_size = data.raw.item["constant-combinator"].icon_size,
-	icon = data.raw.item["constant-combinator"].icon,
-	icon_mipmaps = data.raw.item["constant-combinator"].icon_mipmaps,
+	icon_size = data.raw.item["display-panel"].icon_size,
+	icon = data.raw.item["display-panel"].icon,
+	icon_mipmaps = data.raw.item["display-panel"].icon_mipmaps,
 	stack_size = 1,
 	hidden = true,
 	hidden_in_factoriopedia = true,
@@ -297,6 +297,7 @@ data:extend {{
 }}
 
 local overlay_controller = table.deepcopy(data.raw["constant-combinator"]["constant-combinator"])
+overlay_controller.sprites = table.deepcopy(data.raw["display-panel"]["display-panel"].sprites)
 overlay_controller.name = "factory-overlay-controller"
 overlay_controller.circuit_wire_max_distance = 0
 overlay_controller.collision_mask = {layers = {}}
