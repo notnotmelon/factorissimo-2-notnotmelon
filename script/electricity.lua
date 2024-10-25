@@ -13,7 +13,8 @@ local function get_or_create_inside_power_pole(factory)
 	local power_pole = factory.inside_surface.create_entity {
 		name = "factory-power-pole",
 		position = {factory.inside_x + layout.inside_energy_x, factory.inside_y + layout.inside_energy_y},
-		force = factory.force
+		force = factory.force,
+		quality = factory.building.quality
 	}
 	power_pole.destructible = false
 	factory._inside_power_pole = power_pole

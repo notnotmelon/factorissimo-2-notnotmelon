@@ -11,7 +11,8 @@ local function build_display_upgrade(factory)
 			factory.inside_x + pos.inside_x,
 			factory.inside_y + pos.inside_y
 		},
-		force = factory.force
+		force = factory.force,
+		quality = factory.building.quality
 	}
 	controller.minable = false
 	controller.destructible = false

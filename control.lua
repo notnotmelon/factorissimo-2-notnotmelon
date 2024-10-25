@@ -53,17 +53,6 @@ local function init_globals()
 	-- Map: Surface name -> Whether radars are active
 	storage.hidden_radars = storage.hidden_radars or {}
 
-	-- List of all spidertrons
-	storage.spidertrons = {}
-	for _, surface in pairs(game.surfaces) do
-		for _, spider in pairs(surface.find_entities_filtered {type = "spider-vehicle"}) do
-			if spider.name ~= "companion" then
-				storage.spidertrons[#storage.spidertrons + 1] = spider
-				script.register_on_object_destroyed(spider)
-			end
-		end
-	end
-
 	if remote.interfaces["PickerDollies"] then
 		remote.call("PickerDollies", "add_blacklist_name", "factory-1", true)
 		remote.call("PickerDollies", "add_blacklist_name", "factory-2", true)
@@ -208,8 +197,11 @@ local function add_tile_mosaic(tiles, tile_name, xmin, ymin, xmax, ymax, pattern
 	end
 end
 
-local function create_factory_interior(layout, force, parent_surface)
-	local factory = create_factory_position(layout, parent_surface)
+local function create_factory_interior(layout, building)
+	local force = building.force
+
+	local factory = create_factory_position(layout, building.surface)
+	factory.building = building
 	factory.layout = layout
 	factory.force = force
 	factory.inside_door_x = layout.inside_door_x + factory.inside_x
@@ -231,7 +223,7 @@ local function create_factory_interior(layout, force, parent_surface)
 	local radar = factory.inside_surface.create_entity {
 		name = "factory-hidden-radar",
 		position = {factory.inside_x, factory.inside_y},
-		force = force
+		force = force,
 	}
 	radar.destructible = false
 	radar.active = false
@@ -412,7 +404,7 @@ end
 
 local function create_fresh_factory(entity)
 	local layout = Layout.create_layout(entity.name)
-	local factory = create_factory_interior(layout, entity.force, entity.surface)
+	local factory = create_factory_interior(layout, entity)
 	create_factory_exterior(factory, entity)
 	factory.inactive = not can_place_factory_here(layout.tier, entity.surface, entity.position)
 	return factory
@@ -466,9 +458,6 @@ script.on_event({
 		entity.destroy()
 	elseif entity.type == "entity-ghost" and (entity.ghost_name == "factory-overlay-controller" or entity.ghost_name == "factory-blueprint-anchor") then
 		entity.destroy()
-	elseif entity.type == "spider-vehicle" and entity.name ~= "companion" then
-		storage.spidertrons[entity.unit_number] = entity
-		script.register_on_object_destroyed(entity)
 	end
 end)
 

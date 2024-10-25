@@ -29,6 +29,7 @@ end
 
 storage.surface_factory_counters = nil
 storage.middleman_circuit_connectors = nil
+storage.spidertrons = nil
 
 local old_factory_surface = game.surfaces["factory-floor-1"]
 local planet = game.planets["nauvis-factory-floor"]
