@@ -63,6 +63,7 @@ data:extend {
 		order = "a-a",
 		place_result = "factory-1",
 		stack_size = 1,
+		weight = 100000000,
 		flags = {"not-stackable"},
 	},
 	{
@@ -72,6 +73,7 @@ data:extend {
 		icon_size = 64,
 		subgroup = "factorissimo2",
 		order = "a-a",
+		weight = 100000000,
 		place_result = "factory-1",
 		stack_size = 1,
 		flags = {"primary-place-result", "not-stackable"}
@@ -131,6 +133,7 @@ data:extend {
 		order = "a-b",
 		place_result = "factory-2",
 		stack_size = 1,
+		weight = 100000000,
 		flags = {"not-stackable"},
 	},
 	{
@@ -140,6 +143,7 @@ data:extend {
 		icon_size = 64,
 		subgroup = "factorissimo2",
 		order = "a-b",
+		weight = 100000000,
 		place_result = "factory-2",
 		stack_size = 1,
 		flags = {"primary-place-result", "not-stackable"}
@@ -197,6 +201,7 @@ data:extend {
 		icon_size = 64,
 		subgroup = "factorissimo2",
 		order = "a-c",
+		weight = 100000000,
 		place_result = "factory-3",
 		stack_size = 1,
 		flags = {"not-stackable"},
@@ -208,6 +213,7 @@ data:extend {
 		icon_size = 64,
 		subgroup = "factorissimo2",
 		order = "a-c",
+		weight = 100000000,
 		place_result = "factory-3",
 		stack_size = 1,
 		flags = {"primary-place-result", "not-stackable"}
