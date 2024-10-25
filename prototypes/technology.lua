@@ -10,7 +10,15 @@ data:extend {
 		icon_size = 128,
 		prerequisites = {"stone-wall", "logistics"},
 		effects = {
-			{type = "unlock-recipe", recipe = "factory-1"},
+			{
+				type = "unlock-recipe",
+				recipe = "factory-1"
+			},
+			{
+				type = "unlock-space-location",
+				space_location = "nauvis-factory-floor",
+				use_icon_overlay_constant = true,
+			}
 		},
 		unit = {
 			count = 200,

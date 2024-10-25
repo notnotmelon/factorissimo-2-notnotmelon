@@ -333,57 +333,6 @@ end)
 
 -- FACTORY PLACEMENT AND DESTRUCTION --
 
----Intended to be called inside a build event. Cancels creation of the entity.
----Returns its item_to_place back to the player or spills it on the ground.
----@param entity LuaEntity
----@param player_index integer?
----@param message LocalisedString?
----@param color Color?
-local function cancel_creation(entity, player_index, message, color)
-	local inserted = 0
-	local items_to_place_this = entity.prototype.items_to_place_this
-	local item_to_place = items_to_place_this and items_to_place_this[1]
-	local surface = entity.surface
-	local position = entity.position
-
-	if player_index then
-		local player = game.get_player(player_index)
-		if player.mine_entity(entity, false) then
-			inserted = 1
-		elseif item_to_place then
-			inserted = player.insert(item_to_place)
-		end
-	end
-
-	if inserted == 0 and item_to_place then
-		surface.spill_item_stack{
-			position = position,
-			stack = item_to_place,
-			enable_looted = true,
-			force = entity.force_index,
-			allow_belts = false
-		}
-	end
-
-	entity.destroy{raise_destroy = true}
-
-	if not message then return end
-
-	local tick = game.tick
-	local last_message = storage._last_cancel_creation_message or 0
-	if last_message + 60 < tick then
-		for _, player in pairs(game.connected_players) do
-			player.create_local_flying_text{
-				text = message,
-				position = position,
-				color = color,
-				create_at_cursor = player.index == player_index
-			}
-		end
-		storage._last_cancel_creation_message = game.tick
-	end
-end
-
 local function can_place_factory_here(tier, surface, position)
 	local factory = find_surrounding_factory(surface, position)
 	if not factory then return true end
@@ -499,12 +448,6 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
 		recheck_nearby_connections(entity)
 	elseif entity.type == "electric-pole" then
 		Electricity.power_pole_placed(entity)
-	elseif entity.type == "solar-panel" or entity.name == "bi-solar-boiler" then
-		if storage.surface_factories[entity.surface_index] then
-			cancel_creation(entity, event.player_index, {"factory-connection-text.invalid-placement"})
-		else
-			entity.force.technologies["factory-interior-upgrade-lights"].researched = true
-		end
 	elseif entity.type == "entity-ghost" and Connections.indicator_names[entity.ghost_name] then
 		Blueprint.unpack_connection_settings_from_blueprint(entity)
 		entity.destroy()

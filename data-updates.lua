@@ -1,3 +1,5 @@
+require "prototypes.space-location"
+
 local F = "__factorissimo-2-notnotmelon__"
 
 local function blank()
