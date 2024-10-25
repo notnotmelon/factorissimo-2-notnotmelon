@@ -103,8 +103,21 @@ local function get_jetpacks()
 	return nil
 end
 
-local function is_airborne(jetpacks, player_unit_number)
-	local data = jetpacks[player_unit_number]
+local function is_airborne(jetpacks, player)
+	local armor_inventory = player.get_inventory(defines.inventory.character_armor)
+	if armor_inventory then
+		for i = 1, #armor_inventory do
+			local armor = armor_inventory[i]
+			game.print("x")
+			if armor.valid_for_read and armor.prototype.provides_flight then
+				game.print("v")
+				return true
+			end
+		end
+	end
+
+	if not jetpacks then return false end
+	local data = jetpacks[player.character.unit_number]
 	if data == nil then return false end
 	return data.status == "flying"
 end
@@ -122,20 +135,26 @@ local function teleport_players()
 		local driving = player.driving
 		if not walking_state.walking and not driving then goto continue end
 		if driving and not player.vehicle then goto continue end -- if the player is riding a rocket silo
-		local airborne = jetpacks and player.character ~= nil and is_airborne(jetpacks, player.character.unit_number)
+		local airborne = player.character ~= nil and is_airborne(jetpacks, player)
 		local is_spider = is_riding_spider(player)
 
-		if not airborne then
-			if is_spider
-				or walking_state.direction == defines.direction.north
-				or walking_state.direction == defines.direction.northeast
-				or walking_state.direction == defines.direction.northwest then
-				local factory = find_factory_by_building(player.surface, {
-					{player.position.x - 0.2, player.position.y - 0.3},
-					{player.position.x + 0.2, player.position.y}
-				})
+		if is_spider or airborne
+			or walking_state.direction == defines.direction.north
+			or walking_state.direction == defines.direction.northeast
+			or walking_state.direction == defines.direction.northwest
+		then
+			local factory = find_factory_by_building {
+				surface = player.surface,
+				area = (not airborne) and {
+					{player.physical_position.x - 0.2, player.physical_position.y - 0.3},
+					{player.physical_position.x + 0.2, player.physical_position.y}
+				} or nil,
+				position = airborne and player.physical_position or nil
+			}
 
-				if factory ~= nil and not factory.inactive and player.position.y > factory.outside_y + 1 and math.abs(player.position.x - factory.outside_x) < 0.6 then
+			if factory ~= nil and not factory.inactive then
+				local is_standing_in_doorway = airborne or (player.physical_position.y > factory.outside_y + 1 and math.abs(player.physical_position.x - factory.outside_x) < 0.6)
+				if is_standing_in_doorway then
 					enter_factory(driving and player.vehicle or player, factory, player)
 					return
 				end
@@ -147,9 +166,9 @@ local function teleport_players()
 			or walking_state.direction == defines.direction.southeast
 			or walking_state.direction == defines.direction.southwest
 		then
-			local factory = find_surrounding_factory(player.surface, player.position)
-			if factory and player.position.y > factory.inside_door_y + (airborne and -0.5 or 1) then
-				if math.abs(player.position.x - factory.inside_door_x) < 4 then
+			local factory = find_surrounding_factory(player.surface, player.physical_position)
+			if factory and player.physical_position.y > factory.inside_door_y + (airborne and -0.5 or 1) then
+				if math.abs(player.physical_position.x - factory.inside_door_x) < 4 then
 					leave_factory(driving and player.vehicle or player, factory, player)
 					Camera.update_camera(player)
 					Overlay.update_overlay(factory)

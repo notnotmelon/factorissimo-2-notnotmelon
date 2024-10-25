@@ -69,8 +69,12 @@ remote_api.get_factory_by_building = function(entity)
 	return factory
 end
 
-remote_api.find_factory_by_building = function(surface, area)
-	for _, entity in pairs(surface.find_entities_filtered {area = area, type = BUILDING_TYPE}) do
+remote_api.find_factory_by_building = function(params)
+	local surface = params.surface
+	local position = params.position
+	local area = params.area
+
+	for _, entity in pairs(surface.find_entities_filtered {position = position, area = area, type = BUILDING_TYPE}) do
 		if Layout.has_layout(entity.name) then return remote_api.get_factory_by_building(entity) end
 	end
 	return nil
