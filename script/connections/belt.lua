@@ -118,8 +118,18 @@ Belt.adjust = Connections.beep
 local function spill_link_items(belt, link, surface, position)
 	for _, i in pairs {1, 2} do
 		local line = link.get_transport_line(i)
-		for item, count in pairs(line.get_contents()) do
-			surface.spill_item_stack(position, {name = item, count = count}, true, link.force, false)
+		for j = 1, #line do
+			local stack = line[j]
+			if stack and stack.valid_for_read then
+				surface.spill_item_stack{
+					position = position,
+					stack = stack,
+					enable_looted = true,
+					force = link.force_index,
+					allow_belts = false,
+					use_start_position_on_failure = true
+				}
+			end
 		end
 	end
 end

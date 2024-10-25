@@ -52,6 +52,8 @@ data:extend {{
 
 local factory_circuit_connector_invisible = table.deepcopy(data.raw["electric-pole"]["factory-circuit-connector"])
 factory_circuit_connector_invisible.name = "factory-circuit-connector-invisible"
+factory_circuit_connector_invisible.localised_name = {"entity-name.factory-circuit-connector"}
+factory_circuit_connector_invisible.localised_description = {"entity-description.factory-circuit-connector"}
 factory_circuit_connector_invisible.pictures = nil
 factory_circuit_connector_invisible.selection_box = nil
 factory_circuit_connector_invisible.minable = nil
