@@ -24,7 +24,7 @@ for surface_name, factory_list in pairs(storage.surface_factories or {}) do
         new_surface_factories[surface.index] = factory_list
     else
         new_surface_factories[surface_name] = factory_list
-    end        
+    end
 end
 
 storage.surface_factory_counters = nil
@@ -32,4 +32,10 @@ storage.surface_factory_counters = nil
 for surface_index in pairs(storage.surface_factories or {}) do
     local surface = game.get_surface(surface_index)
     surface.create_global_electric_network()
+end
+
+local old_factory_surface = game.surfaces["factory-floor-1"]
+local planet = game.planets["nauvis-factory-floor"]
+if old_factory_surface and planet and not planet.surface then
+    planet.associate_surface(old_factory_surface)
 end

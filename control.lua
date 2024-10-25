@@ -120,18 +120,31 @@ local function update_destructible(factory)
 	end
 end
 
-local function get_surface_name(layout)
+local function get_surface_name(layout, parent_surface)
 	if layout.surface_override then return layout.surface_override end
+
+	if parent_surface.planet then
+		return (parent_surface.name .. "-factory-floor"):gsub("%-factory%-floor%-factory%-floor", "-factory-floor")
+	end
+
 	storage.next_factory_surface = storage.next_factory_surface + 1
 	return "factory-floor-" .. storage.next_factory_surface
 end
 
-local function create_factory_position(layout)
-	local surface_name = get_surface_name(layout)
+local function create_factory_position(layout, parent_surface)
+	local surface_name = get_surface_name(layout, parent_surface)
 	local surface = game.get_surface(surface_name)
 
 	if not surface then
-		surface = game.create_surface(surface_name, {width = 2, height = 2})
+		local planet = game.planets[surface_name]
+		if planet then
+			surface = planet.surface or planet.create_surface()
+		end
+
+		if not surface then
+			surface = game.create_surface(surface_name, {width = 2, height = 2})
+		end
+		
 		surface.daytime = 0.5
 		surface.freeze_daytime = true
 		surface.create_global_electric_network()
@@ -196,8 +209,8 @@ local function add_tile_mosaic(tiles, tile_name, xmin, ymin, xmax, ymax, pattern
 	end
 end
 
-local function create_factory_interior(layout, force)
-	local factory = create_factory_position(layout)
+local function create_factory_interior(layout, force, parent_surface)
+	local factory = create_factory_position(layout, parent_surface)
 	factory.layout = layout
 	factory.force = force
 	factory.inside_door_x = layout.inside_door_x + factory.inside_x
@@ -400,7 +413,7 @@ end
 
 local function create_fresh_factory(entity)
 	local layout = Layout.create_layout(entity.name)
-	local factory = create_factory_interior(layout, entity.force)
+	local factory = create_factory_interior(layout, entity.force, entity.surface)
 	create_factory_exterior(factory, entity)
 	factory.inactive = not can_place_factory_here(layout.tier, entity.surface, entity.position)
 	return factory
