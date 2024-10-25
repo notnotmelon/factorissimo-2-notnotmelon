@@ -1,3 +1,6 @@
+local tile_graphics = require("__base__/prototypes/tile/tile-graphics")
+local tile_spritesheet_layout = tile_graphics.tile_spritesheet_layout
+
 local tile_trigger_effects = require("__base__.prototypes.tile.tile-trigger-effects")
 local sounds = require("__base__.prototypes.entity.sounds")
 
@@ -17,7 +20,30 @@ local function make_tile(tinfo)
 		layer = tinfo.layer or 50,
 		variants = {
 			main = tinfo.pictures,
-			empty_transitions = true
+			transition = {
+				to_tiles = {"out-of-map", "empty-space", "oil-ocean-shallow"},
+				transition_group = out_of_map_transition_group_id,
+
+				background_layer_offset = 1,
+				background_layer_group = "zero",
+				offset_background_layer_by_tile_layer = true,
+
+				spritesheet = "__factorissimo-2-notnotmelon__/graphics/tile/out-of-map-transition.png",
+				layout = tile_spritesheet_layout.transition_4_4_8_1_1,
+				overlay_enabled = false
+			},
+			transitions_between_transitions = {
+				transition_group1 = default_transition_group_id,
+				transition_group2 = out_of_map_transition_group_id,
+
+				background_layer_offset = 1,
+				background_layer_group = "zero",
+				offset_background_layer_by_tile_layer = true,
+
+				spritesheet = "__factorissimo-2-notnotmelon__/graphics/tile/out-of-map-transition-transition.png",
+				layout = tile_spritesheet_layout.transition_3_3_3_1_0,
+				overlay_enabled = false
+			}
 		},
 		walking_speed_modifier = 1.4,
 		layer_group = "ground-artificial",
@@ -139,7 +165,7 @@ make_tile {
 make_tile {
 	name = "factory-wall-1",
 	collision_mask = edge_mask(),
-	layer = 30,
+	layer = 70,
 	pictures = pictures_fw(1),
 	map_color = f1wc(),
 }
@@ -147,7 +173,7 @@ make_tile {
 make_tile {
 	name = "factory-pattern-1",
 	collision_mask = floor_mask(),
-	layer = 30,
+	layer = 70,
 	pictures = alt_graphics and pictures_ff(1) or pictures_fw(1),
 	map_color = f1wc(),
 }
