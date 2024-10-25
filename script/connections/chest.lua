@@ -174,7 +174,7 @@ local function balance_items(item, quality, count, input_inv, output_inv)
 end
 
 local floor = math.floor
-local function balance(outside_inv, inside_inv)
+local function balance_chests(outside_inv, inside_inv)
 	local outside_contents = get_contents_by_quality(outside_inv)
 	local inside_contents = get_contents_by_quality(inside_inv)
 
@@ -199,7 +199,7 @@ local function balance(outside_inv, inside_inv)
 	end
 end
 
-local function inwards(outside_inv, inside_inv)
+local function move_items_inwards(outside_inv, inside_inv)
 	for i = 1, #outside_inv do
 		local stack = outside_inv[i]
 		if stack.valid_for_read then
@@ -211,7 +211,7 @@ local function inwards(outside_inv, inside_inv)
 	end
 end
 
-local function outwards(outside_inv, inside_inv)
+local function move_items_outwards(outside_inv, inside_inv)
 	for i = 1, #inside_inv do
 		local stack = inside_inv[i]
 		if stack.valid_for_read then
@@ -231,11 +231,11 @@ Chest.tick = function(conn)
 		local inside_inv = inside.get_inventory(defines.inventory.chest)
 		local mode = conn._settings.mode or 0
 		if mode == 0 then
-			balance(outside_inv, inside_inv)
+			balance_chests(outside_inv, inside_inv)
 		elseif mode == 1 then
-			inwards(outside_inv, inside_inv)
+			move_items_inwards(outside_inv, inside_inv)
 		else
-			outwards(outside_inv, inside_inv)
+			move_items_outwards(outside_inv, inside_inv)
 		end
 		return conn._settings.delay or DEFAULT_DELAY
 	else

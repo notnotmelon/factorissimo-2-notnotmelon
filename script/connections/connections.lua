@@ -43,14 +43,14 @@ Connections.is_connectable = is_connectable
 -- Connection data structure --
 
 local CYCLIC_BUFFER_SIZE = 600
-local function init_data_structure()
+local function init()
 	storage.connections = storage.connections or {}
 	storage.delayed_connection_checks = storage.delayed_connection_checks or {}
 	for i = 0, CYCLIC_BUFFER_SIZE - 1 do
 		storage.connections[i] = storage.connections[i] or {}
 	end
 end
-Connections.init_data_structure = init_data_structure
+Connections.init = init
 
 local function add_connection_to_queue(conn)
 	local current_pos = (math.floor(game.tick / CONNECTION_UPDATE_RATE) + 1) * CONNECTION_UPDATE_RATE % CYCLIC_BUFFER_SIZE
@@ -118,7 +118,8 @@ local function set_connection_indicator(factory, cid, ctype, setting, dir)
 		force = factory.force,
 		position = {x = factory.inside_x + cpos.inside_x + cpos.indicator_dx, y = factory.inside_y + cpos.inside_y + cpos.indicator_dy},
 		create_build_effect_smoke = false,
-		direction = dir
+		direction = dir,
+		quality = factory.building.quality
 	}
 	new_indicator.destructible = false
 	factory.connection_indicators[cid] = new_indicator

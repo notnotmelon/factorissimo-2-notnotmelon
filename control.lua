@@ -16,7 +16,6 @@ local BUILDING_TYPE = BUILDING_TYPE
 require "script.layout"
 local has_layout = Layout.has_layout
 require "script.connections.connections"
-require "script.updates"
 require "script.blueprint"
 require "script.camera"
 require "script.travel"
@@ -31,7 +30,10 @@ local activate_factories  -- Function stub
 -- INITIALIZATION --
 
 local function init_globals()
+	Camera.init()
 	Layout.init()
+	Connections.init()
+
 	-- List of all factories
 	storage.factories = storage.factories or {}
 	-- Map: Id from item-with-tags -> Factory
@@ -58,13 +60,17 @@ local function init_globals()
 		remote.call("PickerDollies", "add_blacklist_name", "factory-2", true)
 		remote.call("PickerDollies", "add_blacklist_name", "factory-3", true)
 	end
+
+	for _, factory in pairs(storage.factories) do
+		-- Fix issues when forces are deleted
+		if not factory.force.valid then
+			factory.force = game.forces["player"]
+		end
+	end
 end
 
 script.on_init(function()
 	init_globals()
-	Connections.init_data_structure()
-	Updates.init()
-	Camera.init()
 	power_middleman_surface()
 	for _, force in pairs(game.forces) do
 		update_hidden_techs(force)
@@ -78,15 +84,13 @@ end)
 
 script.on_configuration_changed(function(config_changed_data)
 	init_globals()
-	Updates.run()
-	Camera.init()
 	power_middleman_surface()
 	activate_factories()
 
 	if remote.interfaces["RSO"] then
 		for surface_index, _ in pairs(storage.surface_factories or {}) do
 			local surface = game.get_surface(surface_index)
-			if surface then pcall(remote.call, "RSO", "ignoreSurface", surface.name) end
+			if surface then pcall(remote.call, "RSO", "ignoreSuface", surface.name) end
 		end
 	end
 	
@@ -611,7 +615,7 @@ local clone_forbidden_prefixes = {
 	"factory-overlay-controller",
 	"factory-overlay-display",
 	"factory-port-marker",
-	"factory-fluid-dummy-connector"
+	"factory-fluid-dummy-connector-"
 }
 
 local function is_entity_clone_forbidden(name)
