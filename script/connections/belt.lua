@@ -1,7 +1,7 @@
 local Belt = {}
 
 Belt.color = {r = 0, g = 183 / 255, b = 0}
-Belt.entity_types = {"transport-belt", "underground-belt", "loader", "loader-1x1", "linked-belt", "splitter"}
+Belt.entity_types = {"transport-belt", "underground-belt", "loader", "loader-1x1", "linked-belt", "splitter", "lane-splitter"}
 Belt.unlocked = function(force) return true end
 
 Belt.indicator_settings = {"d0"}
@@ -24,10 +24,10 @@ local function get_belt_type(entity)
 end
 
 local function get_conn_facing(outside_entity, inside_entity, direction_out, direction_in)
-	local ot, it = outside_entity.type, inside_entity.type
+	local outside_entity_type, inside_entity_type = outside_entity.type, inside_entity.type
 	local outside_dir, inside_dir = outside_entity.direction, inside_entity.direction
 
-	if ot ~= "transport-belt" and ot ~= "splitter" then
+	if outside_entity_type ~= "transport-belt" and outside_entity_type ~= "splitter" and outside_entity_type ~= "lane-splitter" then
 		if get_belt_type(outside_entity) == "input" then
 			if direction_out ~= outside_dir then return nil end
 		else
@@ -35,7 +35,7 @@ local function get_conn_facing(outside_entity, inside_entity, direction_out, dir
 		end
 	end
 
-	if it ~= "transport-belt" and it ~= "splitter" then
+	if inside_entity_type ~= "transport-belt" and inside_entity_type ~= "splitter" and inside_entity_type ~= "lane-splitter" then
 		if get_belt_type(inside_entity) == "input" then
 			if direction_in ~= inside_dir then return nil end
 		else

@@ -11,7 +11,7 @@ local function blank()
 	}
 end
 
-for _, type in ipairs {"linked-belt", "transport-belt", "underground-belt", "loader-1x1", "loader", "splitter"} do
+for _, type in ipairs {"linked-belt", "transport-belt", "underground-belt", "loader-1x1", "loader", "splitter", "lane-splitter"} do
 	for _, belt in pairs(table.deepcopy(data.raw[type])) do
 		local linked = belt
 		linked.allow_side_loading = false
