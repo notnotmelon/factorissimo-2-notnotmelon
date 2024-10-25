@@ -145,7 +145,7 @@ data:extend {
 		name = "factory-interior-upgrade-display",
 		icon = F .. "/graphics/technology/factory-interior-upgrade-display.png",
 		icon_size = 128,
-		prerequisites = {"factory-architecture-t1", "lamp"},
+		prerequisites = {"factory-architecture-t2", "lamp"},
 		effects = {},
 		unit = {
 			count = 100,
