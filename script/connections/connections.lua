@@ -117,7 +117,8 @@ local function set_connection_indicator(factory, cid, ctype, setting, dir)
 		name = "factory-connection-indicator-" .. ctype .. "-" .. setting,
 		force = factory.force,
 		position = {x = factory.inside_x + cpos.inside_x + cpos.indicator_dx, y = factory.inside_y + cpos.inside_y + cpos.indicator_dy},
-		create_build_effect_smoke = false
+		create_build_effect_smoke = false,
+		direction = dir
 	}
 	new_indicator.destructible = false
 	factory.connection_indicators[cid] = new_indicator

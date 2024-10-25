@@ -110,74 +110,116 @@ Chest.adjust = function(conn, positive)
 	end
 end
 
-local basic_item_types = {["item"] = true, ["capsule"] = true, ["gun"] = true, ["rail-planner"] = true, ["module"] = true}
-local function check_for_basic_item(item)
-	local items_with_metadata = storage.items_with_metadata
-	if not items_with_metadata then
-		items_with_metadata = {}
-		for item_name, prototype in pairs(prototypes.item) do
-			if not basic_item_types[prototype.type] then
-				items_with_metadata[item_name] = true
-			end
-		end
-		storage.items_with_metadata = items_with_metadata
+local function get_contents_by_quality(inventory)
+	local contents = inventory.get_contents()
+	local count_by_quality = {}
+	for _, item_data in pairs(contents) do
+		local item = item_data.name
+		local count = item_data.count
+		local quality = item_data.quality
+
+		count_by_quality = count_by_quality or {}
+		count_by_quality[item] = count_by_quality[item] or {}
+		count_by_quality[item][quality] = count
 	end
-	return not items_with_metadata[item]
+	return count_by_quality
 end
 
-local function move_item(item, count, input_inv, output_inv)
-	if check_for_basic_item(item) then
-		-- basic item being transfered
-		local inserted_count = output_inv.insert {name = item, count = count}
-		if inserted_count > 0 then
-			input_inv.remove {name = item, count = inserted_count}
+local function balance_items(item, quality, count, input_inv, output_inv)
+	while count > 0 do
+		local stack = input_inv.find_item_stack {name = item, quality = quality}
+		if not stack then break end
+
+		if stack.count > count then
+			if -- this method will wipe data for the following item types. We instead swap full stacks.
+				stack.is_blueprint or
+				stack.is_blueprint_book or
+				stack.is_item_with_label or
+				stack.is_item_with_inventory or
+				stack.is_item_with_entity_data or
+				stack.is_selection_tool or
+				stack.is_armor
+			then
+				local empty_stack = output_inv.find_empty_stack()
+				if empty_stack then stack.swap_stack(empty_stack) end -- May cause "sloshing"
+				return
+			end
+
+			local amount_moved = output_inv.insert {
+				name = item,
+				count = count,
+				quality = quality,
+				health = stack.health,
+				durability = stack.is_tool and stack.durability or nil,
+				ammo = stack.is_ammo and stack.ammo or nil,
+				tags = stack.is_item_with_tags and stack.tags or nil,
+				custom_description = stack.is_item_with_tags and stack.custom_description or nil,
+				spoil_percent = stack.spoil_percent,
+			}
+			stack.count = stack.count - amount_moved
+			break
+		else
+			local amount_moved = output_inv.insert(stack)
+			if amount_moved == stack.count then
+				stack.clear()
+			elseif amount_moved == 0 then
+				break
+			else
+				stack.count = stack.count - amount_moved
+			end
+			count = count - amount_moved
 		end
-	else
-		-- advanced item being transfered, need to preserve tags, durablity, ect
-		-- not safe to "split" the stack here, may result in some item sloshing
-		while count > 0 do
-			local stack = input_inv.find_item_stack(item)
-			local empty_slot, i = output_inv.find_empty_stack(item)
-			if not stack or not empty_slot then break end
-			if output_inv.supports_bar() and output_inv.get_bar() == i then break end
-			if not stack.swap_stack(empty_slot) then break end
-			count = count - stack.count
-		end
-		output_inv.sort_and_merge()
 	end
+	output_inv.sort_and_merge()
 end
 
 local floor = math.floor
 local function balance(outside_inv, inside_inv)
-	local outside_contents = outside_inv.get_contents()
-	local inside_contents = inside_inv.get_contents()
-	for item, count in pairs(outside_contents) do
-		local count2 = inside_contents[item] or 0
-		local diff = count - count2
-		if diff > 1 then
-			move_item(item, floor(diff / 2), outside_inv, inside_inv)
-		elseif diff < -1 then
-			move_item(item, floor(-diff / 2), inside_inv, outside_inv)
+	local outside_contents = get_contents_by_quality(outside_inv)
+	local inside_contents = get_contents_by_quality(inside_inv)
+
+	for item, by_quality in pairs(outside_contents) do
+		for quality, count in pairs(by_quality) do
+			local count2 = (inside_contents[item] and inside_contents[item][quality]) or 0
+			local diff = count - count2
+			if diff > 1 then
+				balance_items(item, quality, floor(diff / 2), outside_inv, inside_inv)
+			elseif diff < -1 then
+				balance_items(item, quality, floor(-diff / 2), inside_inv, outside_inv)
+			end
 		end
 	end
-	for item, count in pairs(inside_contents) do
-		if count > 1 and not outside_contents[item] then
-			move_item(item, floor(count / 2), inside_inv, outside_inv)
+	for item, by_quality in pairs(inside_contents) do
+		for quality, count in pairs(by_quality) do
+			local count2 = (outside_contents[item] and outside_contents[item][quality]) or 0
+			if count2 == 0 then
+				balance_items(item, quality, floor(count / 2), inside_inv, outside_inv)
+			end
 		end
 	end
 end
 
 local function inwards(outside_inv, inside_inv)
-	local outside_contents = outside_inv.get_contents()
-	for item, count in pairs(outside_contents) do
-		move_item(item, count, outside_inv, inside_inv)
+	for i = 1, #outside_inv do
+		local stack = outside_inv[i]
+		if stack.valid_for_read then
+			local amount_moved = inside_inv.insert(stack)
+			if amount_moved > 0 then
+				stack.count = stack.count - amount_moved
+			end
+		end
 	end
 end
 
 local function outwards(outside_inv, inside_inv)
-	local inside_contents = inside_inv.get_contents()
-	for item, count in pairs(inside_contents) do
-		move_item(item, count, inside_inv, outside_inv)
+	for i = 1, #inside_inv do
+		local stack = inside_inv[i]
+		if stack.valid_for_read then
+			local amount_moved = outside_inv.insert(stack)
+			if amount_moved > 0 then
+				stack.count = stack.count - amount_moved
+			end
+		end
 	end
 end
 

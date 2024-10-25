@@ -108,9 +108,7 @@ local function is_airborne(jetpacks, player)
 	if armor_inventory then
 		for i = 1, #armor_inventory do
 			local armor = armor_inventory[i]
-			game.print("x")
 			if armor.valid_for_read and armor.prototype.provides_flight then
-				game.print("v")
 				return true
 			end
 		end
