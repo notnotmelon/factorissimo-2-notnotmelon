@@ -441,12 +441,7 @@ end
 script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_entity, defines.events.script_raised_built, defines.events.script_raised_revive}, function(event)
 	local entity = event.created_entity or event.entity
 	if has_layout(entity.name) then
-		local stack = event.stack
-		if stack and stack.valid_for_read and stack.type == "item-with-tags" then
-			handle_factory_placed(entity, stack.tags)
-		else
-			handle_factory_placed(entity, event.tags)
-		end
+		handle_factory_placed(entity, event.tags)
 	elseif Connections.is_connectable(entity) then
 		if entity.name == "factory-circuit-connector" then
 			entity.operable = false
@@ -503,10 +498,14 @@ script.on_event({defines.events.on_player_mined_entity, defines.events.on_robot_
 		storage.saved_factories[factory.id] = factory
 		local buffer = event.buffer
 		buffer.clear()
-		buffer.insert {name = factory.layout.name}
-		buffer[1].tags = {id = factory.id}
-		local description = generate_factory_item_description(factory)
-		if description then buffer[1].custom_description = description end
+		buffer.insert {
+			name = factory.layout.name,
+			count = 1,
+			tags = {id = factory.id},
+			custom_description = generate_factory_item_description(factory),
+			quality = entity.quality,
+			health = entity.health / entity.max_health
+		}
 	elseif Connections.is_connectable(entity) then
 		recheck_nearby_connections(entity, true) -- Delay
 	elseif entity.type == "electric-pole" then
@@ -562,12 +561,17 @@ script.on_event(defines.events.on_entity_died, function(event)
 		local item = entity.surface.create_entity {
 			name = "item-on-ground",
 			position = entity.position,
-			stack = {name = factory.layout.name, tags = {id = factory.id}}
+			stack = {
+				name = factory.layout.name,
+				tags = {id = factory.id},
+				quality = entity.quality,
+				health = entity.health / entity.max_health,
+				count = 1,
+				custom_description = generate_factory_item_description(factory)
+			}
 		}
 		item.order_deconstruction(entity.force)
 		item.to_be_looted = true
-		local description = generate_factory_item_description(factory)
-		if description then item.stack.custom_description = description end
 	elseif Connections.is_connectable(entity) then
 		recheck_nearby_connections(entity, true) -- Delay
 	elseif entity.type == "electric-pole" then
