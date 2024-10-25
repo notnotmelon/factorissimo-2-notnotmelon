@@ -297,6 +297,7 @@ remote_api.add_layout = function(layout)
 end
 
 function has_layout(name)
+	name = name:gsub("%-instantiated", "")
 	return storage.layout_generators[name] ~= nil
 end
 

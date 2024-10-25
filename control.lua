@@ -334,7 +334,7 @@ commands.add_command("give-lost-factory-buildings", {"command-help-message.give-
 			local stack = inventory[i]
 			if stack.valid_for_read and stack.name == factory.layout.name and stack.type == "item-with-tags" and stack.tags.id == id then goto found end
 		end
-		player.insert {name = factory.layout.name, count = 1, tags = {id = id}}
+		player.insert {name = factory.layout.name .. "-instantiated", count = 1, tags = {id = id}}
 		::found::
 	end
 end)
@@ -504,7 +504,7 @@ script.on_event({
 		local buffer = event.buffer
 		buffer.clear()
 		buffer.insert {
-			name = factory.layout.name,
+			name = factory.layout.name .. "-instantiated",
 			count = 1,
 			tags = {id = factory.id},
 			custom_description = generate_factory_item_description(factory),

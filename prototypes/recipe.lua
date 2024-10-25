@@ -10,8 +10,8 @@ data:extend {
             {type = "item", name = "iron-plate",   amount = 500},
             {type = "item", name = "copper-plate", amount = 200}
         },
-        results = {{type = "item", name = "factory-1-raw", amount = 1}},
-        main_product = "factory-1-raw",
+        results = {{type = "item", name = "factory-1", amount = 1}},
+        main_product = "factory-1",
         localised_name = {"entity-name.factory-1"}
     },
     {
@@ -24,8 +24,8 @@ data:extend {
             {type = "item", name = "steel-plate",       amount = 250},
             {type = "item", name = "big-electric-pole", amount = 50}
         },
-        results = {{type = "item", name = "factory-2-raw", amount = 1}},
-        main_product = "factory-2-raw",
+        results = {{type = "item", name = "factory-2", amount = 1}},
+        main_product = "factory-2",
         localised_name = {"entity-name.factory-2"}
     },
     {
@@ -38,8 +38,8 @@ data:extend {
             {type = "item", name = "steel-plate", amount = 2000},
             {type = "item", name = "substation",  amount = 100}
         },
-        results = {{type = "item", name = "factory-3-raw", amount = 1}},
-        main_product = "factory-3-raw",
+        results = {{type = "item", name = "factory-3", amount = 1}},
+        main_product = "factory-3",
         localised_name = {"entity-name.factory-3"}
     },
     -- Utilities
