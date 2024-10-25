@@ -1,4 +1,43 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.0
+Date: 2024-10-25
+  Features:
+    - Add factorissimo to the starmap
+    - Add unstackable flag to factory building items
+    - Added new logic for factorissimo entrance when using a mech suit
+    - Banned rocket silos, cargo landing pads, and artillery turrets from being built indoors
+    - Blocked placement of factory buildings in surfaces with too low gravity.
+    - Cleaned up factoriopedia tab
+    - Fluid connections are now linked pipes
+    - Remove Factorissimo2-same-surface mod setting in prep for aquilo
+    - Reworked the tech tree when space age is installed
+  Compatibility:
+    - Added optional dependancy on the space age mod
+  Bugfixes:
+    - Add support for global_electric_network()
+    - Delete all data-stage crashes in 2.0
+    - Fix crash when hovering the factory overlay
+    - Fix incorrect migration files
+    - Fixed belt-to-belt connections
+    - Fixed crashes related to the factorissimo combinator overlays
+    - Fixed offset rendering issues related to the new rendering API
+    - Fixed player travel not working
+    - Global -> Storage
+    - No need to define icons here as this is handled by main_product
+    - Prevent factorissimos from being sent up in rocket silos.
+    - Re-implement multiple factories per surface due to mod api insights
+    - Rewrite system of electricity connections in order to support 2.0
+    - Update flying texts for 2.0 API
+    - Update generate_factory_item_description for 2.0
+    - Update the remove_direct_connection function for 2.0
+    - Update vscode config to include new globals
+  Graphics:
+    - Added new graphics for the factory overlay controller
+    - Improve tile transitions for factorissimo tiles
+    - Improved out-of-map tile graphics via parallax
+  Locale:
+    - Added text colors and font ligatures
+---------------------------------------------------------------------------------------------------
 Version: 1.4.3
 Date: 2024-08-06
   Compatibility:
