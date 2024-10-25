@@ -439,7 +439,9 @@ script.on_event({
 }, function(event)
 	local entity = event.created_entity or event.entity
 	if has_layout(entity.name) then
-		handle_factory_placed(entity, event.tags)
+		local inventory = event.consumed_items
+		local tags = event.tags or (inventory and inventory[1] and inventory[1].valid_for_read and inventory[1].is_item_with_tags and inventory[1].tags) or nil
+		handle_factory_placed(entity, tags)
 	elseif Connections.is_connectable(entity) then
 		if entity.name == "factory-circuit-connector" then
 			entity.operable = false
