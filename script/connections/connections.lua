@@ -272,8 +272,9 @@ local function rotate(factory, indicator)
 		if ind2 and ind2.valid then
 			if (ind2.unit_number == indicator.unit_number) then
 				local conn = factory.connections[cid]
-				local text = c_rotate[conn._type](conn)
-				create_flying_text{position = indicator.position, color = c_color[conn._type], text = text}
+				local text, noop = c_rotate[conn._type](conn)
+				create_flying_text {position = indicator.position, color = c_color[conn._type], text = text}
+				if noop then return end
 				local setting, dir = c_direction[conn._type](conn)
 				set_connection_indicator(factory, cid, conn._type, setting, dir)
 				return
@@ -288,8 +289,9 @@ local function adjust(factory, indicator, positive)
 		if ind2 and ind2.valid then
 			if (ind2.unit_number == indicator.unit_number) then
 				local conn = factory.connections[cid]
-				local text = c_adjust[conn._type](conn, positive)
+				local text, noop = c_adjust[conn._type](conn, positive)
 				create_flying_text{position = indicator.position, color = c_color[conn._type], text = text}
+				if noop then return end
 				local setting, dir = c_direction[conn._type](conn)
 				set_connection_indicator(factory, cid, conn._type, setting, dir)
 				return
@@ -302,7 +304,7 @@ Connections.adjust = adjust
 local beeps = {"Beep", "Boop", "Beep", "Boop", "Beeple"}
 Connections.beep = function()
 	local t = game.tick
-	return beeps[t % 5 + 1]
+	return beeps[t % 5 + 1], true
 end
 
 register_connection_type("belt", require("belt"))

@@ -274,6 +274,7 @@ data:extend {{
 	collision_box = {{-j, -j}, {j, j}},
 	collision_mask = {layers = {}},
 	flags = {"not-on-map"},
+	auto_connect_up_to_n_wires = 0,
 	hidden = true,
 	maximum_wire_distance = 1,
 	supply_area_distance = 63,

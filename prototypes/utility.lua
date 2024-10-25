@@ -28,6 +28,7 @@ data:extend {{
 	collision_box = {{-0.35, -0.35}, {0.35, 0.35}},
 	selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
 	item_slot_count = 15,
+	auto_connect_up_to_n_wires = 0,
 	pictures = {
 		direction_count = 1,
 		filename = F .. "/graphics/utility/factory-combinators.png",
@@ -48,6 +49,18 @@ data:extend {{
 	}},
 	maximum_wire_distance = 7.5
 }}
+
+local factory_circuit_connector_invisible = table.deepcopy(data.raw["electric-pole"]["factory-circuit-connector"])
+factory_circuit_connector_invisible.name = "factory-circuit-connector-invisible"
+factory_circuit_connector_invisible.pictures = nil
+factory_circuit_connector_invisible.selection_box = nil
+factory_circuit_connector_invisible.minable = nil
+factory_circuit_connector_invisible.corpse = nil
+factory_circuit_connector_invisible.hidden = true
+factory_circuit_connector_invisible.draw_circuit_wires = false
+factory_circuit_connector_invisible.draw_copper_wires = false
+factory_circuit_connector_invisible.factoriopedia_alternative = "factory-circuit-connector"
+data:extend {factory_circuit_connector_invisible}
 
 -- Heat source to make aquilo work
 

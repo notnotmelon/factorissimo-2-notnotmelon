@@ -28,6 +28,7 @@ for surface_name, factory_list in pairs(storage.surface_factories or {}) do
 end
 
 storage.surface_factory_counters = nil
+storage.middleman_circuit_connectors = nil
 
 local old_factory_surface = game.surfaces["factory-floor-1"]
 local planet = game.planets["nauvis-factory-floor"]
