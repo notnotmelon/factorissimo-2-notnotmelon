@@ -213,3 +213,19 @@ make_tile {
 	pictures = alt_graphics and pictures_ff(1) or pictures_fw(3),
 	map_color = f3wc(),
 }
+
+if feature_flags.space_travel then
+	data:extend {{
+		type = "tile-effect",
+		name = "factorissimo-out-of-map",
+		shader = "space",
+		space = {
+			star_scale = 0,
+			nebula_saturation = 1,
+		}
+	}}
+
+	data.raw.tile["out-of-map"].effect = "factorissimo-out-of-map"
+	data.raw.tile["out-of-map"].effect_color = {0.5, 0.507, 0}
+	data.raw.tile["out-of-map"].effect_color_secondary = {0, 68, 25}
+end
