@@ -147,7 +147,6 @@ local function create_factory_position(layout, parent_surface)
 		
 		surface.daytime = 0.5
 		surface.freeze_daytime = true
-		surface.create_global_electric_network()
 
 		if remote.interfaces["RSO"] then -- RSO compatibility
 			pcall(remote.call, "RSO", "ignoreSurface", surface_name)

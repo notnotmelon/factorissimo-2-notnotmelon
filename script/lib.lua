@@ -28,7 +28,6 @@ factory = {
 
 	+inside_overlay_controller = *,
 	+_inside_power_pole = *,
-	(+)outside_power_pole = *,
 
 	+stored_pollution = *,
 

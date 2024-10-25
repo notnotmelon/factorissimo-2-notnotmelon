@@ -23,7 +23,6 @@ end
 Electricity.get_or_create_inside_power_pole = get_or_create_inside_power_pole
 
 local function connect_power(factory, outside_power_pole)
-	factory.outside_power_pole = outside_power_pole
 	local inside_power_pole = get_or_create_inside_power_pole(factory)
 
 	local outside_power_pole_wire_connector = outside_power_pole.get_wire_connector(defines.wire_connector_id.pole_copper)
@@ -89,7 +88,6 @@ function Electricity.power_pole_placed(pole)
 	for _, factory in pairs(get_factories_near_pole(pole)) do
 		local electric_network = factory.outside_energy_receiver.electric_network_id
 		if not electric_network or electric_network ~= pole.electric_network_id then goto continue end
-		if electric_network == get_or_create_inside_power_pole(factory).electric_network_id then goto continue end -- No need to connect, they are already connected
 		connect_power(factory, pole)
 
 		::continue::
