@@ -140,10 +140,11 @@ local function create_energy_interfaces(size, icon)
 		type = "electric-energy-interface",
 		name = "factory-power-input-" .. size,
 		icon = icon,
-		icon_size = 32,
+		icon_size = 64,
 		flags = {"not-on-map"},
 		minable = nil,
 		max_health = 1,
+		hidden = true,
 		selectable_in_game = false,
 		energy_source = {
 			type = "electric",
@@ -194,6 +195,7 @@ local function create_indicator(ctype, suffix, image)
 			volume = 1,
 			pipe_connections = {},
 		},
+		hidden = true,
 		two_direction_only = false,
 		window_bounding_box = {{0, 0}, {0, 0}},
 		pictures = {
@@ -306,6 +308,7 @@ local function create_dummy_connector(dir, dx, dy, pictures)
 		name = "factory-fluid-dummy-connector-" .. dir,
 		flags = {"not-on-map", "hide-alt-info"},
 		minable = nil,
+		hidden = true,
 		max_health = 500,
 		selection_box = {{-0.4, -0.4}, {0.4, 0.4}},
 		selectable_in_game = false,

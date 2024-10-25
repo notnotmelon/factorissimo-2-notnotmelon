@@ -25,6 +25,7 @@ for _, type in ipairs {"linked-belt", "transport-belt", "underground-belt", "loa
 		}
 		linked.selection_box = nil
 		linked.minable = nil
+		linked.hidden = true
 		linked.belt_length = nil
 		linked.filter_count = nil
 		linked.structure_render_layer = nil
@@ -44,6 +45,7 @@ local function factory_pipe(pipe, base_level, suffix)
 	new.fluid_box.height = (pipe.fluid_box.height or 1) * 25
 	new.fluid_box.base_level = new.fluid_box.height * base_level
 	new.next_upgrade = nil
+	new.hidden = true
 
 	local mine = new.minable
 	if mine and not new.placeable_by then

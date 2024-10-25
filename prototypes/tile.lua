@@ -11,9 +11,17 @@ local concrete_tile_build_sounds = table.deepcopy(data.raw["tile"]["concrete"].b
 local F = "__factorissimo-2-notnotmelon__"
 local alt_graphics = settings.startup["Factorissimo2-alt-graphics"].value
 
+data:extend{{
+	type = "item-subgroup",
+	name = "factorissimo-tiles",
+	order = "q",
+	group = "tiles"
+}}
+
 local function make_tile(tinfo)
 	data:extend {{
 		type = "tile",
+		subgroup = "factorissimo-tiles",
 		name = tinfo.name,
 		needs_correction = false,
 		collision_mask = tinfo.collision_mask,
