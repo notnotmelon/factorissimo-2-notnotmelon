@@ -11,7 +11,8 @@ data:extend {
             {type = "item", name = "copper-plate", amount = 200}
         },
         results = {{type = "item", name = "factory-1-raw", amount = 1}},
-        main_product = "factory-1-raw"
+        main_product = "factory-1-raw",
+        localised_name = {"entity-name.factory-1"}
     },
     {
         type = "recipe",
@@ -24,7 +25,8 @@ data:extend {
             {type = "item", name = "big-electric-pole", amount = 50}
         },
         results = {{type = "item", name = "factory-2-raw", amount = 1}},
-        main_product = "factory-2-raw"
+        main_product = "factory-2-raw",
+        localised_name = {"entity-name.factory-2"}
     },
     {
         type = "recipe",
@@ -37,7 +39,8 @@ data:extend {
             {type = "item", name = "substation",  amount = 100}
         },
         results = {{type = "item", name = "factory-3-raw", amount = 1}},
-        main_product = "factory-3-raw"
+        main_product = "factory-3-raw",
+        localised_name = {"entity-name.factory-3"}
     },
     -- Utilities
     {
