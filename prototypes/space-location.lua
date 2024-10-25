@@ -53,6 +53,7 @@ for _, planet in pairs(data.raw.planet) do
     factory_floor.surface_properties = factory_floor.surface_properties or {}
     factory_floor.surface_properties["solar-power"] = 0
     factory_floor.surface_properties["day-night-cycle"] = 0
+    factory_floor.surface_properties["indoors"] = 1
     factory_floor.magnitude = (factory_floor.magnitude or 1) / 2
     factory_floor.starmap_icons = nil
     factory_floor.starmap_icon = "__factorissimo-2-notnotmelon__/graphics/starmap/factory-floor-" .. math.floor((planet.orientation or 0) * 64 + 32) % 64 .. ".png"
