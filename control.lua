@@ -492,8 +492,6 @@ script.on_event({
 end)
 
 local sprite_path_translation = {
-	item = "item",
-	fluid = "fluid",
 	virtual = "virtual-signal",
 }
 local function generate_factory_item_description(factory)
@@ -503,12 +501,13 @@ local function generate_factory_item_description(factory)
 		for _, section in pairs(overlay.get_or_create_control_behavior().sections) do
 			for _, filter in pairs(section.filters) do
 				if filter.value and filter.value.name then
-					table.insert(params, "[" .. sprite_path_translation[filter.value.type] .. "=" .. filter.value.name .. "]")
+					local sprite_type = sprite_path_translation[filter.value.type] or filter.value.type
+					table.insert(params, "[" .. sprite_type .. "=" .. filter.value.name .. "]")
 				end
 			end
 		end
 	end
-	local params = table.concat(params, " ")
+	local params = table.concat(params, "\n")
 	if params ~= "" then return "[font=heading-2]" .. params .. "[/font]" end
 end
 
