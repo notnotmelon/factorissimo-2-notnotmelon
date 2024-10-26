@@ -1,3 +1,11 @@
+data:extend{{
+    name = "ceiling",
+    type = "surface-property",
+    default_value = 1,
+    is_time = true,
+    hidden = true
+}}
+
 if not feature_flags.space_travel then return end
 
 local banned_from_being_placed_indoors = {
@@ -16,11 +24,3 @@ for _, prototype in pairs(banned_from_being_placed_indoors) do
         })
     end
 end
-
-data:extend{{
-    name = "ceiling",
-    type = "surface-property",
-    default_value = 1,
-    is_time = true,
-    hidden = true
-}}
