@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.8
+Date: 2024-10-26
+  Bugfixes:
+    - Fixed grass tiles appearing in the factory floor surface. Resolves: [#16](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/16)
+---------------------------------------------------------------------------------------------------
 Version: 1.5.7
 Date: 2024-10-26
   Bugfixes:
