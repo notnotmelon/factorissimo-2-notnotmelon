@@ -58,10 +58,19 @@ local function init_globals()
 		remote.call("PickerDollies", "add_blacklist_name", "factory-3", true)
 	end
 
+	-- Fix common migration issues.
 	for _, factory in pairs(storage.factories) do
-		-- Fix issues when forces are deleted
-		if not factory.force.valid then
-			factory.force = game.forces["player"]
+		-- Fix issues when forces are deleted.
+		if not factory.force or not factory.force.valid then
+			factory.force = game.forces.player
+		end
+		-- Fix issues when quality prototypes are removed.
+		if not factory.quality or not factory.quality.valid then
+			if factory.building and factory.building.valid then
+				factory.quality = factory.building.quality
+			else
+				factory.quality = prototypes.quality.normal
+			end
 		end
 	end
 end
@@ -222,6 +231,7 @@ local function create_factory_interior(layout, building)
 	factory.building = building
 	factory.layout = layout
 	factory.force = force
+	factory.quality = building.quality
 	factory.inside_door_x = layout.inside_door_x + factory.inside_x
 	factory.inside_door_y = layout.inside_door_y + factory.inside_y
 	local tiles = {}

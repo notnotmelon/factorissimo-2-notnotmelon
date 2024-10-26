@@ -27,7 +27,7 @@ local function create_linked_connections(factory, cpos, settings)
 		name = "factory-inside-pump-" .. inside_flow_direction,
 		position = inside_position,
 		direction = cpos.direction_in,
-		quality = factory.building.quality,
+		quality = factory.quality,
 	}
 	inside_connector.destructible = false
 	inside_connector.operable = false
@@ -37,7 +37,7 @@ local function create_linked_connections(factory, cpos, settings)
 		name = "factory-outside-pump-" .. outside_flow_direction,
 		position = outside_position,
 		direction = cpos.direction_out,
-		quality = factory.building.quality,
+		quality = factory.quality,
 	}
 	outside_connector.destructible = false
 	outside_connector.operable = false
