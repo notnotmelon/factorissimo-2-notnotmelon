@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.6.0
+Date: 2024-10-26
+  Features:
+    - Implemented surface render parameters and fog animations for all factory surfaces.
+    - Rendered a small planet indicator over top the factory power monitor
+  Bugfixes:
+    - Fix some technologies missing necessary prereqs in the tech tree. Resolves [#24](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/24)
+---------------------------------------------------------------------------------------------------
 Version: 1.5.17
 Date: 2024-10-26
   Bugfixes:
