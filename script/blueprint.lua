@@ -25,6 +25,8 @@ local function setup_blueprint_tags(blueprint, mapping)
 end
 
 function Blueprint.copy_entity_ghosts(source, destination)
+	if not source.inside_surface.valid or not destination.inside_surface.valid then return end
+
 	local j = 60
 	local first_anchor = source.inside_surface.create_entity {name = "factory-blueprint-anchor", position = {source.inside_x - j, source.inside_y - j}, force = source.force}
 	local second_anchor = source.inside_surface.create_entity {name = "factory-blueprint-anchor", position = {source.inside_x + j, source.inside_y + j}, force = source.force}

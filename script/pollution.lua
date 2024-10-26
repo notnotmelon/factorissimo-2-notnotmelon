@@ -1,5 +1,6 @@
 local function update_pollution(factory)
 	local inside_surface = factory.inside_surface
+	if not inside_surface.valid then return end
 	local chunk
 	local pollution, cp = 0, 0
 	local inside_x, inside_y = factory.inside_x, factory.inside_y

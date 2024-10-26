@@ -37,6 +37,9 @@ Camera.init = init
 
 local function set_camera(player, factory, inside)
 	if not player.force.technologies["factory-preview"].researched or factory.inactive then return end
+	local inside_surface = factory.inside_surface
+	local outside_surface = factory.outside_surface
+	if not inside_surface.valid or not outside_surface.valid then return end
 
 	local ps = settings.get_player_settings(player)
 	local ps_preview_size = ps["Factorissimo2-preview-size"]
@@ -46,11 +49,11 @@ local function set_camera(player, factory, inside)
 	local position, surface_index, zoom
 	if not inside then
 		position = {x = factory.outside_x, y = factory.outside_y}
-		surface_index = factory.outside_surface.index
+		surface_index = outside_surface.index
 		zoom = (preview_size / (32 / preview_zoom)) / (8 + factory.layout.outside_size)
 	else
 		position = {x = factory.inside_x, y = factory.inside_y}
-		surface_index = factory.inside_surface.index
+		surface_index = inside_surface.index
 		zoom = (preview_size / (32 / preview_zoom)) / (5 + factory.layout.inside_size)
 	end
 	local camera_frame = get_camera_frame(player)

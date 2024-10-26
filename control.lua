@@ -97,8 +97,6 @@ end)
 -- FACTORY UPGRADES --
 
 local function build_lights_upgrade(factory)
-	if factory.upgrades.lights then return end
-	factory.upgrades.lights = true
 	factory.inside_surface.daytime = 1
 end
 
@@ -179,7 +177,6 @@ local function create_factory_position(layout, parent_surface)
 	factory.inside_x = 32 * cx
 	factory.inside_y = 32 * cy
 	factory.stored_pollution = 0
-	factory.upgrades = {}
 
 	storage.surface_factories[surface.index] = storage.surface_factories[surface.index] or {}
 	storage.surface_factories[surface.index][n + 1] = factory
@@ -341,6 +338,7 @@ commands.add_command("give-lost-factory-buildings", {"command-help-message.give-
 	local player = game.players[event.player_index]
 	if not (player and player.connected and player.admin) then return end
 	local inventory = player.get_main_inventory()
+	if not inventory then return end
 	for id, factory in pairs(storage.saved_factories) do
 		for i = 1, #inventory do
 			local stack = inventory[i]
@@ -429,21 +427,28 @@ end
 local function handle_factory_placed(entity, tags)
 	if not tags or not tags.id then
 		create_fresh_factory(entity)
-	elseif storage.saved_factories[tags.id] then
+		return
+	end
+
+	local factory = storage.saved_factories[tags.id]
+	storage.saved_factories[tags.id] = nil
+	if factory and factory.inside_surface and factory.inside_surface.valid then
 		-- This is a saved factory, we need to unpack it
-		local factory = storage.saved_factories[tags.id]
-		storage.saved_factories[tags.id] = nil
 		create_factory_exterior(factory, entity)
 		factory.inactive = not can_place_factory_here(factory.layout.tier, entity.surface, entity.position)
-	elseif storage.factories[tags.id] then
+		return
+	end
+
+	if not factory and storage.factories[tags.id] then
 		-- This factory was copied from somewhere else. Clone all contained entities
 		local factory = create_fresh_factory(entity)
 		Blueprint.copy_entity_ghosts(storage.factories[tags.id], factory)
 		Overlay.update_overlay(factory)
-	else
-		create_flying_text {position = entity.position, text = {"factory-connection-text.invalid-factory-data"}}
-		entity.destroy()
+		return
 	end
+
+	create_flying_text {position = entity.position, text = {"factory-connection-text.invalid-factory-data"}}
+	entity.destroy()
 end
 
 script.on_event({
@@ -667,6 +672,11 @@ script.on_nth_tick(180, function(event)
 
 	for surface_index, _ in pairs(storage.surface_factories) do
 		local surface = game.get_surface(surface_index)
+		if not surface then
+			storage.surface_factories[surface_index] = nil
+			return
+		end
+
 		local players = not not has_players[surface.name]
 		if players ~= storage.hidden_radars[surface.name] then
 			for _, factory in pairs(storage.factories) do

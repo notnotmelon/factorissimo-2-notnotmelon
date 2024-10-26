@@ -148,6 +148,9 @@ local function register_connection(factory, cid, ctype, conn, settings)
 end
 
 local function init_connection(factory, cid, cpos) -- Only call this when factory.connections[cid] == nil!
+	if not factory.outside_surface.valid then return end
+	if not factory.inside_surface.valid then return end
+
 	local outside_entities = factory.outside_surface.find_entities_filtered {
 		position = {cpos.outside_x + factory.outside_x, cpos.outside_y + factory.outside_y},
 		force = factory.force
