@@ -88,43 +88,50 @@ local function get_nice_overlay_arrangement(width, height, amount)
 	return result
 end
 
-local function update_overlay(factory)
-	for _, id in pairs(factory.outside_overlay_displays) do
-		local object = rendering.get_object_by_id(id)
-		if object then object.destroy() end
+local function convert_logistic_sections_into_overlay_icons(control_behavior)
+	local overlay_icons = {}
+	for _, section in pairs(control_behavior.sections) do
+		if section.active then
+			for _, filter in pairs(section.filters) do
+				if filter.value then
+					table.insert(overlay_icons, filter.value)
+				end
+			end
+		end
 	end
-	factory.outside_overlay_displays = {}
+	return overlay_icons
+end
+
+local function update_overlay(factory, draw_onto)
+	if not draw_onto then
+		for _, id in pairs(factory.outside_overlay_displays) do
+			local object = rendering.get_object_by_id(id)
+			if object then object.destroy() end
+		end
+		factory.outside_overlay_displays = {}
+	end
 
 	if not factory.built then return end
+	if not factory.building.valid then return end
 	local controller = factory.inside_overlay_controller
 	if not controller then return end
 	if not controller.valid then return end
 	local control_behavior = controller.get_or_create_control_behavior()
 	if not control_behavior.enabled then return end
 
-	local nonempty_params = {}
-
-	for _, section in pairs(control_behavior.sections) do
-		if section.active then
-			for _, filter in pairs(section.filters) do
-				if filter.value then
-					table.insert(nonempty_params, filter.value)
-				end
-			end
-		end
-	end
+	local overlay_icons = convert_logistic_sections_into_overlay_icons(control_behavior)
 
 	local sprite_positions = get_nice_overlay_arrangement(
 		factory.layout.overlays.outside_w,
 		factory.layout.overlays.outside_h,
-		#nonempty_params
+		#overlay_icons
 	)
 	local i = 0
-	for _, param in pairs(nonempty_params) do
+	for _, param in pairs(overlay_icons) do
 		i = i + 1
 		draw_overlay_sprite(
 			param,
-			factory.building,
+			draw_onto or factory.building,
 			{sprite_positions[i].x + factory.layout.overlays.outside_x, sprite_positions[i].y + factory.layout.overlays.outside_y},
 			sprite_positions[i].scale,
 			factory.outside_overlay_displays
@@ -132,3 +139,32 @@ local function update_overlay(factory)
 	end
 end
 Overlay.update_overlay = update_overlay
+
+local function copy_overlay_between_factory_buildings(source, destination)
+	local source_controller = source.inside_overlay_controller
+	local destination_controller = destination.inside_overlay_controller
+
+	if not source_controller or not destination_controller then return end
+	if not source_controller.valid or not destination_controller.valid then return end
+
+	local source_control_behavior = source_controller.get_or_create_control_behavior()
+	local destination_control_behavior = destination_controller.get_or_create_control_behavior()
+
+	destination_control_behavior.enabled = source_control_behavior.enabled
+
+	-- Remove all sections from the destination controller
+	for i = #destination_control_behavior.sections, 1, -1 do
+		destination_control_behavior.remove_section(i)
+	end
+
+	-- Copy all sections from the source controller
+	for _, section in pairs(source_control_behavior.sections) do
+		local new_section = destination_control_behavior.add_section(section.group)
+		new_section.active = section.active
+		new_section.multiplier = section.multiplier
+		new_section.filters = section.filters
+	end
+
+	Overlay.update_overlay(destination)
+end
+Overlay.copy_overlay_between_factory_buildings = copy_overlay_between_factory_buildings

@@ -44,6 +44,8 @@ function Blueprint.copy_entity_ghosts(source, destination)
 	}
 	setup_blueprint_tags(stack, mapping)
 
+	Overlay.copy_overlay_between_factory_buildings(source, destination)
+
 	local update_tick = game.tick + 160 -- Delay this function a bit to give the radars a chance to scan the area
 	script.on_nth_tick(update_tick, function()
 		script.on_nth_tick(update_tick, nil)
@@ -54,7 +56,7 @@ function Blueprint.copy_entity_ghosts(source, destination)
 				surface = destination.inside_surface,
 				force = destination.force,
 				position = {destination.inside_x - 1, destination.inside_y - 1},
-				build_mode = defines.build_mode.superforced,
+				build_mode = defines.build_mode.forced,
 				skip_fog_of_war = true,
 				raise_built = true
 			}

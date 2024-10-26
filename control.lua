@@ -474,28 +474,47 @@ script.on_event({
 	defines.events.script_raised_revive
 }, function(event)
 	local entity = event.created_entity or event.entity
-	if has_layout(entity.name) then
+	local entity_name, entity_type = entity.name, entity.type
+
+	if has_layout(entity_name) then
 		local inventory = event.consumed_items
 		local tags = event.tags or (inventory and inventory[1] and inventory[1].valid_for_read and inventory[1].is_item_with_tags and inventory[1].tags) or nil
 		handle_factory_placed(entity, tags)
-	elseif Connections.is_connectable(entity) then
-		if entity.name == "factory-circuit-connector" then
+		return
+	end
+
+	if Connections.is_connectable(entity) then
+		if entity_name == "factory-circuit-connector" then
 			entity.operable = false
 		else
-			local _, _, pipe_name_input = entity.name:find("^factory%-(.*)%-input$")
-			local _, _, pipe_name_output = entity.name:find("^factory%-(.*)%-output$")
+			local _, _, pipe_name_input = entity_name:find("^factory%-(.*)%-input$")
+			local _, _, pipe_name_output = entity_name:find("^factory%-(.*)%-output$")
 			local pipe_name = pipe_name_input or pipe_name_output
 			if pipe_name then entity = remote_api.replace_entity(entity, pipe_name) end
 		end
 
 		recheck_nearby_connections(entity)
-	elseif entity.type == "electric-pole" then
+		return
+	end
+
+	if entity_type == "electric-pole" then
 		Electricity.power_pole_placed(entity)
-	elseif entity.type == "entity-ghost" and Connections.indicator_names[entity.ghost_name] then
+		return
+	end
+
+	if entity_type ~= "entity-ghost" then return end
+	local ghost_name = entity.ghost_name
+	
+	if Connections.indicator_names[ghost_name] then
 		Blueprint.unpack_connection_settings_from_blueprint(entity)
 		entity.destroy()
-	elseif entity.type == "entity-ghost" and (entity.ghost_name == "factory-overlay-controller" or entity.ghost_name == "factory-blueprint-anchor") then
+	elseif ghost_name == "factory-overlay-controller" or ghost_name == "factory-blueprint-anchor" then
 		entity.destroy()
+	elseif has_layout(ghost_name) and entity.tags then
+		local copied_from_factory = storage.factories[entity.tags.id]
+		if copied_from_factory then
+			Overlay.update_overlay(copied_from_factory, entity)
+		end
 	end
 end)
 
