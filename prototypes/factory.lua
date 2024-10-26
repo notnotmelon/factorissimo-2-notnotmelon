@@ -26,15 +26,17 @@ data:extend {
 				layers = {
 					{
 						filename = F .. "/graphics/factory/factory-1-shadow.png",
-						width = 416,
-						height = 320,
+						width = 416 * 2,
+						height = 320 * 2,
+						scale = 0.5,
 						shift = {1.5, 0},
 						draw_as_shadow = true
 					},
 					{
 						filename = F .. "/graphics/factory/factory-1" .. alt_graphics .. ".png",
-						width = 416,
-						height = 320,
+						width = 416 * 2,
+						height = 320 * 2,
+						scale = 0.5,
 						shift = {1.5, 0},
 					}
 				}
@@ -97,15 +99,17 @@ data:extend {
 				layers = {
 					{
 						filename = F .. "/graphics/factory/factory-2-shadow.png",
-						width = 544,
-						height = 448,
+						width = 544 * 2,
+						height = 448 * 2,
+						scale = 0.5,
 						shift = {1.5, 0},
 						draw_as_shadow = true
 					},
 					{
 						filename = F .. "/graphics/factory/factory-2" .. alt_graphics .. ".png",
-						width = 544,
-						height = 448,
+						width = 544 * 2,
+						height = 448 * 2,
+						scale = 0.5,
 						shift = {1.5, 0},
 					}
 				}
@@ -168,15 +172,17 @@ data:extend {
 				layers = {
 					{
 						filename = F .. "/graphics/factory/factory-3-shadow.png",
-						width = 704,
-						height = 608,
+						width = 704 * 2,
+						height = 608 * 2,
+						scale = 0.5,
 						shift = {2, -0.09375},
 						draw_as_shadow = true
 					},
 					{
 						filename = F .. "/graphics/factory/factory-3" .. alt_graphics .. ".png",
-						width = 704,
-						height = 608,
+						width = 704 * 2,
+						height = 608 * 2,
+						scale = 0.5,
 						shift = {2, -0.09375},
 					}
 				}
