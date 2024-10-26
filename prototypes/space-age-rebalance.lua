@@ -90,6 +90,7 @@ data.raw.technology["factory-connection-type-chest"].unit = {
 }
 data.raw.technology["factory-connection-type-chest"].prerequisites = {
     "factory-architecture-t2",
+    "logistic-system"
 }
 
 data.raw.technology["factory-connection-type-circuit"].unit = {
@@ -102,6 +103,7 @@ data.raw.technology["factory-connection-type-circuit"].unit = {
 }
 data.raw.technology["factory-connection-type-circuit"].prerequisites = {
     "factory-architecture-t1",
+    "circuit-network"
 }
 
 data.raw.technology["factory-recursion-t1"].unit = {

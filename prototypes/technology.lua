@@ -100,7 +100,7 @@ data:extend {
 		name = "factory-connection-type-circuit",
 		icon = F .. "/graphics/technology/factory-connection-type-circuit.png",
 		icon_size = 128,
-		prerequisites = {"factory-architecture-t2", "circuit-network"},
+		prerequisites = {"factory-architecture-t2", "circuit-network", "logistic-science-pack"},
 		effects = {{type = "unlock-recipe", recipe = "factory-circuit-connector"}},
 		unit = {
 			count = 300,
@@ -159,7 +159,7 @@ data:extend {
 		name = "factory-preview",
 		icon = F .. "/graphics/technology/factory-preview.png",
 		icon_size = 128,
-		prerequisites = {"factory-interior-upgrade-lights"},
+		prerequisites = {"factory-interior-upgrade-lights", "logistic-science-pack"},
 		effects = {},
 		unit = {
 			count = 200,
