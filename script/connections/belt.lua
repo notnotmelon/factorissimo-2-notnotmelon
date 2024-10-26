@@ -59,6 +59,7 @@ Belt.connect = function(factory, cid, cpos, outside_entity, inside_entity)
 		raise_built = false,
 		force = inside_entity.force
 	}
+	if not inside_link then return end
 	inside_link.destructible = false
 
 	local outside_link = outside_entity.surface.create_entity {
@@ -68,6 +69,7 @@ Belt.connect = function(factory, cid, cpos, outside_entity, inside_entity)
 		raise_built = false,
 		force = outside_entity.force
 	}
+	if not outside_link then return end
 	outside_link.destructible = false
 
 	local connection
