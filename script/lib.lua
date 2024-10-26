@@ -89,25 +89,4 @@ remote_api.find_surrounding_factory = function(surface, position)
 	return factories[8 * y + x + 1]
 end
 
-remote_api.power_middleman_surface = function()
-	if game.surfaces["factory-power-connection"] then
-		return game.surfaces["factory-power-connection"]
-	end
-
-	local map_gen_settings = {height = 1, width = 1, property_expression_names = {}}
-	map_gen_settings.autoplace_settings = {
-		["decorative"] = {treat_missing_as_default = false, settings = {}},
-		["entity"] = {treat_missing_as_default = false, settings = {}},
-		["tile"] = {treat_missing_as_default = false, settings = {["out-of-map"] = {}}},
-	}
-
-	local surface = game.create_surface("factory-power-connection", map_gen_settings)
-	surface.set_chunk_generated_status({0, 0}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({-1, 0}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({0, -1}, defines.chunk_generated_status.entities)
-	surface.set_chunk_generated_status({-1, -1}, defines.chunk_generated_status.entities)
-
-	return surface
-end
-
 return remote_api

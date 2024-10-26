@@ -1,5 +1,4 @@
 local find_surrounding_factory = remote_api.find_surrounding_factory
-local power_middleman_surface = remote_api.power_middleman_surface
 local find_factory_by_building = remote_api.find_factory_by_building
 local get_factory_by_building = remote_api.get_factory_by_building
 local has_layout = Layout.has_layout
@@ -14,6 +13,20 @@ local function find_connected_spidertron_remotes(player, e)
 		end
 	end
 	return result
+end
+
+--- This function exists in order to teleport the personal robopots of a player along with the player when moving between factories.
+local function purgatory_surface()
+	local planet = game.planets["factory-travel-surface"]
+	if planet.surface then return planet.surface end
+
+	local surface = planet.create_surface()
+	surface.set_chunk_generated_status({0, 0}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({-1, 0}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({0, -1}, defines.chunk_generated_status.entities)
+	surface.set_chunk_generated_status({-1, -1}, defines.chunk_generated_status.entities)
+
+	return surface
 end
 
 local function teleport_safely(e, surface, position, player, leaving)
@@ -63,7 +76,7 @@ local function teleport_safely(e, surface, position, player, leaving)
 			e.is_player() and e.character.name or e.name,
 			position, 5, 0.5, false
 		) or position
-		e.teleport({0, 0}, power_middleman_surface()) -- teleport personal robots with the player
+		e.teleport({0, 0}, purgatory_surface())
 		e.teleport(position, surface)
 	end
 

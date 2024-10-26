@@ -1,3 +1,26 @@
+-- generate a surface prototype for the personal roboport travel surface. see travel.lua for more information
+data:extend {{
+    type = "planet",
+    name = "factory-travel-surface",
+    localised_name = "",
+    hidden = true,
+    icon = "__base__/graphics/icons/space-science-pack.png",
+    icon_size = 64,
+    gravity_pull = 0,
+    distance = 0,
+    orientation = 0,
+    map_gen_settings = {
+        height = 1,
+        width = 1,
+        property_expression_names = {},
+        autoplace_settings = {
+            ["decorative"] = {treat_missing_as_default = false, settings = {}},
+            ["entity"] = {treat_missing_as_default = false, settings = {}},
+            ["tile"] = {treat_missing_as_default = false, settings = {}},
+        }
+    }
+}}
+
 local function generate_factory_floor_planet_icons(planet)
     if not planet.icons and not planet.icon then
         error("Planet " .. planet.name .. " has no icon or icons")
@@ -42,7 +65,7 @@ for _, planet in pairs(data.raw.planet) do
     factory_floor.localised_name = ""
     factory_floor.localised_description = {"space-location-description.factory-floor", original_localised_name, planet.name}
     factory_floor.lightning_properties = nil
-    factory_floor.distance = factory_floor.distance - (1.25 * factory_floor.magnitude)
+    factory_floor.distance = factory_floor.distance - (1.25 * (factory_floor.magnitude or 1))
     factory_floor.draw_orbit = false
     factory_floor.solar_power_in_space = 0
     factory_floor.fly_condition = true

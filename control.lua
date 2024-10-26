@@ -10,7 +10,6 @@ end
 local remote_api = require "script.lib"
 local get_factory_by_building = remote_api.get_factory_by_building
 local find_surrounding_factory = remote_api.find_surrounding_factory
-local power_middleman_surface = remote_api.power_middleman_surface
 local BUILDING_TYPE = BUILDING_TYPE
 
 require "script.layout"
@@ -71,7 +70,6 @@ end
 
 script.on_init(function()
 	init_globals()
-	power_middleman_surface()
 	for _, force in pairs(game.forces) do
 		update_hidden_techs(force)
 	end
@@ -84,7 +82,6 @@ end)
 
 script.on_configuration_changed(function(config_changed_data)
 	init_globals()
-	power_middleman_surface()
 	activate_factories()
 
 	if remote.interfaces["RSO"] then
