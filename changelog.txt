@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.7
+Date: 2024-10-26
+  Bugfixes:
+    - Fixed a crash caused by invalid migration file. Resolves [#15](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/15)
+---------------------------------------------------------------------------------------------------
 Version: 1.5.6
 Date: 2024-10-26
   Bugfixes:
