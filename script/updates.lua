@@ -5,7 +5,7 @@ Updates.init = function()
 end
 
 local function fix_common_issues()
-	
+
 end
 
 Updates.run = function()

@@ -72,6 +72,7 @@ local function create_indicator(ctype, suffix, image)
 		hidden                         = true,
 		two_direction_only             = false,
 		window_bounding_box            = {{0, 0}, {0, 0}},
+		selection_priority             = 52,
 		pictures                       = {
 			picture = {
 				sheet = {

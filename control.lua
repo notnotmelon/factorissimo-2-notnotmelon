@@ -93,7 +93,7 @@ script.on_configuration_changed(function(config_changed_data)
 			if surface then pcall(remote.call, "RSO", "ignoreSuface", surface.name) end
 		end
 	end
-	
+
 	storage.items_with_metadata = nil
 end)
 
@@ -137,7 +137,7 @@ local function create_factory_position(layout, parent_surface)
 		if not surface then
 			surface = game.create_surface(surface_name, {width = 2, height = 2})
 		end
-		
+
 		surface.daytime = 0.5
 		surface.freeze_daytime = true
 
@@ -150,7 +150,7 @@ local function create_factory_position(layout, parent_surface)
 	for _, factory in pairs(storage.factories) do
 		if factory.inside_surface.valid and factory.inside_surface == surface then n = n + 1 end
 	end
-	
+
 	local FACTORISSIMO_CHUNK_SPACING = 16
 	local cx = FACTORISSIMO_CHUNK_SPACING * (n % 8)
 	local cy = FACTORISSIMO_CHUNK_SPACING * math.floor(n / 8)
@@ -351,11 +351,11 @@ local function can_place_factory_here(tier, surface, position)
 		return true
 	end
 	if outer_tier > tier then
-		create_flying_text{position = position, text = {"factory-connection-text.invalid-placement-recursion-1"}}
+		create_flying_text {position = position, text = {"factory-connection-text.invalid-placement-recursion-1"}}
 	elseif (outer_tier >= tier or settings.global["Factorissimo2-better-recursion-2"].value) then
-		create_flying_text{position = position, text = {"factory-connection-text.invalid-placement-recursion-2"}}
+		create_flying_text {position = position, text = {"factory-connection-text.invalid-placement-recursion-2"}}
 	else
-		create_flying_text{position = position, text = {"factory-connection-text.invalid-placement"}}
+		create_flying_text {position = position, text = {"factory-connection-text.invalid-placement"}}
 	end
 	return false
 end
@@ -429,7 +429,7 @@ local function handle_factory_placed(entity, tags)
 		Blueprint.copy_entity_ghosts(storage.factories[tags.id], factory)
 		Overlay.update_overlay(factory)
 	else
-		create_flying_text{position = entity.position, text = {"factory-connection-text.invalid-factory-data"}}
+		create_flying_text {position = entity.position, text = {"factory-connection-text.invalid-factory-data"}}
 		entity.destroy()
 	end
 end
@@ -537,7 +537,7 @@ local function rebuild_factory(entity)
 		factory.outside_port_markers = {}
 		toggle_port_markers(factory)
 	end
-	create_flying_text{position = entity.position, text = {"factory-cant-be-mined"}}
+	create_flying_text {position = entity.position, text = {"factory-cant-be-mined"}}
 end
 
 local fake_robots = {["repair-block-robot"] = true} -- Modded construction robots with heavy control scripting

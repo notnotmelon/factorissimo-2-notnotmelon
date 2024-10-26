@@ -5,7 +5,7 @@ Circuit.entity_types = {"factory-circuit-connector"}
 Circuit.unlocked = function(force) return force.technologies["factory-connection-type-circuit"].researched end
 
 local function connect_two_poles_with_circuit_wires(pole_1, pole_2)
-	for _, connector_type in pairs{
+	for _, connector_type in pairs {
 		defines.wire_connector_id.circuit_red,
 		defines.wire_connector_id.circuit_green,
 	} do

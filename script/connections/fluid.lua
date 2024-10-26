@@ -37,7 +37,7 @@ local function create_linked_connections(factory, cpos, settings)
 		name = "factory-outside-pump-" .. outside_flow_direction,
 		position = outside_position,
 		direction = cpos.direction_out,
-		quality = quality,
+		quality = factory.building.quality,
 	}
 	outside_connector.destructible = false
 	outside_connector.operable = false
@@ -77,7 +77,7 @@ Fluid.direction = function(conn)
 end
 
 Fluid.rotate = function(conn)
-	conn._settings.input_mode = not conn._settings.input_mode	
+	conn._settings.input_mode = not conn._settings.input_mode
 
 	if conn.inside_connector and conn.inside_connector.valid then
 		conn.inside_connector.destroy()

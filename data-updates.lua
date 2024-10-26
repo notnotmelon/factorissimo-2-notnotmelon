@@ -1,5 +1,6 @@
 require "prototypes.space-location"
 require "prototypes.ceiling"
+require "prototypes.factory-pumps"
 
 local F = "__factorissimo-2-notnotmelon__"
 

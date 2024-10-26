@@ -1,4 +1,4 @@
-data:extend{{
+data:extend {{
     name = "ceiling",
     type = "surface-property",
     default_value = 1,

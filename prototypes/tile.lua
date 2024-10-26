@@ -12,7 +12,7 @@ local F = "__factorissimo-2-notnotmelon__"
 local alt_graphics = settings.startup["Factorissimo2-alt-graphics"].value
 local no_tile_transitions = settings.startup["Factorissimo2-disable-new-tile-effects"].value
 
-data:extend{{
+data:extend {{
 	type = "item-subgroup",
 	name = "factorissimo-tiles",
 	order = "q",
@@ -20,7 +20,7 @@ data:extend{{
 }}
 
 local function tile_transitions(tinfo)
-	if no_tile_transitions then	
+	if no_tile_transitions then
 		return {
 			main = tinfo.pictures,
 			empty_transitions = true
@@ -30,11 +30,11 @@ local function tile_transitions(tinfo)
 			main = tinfo.pictures,
 			transition = {
 				transition_group = out_of_map_transition_group_id,
-	
+
 				background_layer_offset = 1,
 				background_layer_group = "zero",
 				offset_background_layer_by_tile_layer = true,
-	
+
 				spritesheet = "__factorissimo-2-notnotmelon__/graphics/tile/out-of-map-transition.png",
 				layout = tile_spritesheet_layout.transition_4_4_8_1_1,
 				overlay_enabled = false

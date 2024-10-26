@@ -121,7 +121,7 @@ local function spill_link_items(belt, link, surface, position)
 		for j = 1, #line do
 			local stack = line[j]
 			if stack and stack.valid_for_read then
-				surface.spill_item_stack{
+				surface.spill_item_stack {
 					position = position,
 					stack = stack,
 					enable_looted = true,

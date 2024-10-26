@@ -71,7 +71,7 @@ Connections.get_connection_settings = get_connection_settings
 local function build_aquilo_invisible_heaters(factory, cid)
 	local cpos = factory.layout.connections[cid]
 	factory.aquilo_invisible_heaters = factory.aquilo_invisible_heaters or {inside = {}, outside = {}}
-	
+
 	if factory.inside_surface.planet and factory.inside_surface.planet.prototype.entities_require_heating then
 		local inside = factory.inside_surface.create_entity {
 			name = "factory-heat-source",
@@ -176,8 +176,8 @@ local function init_connection(factory, cid, cpos) -- Only call this when factor
 							return
 						end
 					else
-						create_flying_text{position = inside_entity.position, text = {"research-required"}}
-						create_flying_text{position = outside_entity.position, text = {"research-required"}}
+						create_flying_text {position = inside_entity.position, text = {"research-required"}}
+						create_flying_text {position = outside_entity.position, text = {"research-required"}}
 					end
 				end
 			end
@@ -292,7 +292,7 @@ local function adjust(factory, indicator, positive)
 			if (ind2.unit_number == indicator.unit_number) then
 				local conn = factory.connections[cid]
 				local text, noop = c_adjust[conn._type](conn, positive)
-				create_flying_text{position = indicator.position, color = c_color[conn._type], text = text}
+				create_flying_text {position = indicator.position, color = c_color[conn._type], text = text}
 				if noop then return end
 				local setting, dir = c_direction[conn._type](conn)
 				set_connection_indicator(factory, cid, conn._type, setting, dir)
