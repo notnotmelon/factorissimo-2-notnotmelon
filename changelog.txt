@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.15
+Date: 2024-10-26
+  Bugfixes:
+    - Fixed a crash when researching the factory overlay controller. Resolves [#23](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/23)
+---------------------------------------------------------------------------------------------------
 Version: 1.5.14
 Date: 2024-10-26
   Bugfixes:
