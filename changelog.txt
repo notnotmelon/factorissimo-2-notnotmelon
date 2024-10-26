@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.16
+Date: 2024-10-26
+  Compatibility:
+    - Added compat with the global power network mod. Resolves [#21](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/21)
+---------------------------------------------------------------------------------------------------
 Version: 1.5.15
 Date: 2024-10-26
   Bugfixes:
