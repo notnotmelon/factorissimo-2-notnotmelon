@@ -45,7 +45,7 @@ data:extend {{
 			green = {-0.21875, 0.15625}
 		}
 	}},
-	maximum_wire_distance = 7.5
+	maximum_wire_distance = 14,
 }}
 
 local factory_circuit_connector_invisible = table.deepcopy(data.raw["electric-pole"]["factory-circuit-connector"])
