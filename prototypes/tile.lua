@@ -10,6 +10,7 @@ local concrete_tile_build_sounds = table.deepcopy(data.raw["tile"]["concrete"].b
 
 local F = "__factorissimo-2-notnotmelon__"
 local alt_graphics = settings.startup["Factorissimo2-alt-graphics"].value
+local no_tile_transitions = settings.startup["Factorissimo2-disable-new-tile-effects"].value
 
 data:extend{{
 	type = "item-subgroup",
@@ -17,6 +18,30 @@ data:extend{{
 	order = "q",
 	group = "tiles"
 }}
+
+local function tile_transitions(tinfo)
+	if no_tile_transitions then	
+		return {
+			main = tinfo.pictures,
+			empty_transitions = true
+		}
+	else
+		return {
+			main = tinfo.pictures,
+			transition = {
+				transition_group = out_of_map_transition_group_id,
+	
+				background_layer_offset = 1,
+				background_layer_group = "zero",
+				offset_background_layer_by_tile_layer = true,
+	
+				spritesheet = "__factorissimo-2-notnotmelon__/graphics/tile/out-of-map-transition.png",
+				layout = tile_spritesheet_layout.transition_4_4_8_1_1,
+				overlay_enabled = false
+			}
+		}
+	end
+end
 
 local function make_tile(tinfo)
 	data:extend {{
@@ -26,20 +51,7 @@ local function make_tile(tinfo)
 		needs_correction = false,
 		collision_mask = tinfo.collision_mask,
 		layer = tinfo.layer or 50,
-		variants = {
-			main = tinfo.pictures,
-			transition = {
-				transition_group = out_of_map_transition_group_id,
-
-				background_layer_offset = 1,
-				background_layer_group = "zero",
-				offset_background_layer_by_tile_layer = true,
-
-				spritesheet = "__factorissimo-2-notnotmelon__/graphics/tile/out-of-map-transition.png",
-				layout = tile_spritesheet_layout.transition_4_4_8_1_1,
-				overlay_enabled = false
-			}
-		},
+		variants = tile_transitions(tinfo),
 		walking_speed_modifier = 1.4,
 		layer_group = "ground-artificial",
 		mined_sound = sounds.deconstruct_bricks(0.8),
