@@ -53,6 +53,46 @@ local function generate_factory_floor_planet_icons(planet)
     return icons
 end
 
+local function fog_color(planet)
+    if planet == "nauvis" then return {0.3, 0.3, 0.3}, {0.3, 0.3, 0.3} end
+    if planet == "gleba" then return {1, 1, 0.3}, {1, 0, 1} end
+    if planet == "vulcanus" then return {1.0, 0.8706, 0.302}, {1.0, 0.8706, 0.2902} end
+    if planet == "fulgora" then return {0, 0, 0.6}, {0.6, 0.1, 0.6} end
+    if planet == "aquilo" then return {0.9, 0.9, 0.9}, {0.6, 0.6, 1} end
+
+    return {0.3, 0.3, 0.3}, {0.3, 0.3, 0.3}
+end
+
+local function update_surface_render_parameters(planet, factory_floor)
+    if not feature_flags.expansion_shaders then return end
+
+    local color1, color2 = fog_color(planet.name)
+
+    local fog = {
+        shape_noise_texture = {
+            filename = "__core__/graphics/clouds-noise.png",
+            size = 2048
+        },
+        detail_noise_texture = {
+            filename = "__core__/graphics/clouds-detail-noise.png",
+            size = 2048
+        },
+        color1 = color1,
+        color2 = color2,
+        fog_type = "vulcanus",
+    }
+
+    factory_floor.surface_render_parameters = factory_floor.surface_render_parameters or {}
+    local srp = factory_floor.surface_render_parameters
+    srp.fog = fog
+    srp.draw_sprite_clouds = false
+    srp.clouds = nil
+
+    if planet.name == "gleba" then -- No rain indoors
+        factory_floor.player_effects = nil
+    end
+end
+
 -- we need to copy all existing planets in order to create factory floors for them
 local factory_floors = {}
 for _, planet in pairs(data.raw.planet) do
@@ -86,6 +126,7 @@ for _, planet in pairs(data.raw.planet) do
     factory_floor.starmap_icon_size = 115
     factory_floor.factoriopedia_alternative = planet.name
     factory_floor.hidden_in_factoriopedia = true
+    update_surface_render_parameters(planet, factory_floor)
     table.insert(factory_floors, factory_floor)
 
     ::continue::
