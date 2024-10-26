@@ -12,7 +12,7 @@ for _, quality in pairs(data.raw.quality) do
     if quality.level > highest_quality_level then highest_quality_level = quality.level end
 end
 local pumping_speed = data.raw.pump.pump.pumping_speed * 10
-local pumping_speed_with_quality = pumping_speed * highest_quality_level / 2
+local pumping_speed_with_quality = pumping_speed * (1 + highest_quality_level * 0.3)
 
 -- Multiply the max fluid flow to allow factorissimo pumps to transfer at high speed.
 data.raw["utility-constants"]["default"].max_fluid_flow = math.max(data.raw["utility-constants"]["default"].max_fluid_flow or 0, pumping_speed_with_quality)
