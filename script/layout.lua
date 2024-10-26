@@ -24,6 +24,13 @@ local make_connection = function(id, outside_x, outside_y, inside_x, inside_y, d
 end
 remote_api.make_connection = make_connection
 
+local make_quality_connection = function(id, outside_x, outside_y, inside_x, inside_y, direction_out, quality)
+	local connection = make_connection(id, outside_x, outside_y, inside_x, inside_y, direction_out)
+	connection.quality = quality
+	return connection
+end
+remote_api.make_quality_connection = make_quality_connection
+
 local layout_generators = {
 	["factory-1"] = {
 		name = "factory-1",
@@ -78,21 +85,31 @@ local layout_generators = {
 			w2 = make_connection("w2", -4.5, -1.5, -15.5, -5.5, west),
 			w3 = make_connection("w3", -4.5, 1.5, -15.5, 5.5, west),
 			w4 = make_connection("w4", -4.5, 2.5, -15.5, 9.5, west),
+			w5 = make_quality_connection("w5", -4.5, 0.5, -15.5, 2.5, west, 3),
+			w6 = make_quality_connection("w6", -4.5, -0.5, -15.5, -2.5, west, 2),
 
 			e1 = make_connection("e1", 4.5, -2.5, 15.5, -9.5, east),
 			e2 = make_connection("e2", 4.5, -1.5, 15.5, -5.5, east),
 			e3 = make_connection("e3", 4.5, 1.5, 15.5, 5.5, east),
 			e4 = make_connection("e4", 4.5, 2.5, 15.5, 9.5, east),
+			e5 = make_quality_connection("e5", 4.5, 0.5, 15.5, 2.5, east, 2),
+			e6 = make_quality_connection("e6", 4.5, -0.5, 15.5, -2.5, east, 3),
 
 			n1 = make_connection("n1", -2.5, -4.5, -9.5, -15.5, north),
 			n2 = make_connection("n2", -1.5, -4.5, -5.5, -15.5, north),
 			n3 = make_connection("n3", 1.5, -4.5, 5.5, -15.5, north),
 			n4 = make_connection("n4", 2.5, -4.5, 9.5, -15.5, north),
+			n5 = make_quality_connection("n5", -0.5, -4.5, -2.5, -15.5, north, 1),
+			n6 = make_quality_connection("n6", 0.5, -4.5, 2.5, -15.5, north, 1),
+			n7 = make_quality_connection("n7", -3.5, -4.5, -12.5, -15.5, north, 4),
+			n8 = make_quality_connection("n8", 3.5, -4.5, 12.5, -15.5, north, 5),
 
 			s1 = make_connection("s1", -2.5, 4.5, -9.5, 15.5, south),
 			s2 = make_connection("s2", -1.5, 4.5, -5.5, 15.5, south),
 			s3 = make_connection("s3", 1.5, 4.5, 5.5, 15.5, south),
 			s4 = make_connection("s4", 2.5, 4.5, 9.5, 15.5, south),
+			s7 = make_quality_connection("s7", -3.5, 4.5, -12.5, 15.5, south, 5),
+			s8 = make_quality_connection("s8", 3.5, 4.5, 12.5, 15.5, south, 4),
 
 		},
 		overlays = {
@@ -159,6 +176,10 @@ local layout_generators = {
 			w4 = make_connection("w4", -6.5, 2.5, -23.5, 8.5, west),
 			w5 = make_connection("w5", -6.5, 3.5, -23.5, 13.5, west),
 			w6 = make_connection("w6", -6.5, 4.5, -23.5, 18.5, west),
+			w7 = make_quality_connection("w7", -6.5, -1.5, -23.5, -4.5, west, 2),
+			w8 = make_quality_connection("w8", -6.5, 1.5, -23.5, 4.5, west, 3),
+			w9 = make_quality_connection("w9", -6.5, -0.5, -23.5, -1.5, west, 4),
+			w10 = make_quality_connection("w10", -6.5, 0.5, -23.5, 1.5, west, 5),
 
 			e1 = make_connection("e1", 6.5, -4.5, 23.5, -18.5, east),
 			e2 = make_connection("e2", 6.5, -3.5, 23.5, -13.5, east),
@@ -166,6 +187,10 @@ local layout_generators = {
 			e4 = make_connection("e4", 6.5, 2.5, 23.5, 8.5, east),
 			e5 = make_connection("e5", 6.5, 3.5, 23.5, 13.5, east),
 			e6 = make_connection("e6", 6.5, 4.5, 23.5, 18.5, east),
+			e7 = make_quality_connection("e7", 6.5, -1.5, 23.5, -4.5, east, 3),
+			e8 = make_quality_connection("e8", 6.5, 1.5, 23.5, 4.5, east, 2),
+			e9 = make_quality_connection("e9", 6.5, -0.5, 23.5, -1.5, east, 5),
+			e10 = make_quality_connection("e10", 6.5, 0.5, 23.5, 1.5, east, 4),
 
 			n1 = make_connection("n1", -4.5, -6.5, -18.5, -23.5, north),
 			n2 = make_connection("n2", -3.5, -6.5, -13.5, -23.5, north),
@@ -173,6 +198,8 @@ local layout_generators = {
 			n4 = make_connection("n4", 2.5, -6.5, 8.5, -23.5, north),
 			n5 = make_connection("n5", 3.5, -6.5, 13.5, -23.5, north),
 			n6 = make_connection("n6", 4.5, -6.5, 18.5, -23.5, north),
+			n7 = make_quality_connection("n7", -1.5, -6.5, -3.5, -23.5, north, 1),
+			n8 = make_quality_connection("n8", 1.5, -6.5, 3.5, -23.5, north, 1),
 
 			s1 = make_connection("s1", -4.5, 6.5, -18.5, 23.5, south),
 			s2 = make_connection("s2", -3.5, 6.5, -13.5, 23.5, south),
@@ -247,6 +274,10 @@ local layout_generators = {
 			w6 = make_connection("w6", -8.5, 3.5, -30.5, 9.5, west),
 			w7 = make_connection("w7", -8.5, 4.5, -30.5, 20.5, west),
 			w8 = make_connection("w8", -8.5, 5.5, -30.5, 24.5, west),
+			w9 = make_quality_connection("w9", -8.5, -1.5, -30.5, -1.5, west, 2),
+			w10 = make_quality_connection("w10", -8.5, 1.5, -30.5, 1.5, west, 2),
+			w11 = make_quality_connection("w11", -8.5, -6.5, -30.5, -28.5, west, 3),
+			w12 = make_quality_connection("w12", -8.5, 6.5, -30.5, 28.5, west, 3),
 
 			e1 = make_connection("e1", 8.5, -5.5, 30.5, -24.5, east),
 			e2 = make_connection("e2", 8.5, -4.5, 30.5, -20.5, east),
@@ -256,6 +287,10 @@ local layout_generators = {
 			e6 = make_connection("e6", 8.5, 3.5, 30.5, 9.5, east),
 			e7 = make_connection("e7", 8.5, 4.5, 30.5, 20.5, east),
 			e8 = make_connection("e8", 8.5, 5.5, 30.5, 24.5, east),
+			e9 = make_quality_connection("e9", 8.5, -1.5, 30.5, -1.5, east, 2),
+			e10 = make_quality_connection("e10", 8.5, 1.5, 30.5, 1.5, east, 2),
+			e11 = make_quality_connection("e11", 8.5, -6.5, 30.5, -28.5, east, 3),
+			e12 = make_quality_connection("e12", 8.5, 6.5, 30.5, 28.5, east, 3),
 
 			n1 = make_connection("n1", -5.5, -8.5, -24.5, -30.5, north),
 			n2 = make_connection("n2", -4.5, -8.5, -20.5, -30.5, north),
@@ -265,6 +300,10 @@ local layout_generators = {
 			n6 = make_connection("n6", 3.5, -8.5, 9.5, -30.5, north),
 			n7 = make_connection("n7", 4.5, -8.5, 20.5, -30.5, north),
 			n8 = make_connection("n8", 5.5, -8.5, 24.5, -30.5, north),
+			n9 = make_quality_connection("n9", -1.5, -8.5, -1.5, -30.5, north, 1),
+			n10 = make_quality_connection("n10", 1.5, -8.5, 1.5, -30.5, north, 1),
+			n11 = make_quality_connection("n11", -6.5, -8.5, -28.5, -30.5, north, 4),
+			n12 = make_quality_connection("n12", 6.5, -8.5, 28.5, -30.5, north, 4),
 
 			s1 = make_connection("s1", -5.5, 8.5, -24.5, 30.5, south),
 			s2 = make_connection("s2", -4.5, 8.5, -20.5, 30.5, south),
@@ -274,6 +313,8 @@ local layout_generators = {
 			s6 = make_connection("s6", 3.5, 8.5, 9.5, 30.5, south),
 			s7 = make_connection("s7", 4.5, 8.5, 20.5, 30.5, south),
 			s8 = make_connection("s8", 5.5, 8.5, 24.5, 30.5, south),
+			s9 = make_quality_connection("s9", -6.5, 8.5, -28.5, 30.5, south, 5),
+			s10 = make_quality_connection("s10", 6.5, 8.5, 28.5, 30.5, south, 5),
 		},
 		overlays = {
 			outside_x = 0,
@@ -304,13 +345,20 @@ end
 remote_api.has_layout = has_layout
 Layout.has_layout = has_layout
 
-local function create_layout(name)
+local function create_layout(name, quality)
 	local layout = storage.layout_generators[name]
-	if layout then
-		return table.deepcopy(layout)
-	else
-		return nil
+	if not layout then return nil end
+	layout = table.deepcopy(layout)
+
+	local connections = {}
+	for id, connection in pairs(layout.connections) do
+		if (connection.quality or 0) <= quality.level then
+			connections[id] = connection
+		end
 	end
+	layout.connections = connections
+
+	return layout
 end
 remote_api.create_layout = create_layout
 Layout.create_layout = create_layout

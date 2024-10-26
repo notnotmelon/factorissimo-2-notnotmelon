@@ -431,7 +431,7 @@ local function recheck_nearby_connections(entity, delayed)
 end
 
 local function create_fresh_factory(entity)
-	local layout = Layout.create_layout(entity.name)
+	local layout = Layout.create_layout(entity.name, entity.quality)
 	local factory = create_factory_interior(layout, entity)
 	create_factory_exterior(factory, entity)
 	factory.inactive = not can_place_factory_here(layout.tier, entity.surface, entity.position)
