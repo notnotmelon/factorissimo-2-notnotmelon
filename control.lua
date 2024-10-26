@@ -51,8 +51,6 @@ local function init_globals()
 	storage.player_preview_active = storage.player_preview_active or {}
 	-- List of all factory power pole middlemen
 	storage.middleman_power_poles = storage.middleman_power_poles or {}
-	-- Map: Surface name -> Whether radars are active
-	storage.hidden_radars = storage.hidden_radars or {}
 
 	if remote.interfaces["PickerDollies"] then
 		remote.call("PickerDollies", "add_blacklist_name", "factory-1", true)
@@ -246,7 +244,6 @@ local function create_factory_interior(layout, building)
 		force = force,
 	}
 	radar.destructible = false
-	radar.active = false
 	factory.radar = radar
 
 	if force.technologies["factory-interior-upgrade-lights"].researched then
@@ -673,24 +670,6 @@ script.on_nth_tick(180, function(event)
 	for _, player in pairs(game.players) do
 		if storage.surface_factories[player.surface_index] and (player.render_mode == defines.render_mode.chart or player.render_mode == defines.render_mode.chart_zoomed_in) then
 			has_players[player.surface.name] = true
-		end
-	end
-
-	for surface_index, _ in pairs(storage.surface_factories) do
-		local surface = game.get_surface(surface_index)
-		if not surface then
-			storage.surface_factories[surface_index] = nil
-			return
-		end
-
-		local players = not not has_players[surface.name]
-		if players ~= storage.hidden_radars[surface.name] then
-			for _, factory in pairs(storage.factories) do
-				if factory.radar.valid and factory.inside_surface == surface then
-					factory.radar.active = players
-				end
-			end
-			storage.hidden_radars[surface.name] = players
 		end
 	end
 end)

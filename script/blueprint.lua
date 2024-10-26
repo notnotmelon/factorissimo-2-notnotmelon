@@ -43,17 +43,26 @@ function Blueprint.copy_entity_ghosts(source, destination)
 		include_station_names = true
 	}
 	setup_blueprint_tags(stack, mapping)
-	stack.build_blueprint {
-		surface = destination.inside_surface,
-		force = destination.force,
-		position = {destination.inside_x - 1, destination.inside_y - 1},
-		force_build = true,
-		skip_fog_of_war = true,
-		raise_built = true
-	}
 
-	stack.clear()
-	inventory.destroy()
+	local update_tick = game.tick + 160 -- Delay this function a bit to give the radars a chance to scan the area
+	script.on_nth_tick(update_tick, function()
+		script.on_nth_tick(update_tick, nil)
+
+		if not inventory.valid then return end
+		if destination.inside_surface.valid and destination.force.valid then
+			stack.build_blueprint {
+				surface = destination.inside_surface,
+				force = destination.force,
+				position = {destination.inside_x - 1, destination.inside_y - 1},
+				build_mode = defines.build_mode.superforced,
+				skip_fog_of_war = true,
+				raise_built = true
+			}
+			stack.clear()
+		end
+		inventory.destroy()
+	end)
+
 	first_anchor.destroy()
 	second_anchor.destroy()
 end
