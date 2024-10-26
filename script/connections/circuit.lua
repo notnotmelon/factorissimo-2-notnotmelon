@@ -11,6 +11,7 @@ local function connect_two_poles_with_circuit_wires(pole_1, pole_2)
 	} do
 		local connector_1 = pole_1.get_wire_connector(connector_type, true)
 		local connector_2 = pole_2.get_wire_connector(connector_type, true)
+		connector_1.connect_to(connector_2, false, defines.wire_origin.script)
 	end
 end
 
