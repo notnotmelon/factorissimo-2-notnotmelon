@@ -7,6 +7,13 @@ data:extend {
 		default_value = false,
 		order = "a-a",
 	},
+	{
+		type = "bool-setting",
+		name = "Factorissimo2-disable-new-tile-effects",
+		setting_type = "startup",
+		default_value = false,
+		order = "a-b",
+	},
 	-- Global
 	{
 		type = "bool-setting",
