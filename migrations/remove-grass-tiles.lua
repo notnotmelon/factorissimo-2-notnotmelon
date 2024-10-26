@@ -16,5 +16,12 @@ for _, surface in pairs(game.surfaces) do
             table.insert(new_tiles, {name = "out-of-map", position = tile.position})
         end
         surface.set_tiles(new_tiles)
+
+        for _, force in pairs(game.forces) do
+            if force.technologies["factory-interior-upgrade-lights"].researched then
+                surface.daytime = 1
+                break
+            end
+        end
     end
 end

@@ -97,7 +97,7 @@ end)
 -- FACTORY UPGRADES --
 
 local function build_lights_upgrade(factory)
-	factory.inside_surface.daytime = 1
+	if factory.inside_surface.valid then factory.inside_surface.daytime = 1 end
 end
 
 -- FACTORY GENERATION --
@@ -121,16 +121,23 @@ end
 
 script.on_event(defines.events.on_surface_created, function(event)
 	local surface = game.get_surface(event.surface_index)
-	if surface.name:find("%-factory%-floor$") then
-		surface.freeze_daytime = true
-		surface.daytime = 0.5
-		if remote.interfaces["RSO"] then
-			pcall(remote.call, "RSO", "ignoreSurface", surface.name)
+	if not surface.name:find("%-factory%-floor$") then return end
+
+	surface.freeze_daytime = true
+	surface.daytime = 0.5
+	if remote.interfaces["RSO"] then
+		pcall(remote.call, "RSO", "ignoreSurface", surface.name)
+	end
+	local mgs = surface.map_gen_settings
+	mgs.width = 2
+	mgs.height = 2
+	surface.map_gen_settings = mgs
+
+	for _, force in pairs(game.forces) do
+		if force.technologies["factory-interior-upgrade-lights"].researched then
+			surface.daytime = 1
+			break
 		end
-		local mgs = surface.map_gen_settings
-		mgs.width = 2
-		mgs.height = 2
-		surface.map_gen_settings = mgs
 	end
 end)
 
