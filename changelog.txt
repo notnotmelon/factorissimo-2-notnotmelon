@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.6
+Date: 2024-10-26
+  Bugfixes:
+    - Removed mysterious "factory middleman surface" from appearing int the remote view selection
+---------------------------------------------------------------------------------------------------
 Version: 1.5.5
 Date: 2024-10-26
   Bugfixes:
