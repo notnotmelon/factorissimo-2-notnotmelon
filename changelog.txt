@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.11
+Date: 2024-10-26
+  Bugfixes:
+    - Fixed a crash involving the factory overlay controler. Resolves [#20](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/20)
+    - Fixed a crash related to placing belt connections in editor mode.
+---------------------------------------------------------------------------------------------------
 Version: 1.5.10
 Date: 2024-10-26
   Bugfixes:
