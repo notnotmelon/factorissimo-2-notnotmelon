@@ -448,6 +448,7 @@ local function handle_factory_placed(entity, tags)
 	storage.saved_factories[tags.id] = nil
 	if factory and factory.inside_surface and factory.inside_surface.valid then
 		-- This is a saved factory, we need to unpack it
+		factory.quality = entity.quality
 		create_factory_exterior(factory, entity)
 		factory.inactive = not can_place_factory_here(factory.layout.tier, entity.surface, entity.position)
 		return

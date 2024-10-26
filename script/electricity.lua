@@ -25,10 +25,8 @@ Electricity.get_or_create_inside_power_pole = get_or_create_inside_power_pole
 
 local function connect_power(factory, outside_power_pole)
 	local inside_power_pole = get_or_create_inside_power_pole(factory)
-
 	local outside_power_pole_wire_connector = outside_power_pole.get_wire_connector(defines.wire_connector_id.pole_copper)
 	local inside_power_pole_wire_connector = inside_power_pole.get_wire_connector(defines.wire_connector_id.pole_copper)
-
 	inside_power_pole_wire_connector.connect_to(outside_power_pole_wire_connector, false, defines.wire_origin.script)
 end
 
@@ -52,15 +50,17 @@ local function update_power_connection(factory, pole) -- pole parameter is optio
 	-- find the nearest connected power pole
 	local D = prototypes.max_electric_pole_supply_area_distance + factory.layout.outside_size / 2
 	local area = {{x - D, y - D}, {x + D, y + D}}
-	if surface.has_global_electric_network then area = nil end
+	local has_global_electric_network = surface.has_global_electric_network
+	if has_global_electric_network then area = nil end
 
 	local candidates = {}
-	for _, entity in ipairs(surface.find_entities_filtered {type = "electric-pole", area = area}) do
-		if entity.electric_network_id == electric_network and entity ~= pole and not entity.prototype.hidden then
+	for _, entity in pairs(surface.find_entities_filtered {type = "electric-pole", area = area, limit = 100}) do
+		local same_network = has_global_electric_network or entity.electric_network_id == electric_network
+		if same_network and entity ~= pole and not entity.prototype.hidden then
 			candidates[#candidates + 1] = entity
 		end
 	end
-
+	
 	if #candidates == 0 then return end
 	connect_power(factory, surface.get_closest({x, y}, candidates))
 end
