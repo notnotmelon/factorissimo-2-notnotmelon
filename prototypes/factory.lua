@@ -58,8 +58,17 @@ data:extend {
 	{
 		type = "item-with-tags",
 		name = "factory-1-instantiated",
-		icon = F .. "/graphics/icon/factory-1.png",
-		icon_size = 64,
+		localised_name = {"item-name.factory-packed", {"entity-name.factory-1"}},
+		icons = {
+			{
+				icon = F .. "/graphics/icon/factory-1.png",
+				icon_size = 64,
+			},
+			{
+				icon = F .. "/graphics/icon/packing-tape.png",
+				icon_size = 64,
+			}
+		},
 		subgroup = "factorissimo2",
 		order = "a-a",
 		place_result = "factory-1",
@@ -127,12 +136,21 @@ data:extend {
 		circuit_wire_max_distance = 0,
 		map_color = {r = 0.8, g = 0.7, b = 0.55},
 		is_military_target = true
-	},
+	},	
 	{
 		type = "item-with-tags",
 		name = "factory-2-instantiated",
-		icon = F .. "/graphics/icon/factory-2.png",
-		icon_size = 64,
+		localised_name = {"item-name.factory-packed", {"entity-name.factory-1"}},
+		icons = {
+			{
+				icon = F .. "/graphics/icon/factory-2.png",
+				icon_size = 64,
+			},
+			{
+				icon = F .. "/graphics/icon/packing-tape.png",
+				icon_size = 64,
+			}
+		},
 		subgroup = "factorissimo2",
 		order = "a-b",
 		place_result = "factory-2",
@@ -204,8 +222,17 @@ data:extend {
 	{
 		type = "item-with-tags",
 		name = "factory-3-instantiated",
-		icon = F .. "/graphics/icon/factory-3.png",
-		icon_size = 64,
+		localised_name = {"item-name.factory-packed", {"entity-name.factory-1"}},
+		icons = {
+			{
+				icon = F .. "/graphics/icon/factory-3.png",
+				icon_size = 64,
+			},
+			{
+				icon = F .. "/graphics/icon/packing-tape.png",
+				icon_size = 64,
+			}
+		},
 		subgroup = "factorissimo2",
 		order = "a-c",
 		weight = 100000000,
