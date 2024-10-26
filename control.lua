@@ -121,6 +121,21 @@ local function get_surface_name(layout, parent_surface)
 	return "factory-floor-" .. storage.next_factory_surface
 end
 
+script.on_event(defines.events.on_surface_created, function(event)
+	local surface = game.get_surface(event.surface_index)
+	if surface.name:find("%-factory%-floor$") then
+		surface.freeze_daytime = true
+		surface.daytime = 0.5
+		if remote.interfaces["RSO"] then
+			pcall(remote.call, "RSO", "ignoreSurface", surface.name)
+		end
+		local mgs = surface.map_gen_settings
+		mgs.width = 2
+		mgs.height = 2
+		surface.map_gen_settings = mgs
+	end
+end)
+
 local function create_factory_position(layout, parent_surface)
 	local surface_name = get_surface_name(layout, parent_surface)
 	local surface = game.get_surface(surface_name)
