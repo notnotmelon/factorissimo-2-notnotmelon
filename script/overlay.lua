@@ -22,12 +22,10 @@ end
 Overlay.build_display_upgrade = build_display_upgrade
 
 local sprite_path_translation = {
-	item = "item",
-	fluid = "fluid",
 	virtual = "virtual-signal",
 }
 local function draw_overlay_sprite(signal, target_entity, offset, scale, id_table)
-	local sprite_name = sprite_path_translation[signal.type] .. "/" .. signal.name
+	local sprite_name = (sprite_path_translation[signal.type] or signal.type) .. "/" .. signal.name
 	if target_entity.valid then
 		local sprite_data = {
 			sprite = sprite_name,
