@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.13
+Date: 2024-10-26
+  Bugfixes:
+    - Fixed issues of the game not responding when migrating from a 1.1 save. Resolves [#22](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/22)
+---------------------------------------------------------------------------------------------------
 Version: 1.5.12
 Date: 2024-10-26
   Graphics:
