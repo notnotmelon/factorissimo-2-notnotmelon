@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.10
+Date: 2024-10-26
+  Bugfixes:
+    - Fixed interior lights upgrade sometimes not getting correctly applied
+    - Fixed various crashes when uninstalling space age from an existing world.
+  Graphics:
+    - Converted all factory building graphics into high-resolution
+---------------------------------------------------------------------------------------------------
 Version: 1.5.9
 Date: 2024-10-26
   Changes:
