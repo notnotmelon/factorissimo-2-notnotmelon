@@ -70,6 +70,7 @@ if data.raw["assembling-machine"]["borehole-pump"] then
 				ingredients = {},
 				energy_required = 4,
 				allow_productivity = true,
+				hide_from_player_crafting = true,
 				category = "borehole-pump",
 				subgroup = "borehole-pump",
 				results = {
