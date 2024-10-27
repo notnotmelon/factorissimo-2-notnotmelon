@@ -16,15 +16,38 @@ local FACTORY_PUMPING_SPEED = 12000 -- per second
 
 -- returns the default buff amount per quality level in vanilla
 local function get_quality_buff(quality_level)
-	return 1 + quality_level * 0.3
+    return 1 + quality_level * 0.3
+end
+
+-- Recursive function to ensure all strings are within 20 units.
+-- Factorio crashes if a localised string is greater than 20 units
+local function shorten_localised_string(localised_string)
+    if table_size(localised_string) <= 20 then return localised_string end
+
+    local first_half = {}
+    local second_half = {}
+    local midway_point = math.ceil(table_size(localised_string) / 2)
+
+    for i, v in ipairs(localised_string) do
+        if i <= midway_point then
+            if not next(first_half) and v ~= "" then first_half[#first_half + 1] = "" end
+            first_half[#first_half + 1] = v
+        else
+            if not next(second_half) and v ~= "" then second_half[#second_half + 1] = "" end
+            second_half[#second_half + 1] = v
+        end
+    end
+
+    return {"", shorten_localised_string(first_half), shorten_localised_string(second_half)}
 end
 
 local function add_quality_factoriopedia_info(entity, factoriopedia_info)
-    local factoriopedia_description = entity.factoriopedia_description
+    local factoriopedia_description
 
     for _, factoriopedia_info in pairs(factoriopedia_info or {}) do
         local header, factoriopedia_function = unpack(factoriopedia_info)
         local localised_string = {"", "[font=default-semibold]", header, "[/font]"}
+
         for _, quality in pairs(data.raw.quality) do
             local quality_level = quality.level
             if quality.hidden then goto continue end
@@ -36,13 +59,14 @@ local function add_quality_factoriopedia_info(entity, factoriopedia_info)
         end
 
         if factoriopedia_description then
-            factoriopedia_description = {"", factoriopedia_description, "\n\n", localised_string}
+            factoriopedia_description[#factoriopedia_description + 1] = "\n\n"
+            factoriopedia_description[#factoriopedia_description + 1] = shorten_localised_string(localised_string)
         else
             factoriopedia_description = localised_string
         end
     end
 
-    entity.factoriopedia_description = factoriopedia_description
+    entity.factoriopedia_description = shorten_localised_string(factoriopedia_description)
 end
 
 add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-1"], {
