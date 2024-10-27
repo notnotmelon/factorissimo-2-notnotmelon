@@ -49,8 +49,6 @@ local function init_globals()
 	storage.last_player_teleport = storage.last_player_teleport or {}
 	-- Map: Player index -> Whether preview is activated
 	storage.player_preview_active = storage.player_preview_active or {}
-	-- List of all factory power pole middlemen
-	storage.middleman_power_poles = storage.middleman_power_poles or {}
 
 	if remote.interfaces["PickerDollies"] then
 		remote.call("PickerDollies", "add_blacklist_name", "factory-1", true)
