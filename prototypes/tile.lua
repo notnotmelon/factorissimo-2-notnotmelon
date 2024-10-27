@@ -192,7 +192,7 @@ make_tile {
 	layer = 70,
 	pictures = pictures_fw(1),
 	map_color = f1wc(),
-	frozen_tint = {0.6, 0.5, 0.5}
+	frozen_tint = {1, 0.85, 0.85}
 }
 
 make_tile {
@@ -201,7 +201,7 @@ make_tile {
 	layer = 70,
 	pictures = alt_graphics and pictures_ff(1) or pictures_fw(1),
 	map_color = f1wc(),
-	frozen_tint = {0.6, 0.5, 0.5}
+	frozen_tint = {1, 0.85, 0.85}
 }
 
 -- Factory 2
@@ -212,7 +212,7 @@ make_tile {
 	layer = 70,
 	pictures = pictures_fw(2),
 	map_color = f2wc(),
-	frozen_tint = {0.5, 0.5, 0.6}
+	frozen_tint = {0.85, 0.85, 1}
 }
 
 make_tile {
@@ -221,7 +221,7 @@ make_tile {
 	layer = 70,
 	pictures = alt_graphics and pictures_ff(1) or pictures_fw(2),
 	map_color = f2wc(),
-	frozen_tint = {0.5, 0.5, 0.6}
+	frozen_tint = {0.85, 0.85, 1}
 }
 
 -- Factory 3
@@ -232,7 +232,7 @@ make_tile {
 	layer = 70,
 	pictures = pictures_fw(3),
 	map_color = f3wc(),
-	frozen_tint = {0.6, 0.6, 0.4}
+	frozen_tint = {1, 1, 0.7}
 }
 
 make_tile {
@@ -241,7 +241,7 @@ make_tile {
 	layer = 70,
 	pictures = alt_graphics and pictures_ff(1) or pictures_fw(3),
 	map_color = f3wc(),
-	frozen_tint = {0.6, 0.6, 0.4}
+	frozen_tint = {1, 1, 0.7}
 }
 
 if feature_flags.expansion_shaders then
