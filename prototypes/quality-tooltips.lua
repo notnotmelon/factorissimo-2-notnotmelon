@@ -63,7 +63,7 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-1"], {
         end
         return connection_count
     end},
-    {{"quality-tooltip.pumping-speed"}, function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
+    {{"quality-tooltip.fluid-transfer-speed"}, function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
 })
 
 add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-2"], {
@@ -84,7 +84,7 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-2"], {
         end
         return connection_count
     end},
-    {{"quality-tooltip.pumping-speed"}, function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
+    {{"quality-tooltip.fluid-transfer-speed"}, function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
 })
 
 add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-3"], {
@@ -105,5 +105,5 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-3"], {
         end
         return connection_count
     end},
-    {{"quality-tooltip.pumping-speed"}, function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
+    {{"quality-tooltip.fluid-transfer-speed"}, function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
 })

@@ -26,7 +26,6 @@ data:extend {{
     localised_description = {"entity-description.factory-pump"},
     flags = {"not-blueprintable", "not-deconstructable", "not-on-map", "not-flammable", "not-repairable", "hide-alt-info"},
     max_health = 50,
-    selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
     hidden = true,
     fluid_box = {
         volume = pumping_speed_with_quality,
@@ -39,7 +38,6 @@ data:extend {{
     energy_source = {
         type = "void",
     },
-    selection_priority = 51,
     integration_patch = table.deepcopy(pump_pictures),
     integration_patch_render_layer = "lower-object-above-shadow",
     pumping_speed = pumping_speed,
@@ -57,7 +55,6 @@ data:extend {{
     localised_description = {"entity-description.factory-pump"},
     flags = {"not-blueprintable", "not-deconstructable", "not-on-map", "not-flammable", "not-repairable", "hide-alt-info"},
     max_health = 50,
-    selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
     hidden = true,
     fluid_box = {
         volume = pumping_speed_with_quality,
@@ -72,7 +69,6 @@ data:extend {{
     energy_source = {
         type = "void",
     },
-    selection_priority = 51,
     pumping_speed = pumping_speed,
     energy_usage = "1W",
     collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
@@ -81,10 +77,12 @@ data:extend {{
 
 local outside_input = table.deepcopy(data.raw["pump"]["factory-inside-pump-input"])
 outside_input.name = "factory-outside-pump-input"
-outside_input.animations = nil
+outside_input.selection_box = {{-0.5, -0.5}, {0.5, 0.5}}
+outside_input.selection_priority = 51
 
 local outside_output = table.deepcopy(data.raw["pump"]["factory-inside-pump-output"])
 outside_output.name = "factory-outside-pump-output"
-outside_output.animations = nil
+outside_output.selection_box = {{-0.5, -0.5}, {0.5, 0.5}}
+outside_output.selection_priority = 51
 
 data:extend {outside_input, outside_output}
