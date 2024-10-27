@@ -1,4 +1,17 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.1.0
+Date: 2024-10-27
+  Features:
+    - Added borehole pumps
+    - Renamed the mod to Factorissimo 3! We have come a long way these past years :)
+  Bugfixes:
+    - Removed collision mask for linked belts. Allows fast-replace of factory buildings.
+  Graphics:
+    - Fixed texture clipping in the recursion 2 tech icon
+  Changes:
+    - Changed the mining time of factory buildings from 1 second to 0.5 seconds
+    - UPS improvements for heat connections.
+---------------------------------------------------------------------------------------------------
 Version: 1.9.2
 Date: 2024-10-27
   Bugfixes:
