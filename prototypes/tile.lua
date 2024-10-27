@@ -19,39 +19,56 @@ data:extend {{
 	group = "tiles"
 }}
 
-local function tile_transitions(tinfo)
+local function tile_transitions(tile_variants)
 	if no_tile_transitions then
-		return {
-			main = tinfo.pictures,
-			empty_transitions = true
-		}
+		tile_variants.empty_transitions = true
 	else
-		return {
-			main = tinfo.pictures,
-			transition = {
-				transition_group = out_of_map_transition_group_id,
+		tile_variants.transition = {
+			transition_group = out_of_map_transition_group_id,
 
-				background_layer_offset = 1,
-				background_layer_group = "zero",
-				offset_background_layer_by_tile_layer = true,
+			background_layer_offset = 1,
+			background_layer_group = "zero",
+			offset_background_layer_by_tile_layer = true,
 
-				spritesheet = "__factorissimo-2-notnotmelon__/graphics/tile/out-of-map-transition.png",
-				layout = tile_spritesheet_layout.transition_4_4_8_1_1,
-				overlay_enabled = false
-			}
+			spritesheet = "__factorissimo-2-notnotmelon__/graphics/tile/out-of-map-transition.png",
+			layout = tile_spritesheet_layout.transition_4_4_8_1_1,
+			overlay_enabled = false
 		}
 	end
+	return tile_variants
 end
 
 local function make_tile(tinfo)
+	local freezable = not not (feature_flags.freezing and data.raw.tile["frozen-concrete"])
+
+	if freezable then
+		local frozen_concrete = table.deepcopy(data.raw.tile["frozen-concrete"])
+		frozen_concrete.name = tinfo.name .. "-frozen"
+		frozen_concrete.map_color = tinfo.map_color or {r = 1}
+		frozen_concrete.thawed_variant = tinfo.name
+		frozen_concrete.collision_mask = tinfo.collision_mask
+		frozen_concrete.walking_speed_modifier = 1.4
+		frozen_concrete.vehicle_friction_modifier = concrete_vehicle_speed_modifier
+		frozen_concrete.driving_sound = concrete_driving_sound
+		frozen_concrete.mined_sound = sounds.deconstruct_bricks(0.8)
+		frozen_concrete.layer_group = "ground-artificial"
+		frozen_concrete.layer = (tinfo.layer or 50) - 1
+		frozen_concrete.localised_name = {"tile-name." .. tinfo.name}
+		frozen_concrete.variants = tile_transitions(frozen_concrete.variants)
+		frozen_concrete.tint = tinfo.frozen_tint
+		data:extend {frozen_concrete}
+	end
+
 	data:extend {{
 		type = "tile",
 		subgroup = "factorissimo-tiles",
 		name = tinfo.name,
 		needs_correction = false,
 		collision_mask = tinfo.collision_mask,
+		variants = tile_transitions {
+			main = tinfo.pictures
+		},
 		layer = tinfo.layer or 50,
-		variants = tile_transitions(tinfo),
 		walking_speed_modifier = 1.4,
 		layer_group = "ground-artificial",
 		mined_sound = sounds.deconstruct_bricks(0.8),
@@ -61,6 +78,7 @@ local function make_tile(tinfo)
 		vehicle_friction_modifier = concrete_vehicle_speed_modifier,
 		trigger_effect = tile_trigger_effects.concrete_trigger_effect(),
 		map_color = tinfo.map_color or {r = 1},
+		frozen_variant = freezable and (tinfo.name .. "-frozen") or nil,
 	}}
 end
 
@@ -174,6 +192,7 @@ make_tile {
 	layer = 70,
 	pictures = pictures_fw(1),
 	map_color = f1wc(),
+	frozen_tint = {0.6, 0.5, 0.5}
 }
 
 make_tile {
@@ -182,6 +201,7 @@ make_tile {
 	layer = 70,
 	pictures = alt_graphics and pictures_ff(1) or pictures_fw(1),
 	map_color = f1wc(),
+	frozen_tint = {0.6, 0.5, 0.5}
 }
 
 -- Factory 2
@@ -192,6 +212,7 @@ make_tile {
 	layer = 70,
 	pictures = pictures_fw(2),
 	map_color = f2wc(),
+	frozen_tint = {0.5, 0.5, 0.6}
 }
 
 make_tile {
@@ -200,6 +221,7 @@ make_tile {
 	layer = 70,
 	pictures = alt_graphics and pictures_ff(1) or pictures_fw(2),
 	map_color = f2wc(),
+	frozen_tint = {0.5, 0.5, 0.6}
 }
 
 -- Factory 3
@@ -210,6 +232,7 @@ make_tile {
 	layer = 70,
 	pictures = pictures_fw(3),
 	map_color = f3wc(),
+	frozen_tint = {0.6, 0.6, 0.4}
 }
 
 make_tile {
@@ -218,9 +241,10 @@ make_tile {
 	layer = 70,
 	pictures = alt_graphics and pictures_ff(1) or pictures_fw(3),
 	map_color = f3wc(),
+	frozen_tint = {0.6, 0.6, 0.4}
 }
 
-if feature_flags.space_travel then
+if feature_flags.expansion_shaders then
 	data:extend {{
 		type = "tile-effect",
 		name = "factorissimo-out-of-map",
