@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.1.1
+Date: 2024-10-27
+  Bugfixes:
+    - Fixed crash with pyanodons mods
+  Graphics:
+    - New graphics for the circuit connection tech icon
+    - Remade the graphics for the factory circuit connector.
+---------------------------------------------------------------------------------------------------
 Version: 3.1.0
 Date: 2024-10-27
   Features:
