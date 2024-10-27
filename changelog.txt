@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.9.0
+Date: 2024-10-27
+  Features:
+    - Factory buildings now scale with quality. Legendary!
+  Changes:
+    - The wall mounted factory pump is now only selectable from the outside surface.
+---------------------------------------------------------------------------------------------------
 Version: 1.8.0
 Date: 2024-10-26
   Features:
