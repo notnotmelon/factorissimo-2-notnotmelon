@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.1.6
+Date: 2024-10-27
+  Graphics:
+    - Added smoke to the borehole pump
+    - Adjusted the tech icon for the borehole pump
+    - Adjusted the tech icon for the heat connection
+---------------------------------------------------------------------------------------------------
 Version: 3.1.5
 Date: 2024-10-27
   Changes:
