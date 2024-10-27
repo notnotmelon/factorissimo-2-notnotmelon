@@ -14,9 +14,14 @@ local function blank()
 	}
 end
 
+local linked_belts = {}
 for _, type in ipairs {"linked-belt", "transport-belt", "underground-belt", "loader-1x1", "loader", "splitter", "lane-splitter"} do
-	for _, belt in pairs(table.deepcopy(data.raw[type])) do
-		local linked = belt
+	for _, belt in pairs(data.raw[type]) do
+		if belt.collision_mask and belt.collision_mask.layers and not belt.collision_mask.layers.transport_belt then
+			belt.collision_mask.layers.transport_belt = true -- Fixes a crash with advanced furances 2
+		end
+
+		local linked = table.deepcopy(belt)
 		linked.allow_side_loading = false
 		linked.type = "linked-belt"
 		linked.next_upgrade = nil
@@ -38,9 +43,10 @@ for _, type in ipairs {"linked-belt", "transport-belt", "underground-belt", "loa
 		linked.belt_length = nil
 		if type == "loader" or type == "splitter" then linked.collision_box = {{-0.4, -0.4}, {0.4, 0.4}} end
 
-		data:extend {linked}
+		linked_belts[#linked_belts + 1] = linked
 	end
 end
+data:extend(linked_belts)
 
 if data.raw["assembling-machine"]["borehole-pump"] then
 	local borehole_fluids = {}
