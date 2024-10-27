@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.9.1
+Date: 2024-10-27
+  Graphics:
+    - Greatly improved the graphics for frozen Aquilo factory buildings.
+    - Improved the graphics for the out-of-map tile transitions.
+---------------------------------------------------------------------------------------------------
 Version: 1.9.0
 Date: 2024-10-27
   Features:
