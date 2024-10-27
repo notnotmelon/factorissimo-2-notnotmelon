@@ -30,6 +30,7 @@ for _, type in ipairs {"linked-belt", "transport-belt", "underground-belt", "loa
 		linked.minable = nil
 		linked.hidden = true
 		linked.belt_length = nil
+		linked.collision_mask = {layers = {transport_belt = true}}
 		linked.filter_count = nil
 		linked.structure_render_layer = nil
 		linked.container_distance = nil
