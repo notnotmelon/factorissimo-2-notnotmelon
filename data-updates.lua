@@ -39,3 +39,45 @@ for _, type in ipairs {"linked-belt", "transport-belt", "underground-belt", "loa
 		data:extend {linked}
 	end
 end
+
+if mods["space-age"] then
+	local borehole_fluids = {}
+	for _, tile in pairs(data.raw.tile) do
+		if tile.autoplace and tile.fluid and not tile.hidden and not borehole_fluids[tile.fluid] then
+			borehole_fluids[tile.fluid] = true
+			local fluid = data.raw.fluid[tile.fluid]
+			local recipe_name = "borehole-pump-" .. tile.fluid
+			data:extend{{
+				type = "recipe",
+				name = recipe_name,
+				localised_name = fluid.localised_name or {"fluid-name." .. fluid.name},
+				enabled = false,
+				ingredients = {},
+				energy_required = 4,
+				allow_productivity = true,
+				category = "borehole-pump",
+				results = {
+					{type = "fluid", name = tile.fluid, amount = 600}
+				},
+				surface_conditions = table.deepcopy(data.raw["assembling-machine"]["borehole-pump"].surface_conditions)
+			}}
+			table.insert(data.raw.technology["factory-upgrade-borehole-pump"].effects, {type = "unlock-recipe", recipe = recipe_name})
+		end
+	end
+
+	local function add_surface_conditions_to_borehole_recipe(recipe_name, conditions_source_to_copy)
+		local recipe = data.raw.recipe[recipe_name]
+		if not recipe then return end
+		if not conditions_source_to_copy then return end
+
+		recipe.surface_conditions = recipe.surface_conditions or {}
+		for _, condition in pairs(table.deepcopy(conditions_source_to_copy.surface_conditions)) do
+			table.insert(recipe.surface_conditions, condition)
+		end
+	end
+	
+	add_surface_conditions_to_borehole_recipe("borehole-pump-heavy-oil", data.raw.recipe["electromagnetic-science-pack"])
+	add_surface_conditions_to_borehole_recipe("borehole-pump-ammoniacal-solution", data.raw.recipe["cryogenic-science-pack"])
+	add_surface_conditions_to_borehole_recipe("borehole-pump-lava", data.raw.recipe["metallurgic-science-pack"])
+	add_surface_conditions_to_borehole_recipe("borehole-pump-water", data.raw["agricultural-tower"]["agricultural-tower"])
+end

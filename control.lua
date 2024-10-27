@@ -212,6 +212,24 @@ local function add_tile_rect(tiles, tile_name, xmin, ymin, xmax, ymax) -- tiles 
 	end
 end
 
+local function add_hidden_tile_rect(factory)
+	local surface = factory.inside_surface
+	local layout = factory.layout
+	local xmin = factory.inside_x - 64
+	local ymin = factory.inside_y - 64
+	local xmax = factory.inside_x + 64
+	local ymax = factory.inside_y + 64
+	
+	local position = {0, 0}
+	for x = xmin, xmax - 1 do
+		for y = ymin, ymax - 1 do
+			position[1] = x
+			position[2] = y
+			surface.set_hidden_tile(position, "water")
+		end
+	end
+end
+
 local function add_tile_mosaic(tiles, tile_name, xmin, ymin, xmax, ymax, pattern) -- tiles is rw
 	local i = #tiles
 	for x = 0, xmax - xmin - 1 do
@@ -245,6 +263,7 @@ local function create_factory_interior(layout, building)
 		table.insert(tiles, {name = layout.connection_tile, position = {factory.inside_x + cpos.inside_x, factory.inside_y + cpos.inside_y}})
 	end
 	factory.inside_surface.set_tiles(tiles)
+	add_hidden_tile_rect(factory)
 
 	Electricity.get_or_create_inside_power_pole(factory)
 
@@ -466,6 +485,25 @@ local function handle_factory_placed(entity, tags)
 	entity.destroy()
 end
 
+local BOREHOLE_PUMP_FIXED_RECIPES = {
+	["nauvis"] = "borehole-pump-water",
+	["gleba"] = "borehole-pump-water",
+	["vulcanus"] = "borehole-pump-lava",
+	["fulgora"] = "borehole-pump-heavy-oil",
+	["aquilo"] = "borehole-pump-ammoniacal-solution",
+}
+local function on_build_borehole_pump(entity)
+	local surface = entity.surface
+	local parent_planet_name = surface.name:gsub("%-factory%-floor$", "")
+	local parent_planet = game.planets[parent_planet_name]
+	if not parent_planet then return end
+	local fixed_recipe = BOREHOLE_PUMP_FIXED_RECIPES[parent_planet_name]
+	if not fixed_recipe then return end
+
+	entity.set_recipe(fixed_recipe)
+	entity.recipe_locked = true
+end
+
 script.on_event({
 	defines.events.on_built_entity,
 	defines.events.on_robot_built_entity,
@@ -475,6 +513,11 @@ script.on_event({
 }, function(event)
 	local entity = event.created_entity or event.entity
 	local entity_name, entity_type = entity.name, entity.type
+
+	if entity_name == "borehole-pump" then
+		on_build_borehole_pump(entity)
+		return
+	end
 
 	if has_layout(entity_name) then
 		local inventory = event.consumed_items
