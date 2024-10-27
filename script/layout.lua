@@ -328,7 +328,7 @@ local layout_generators = {
 }
 
 local function init()
-	storage.layout_generators = storage.layout_generators or layout_generators
+	storage.layout_generators = layout_generators
 end
 Layout.init = init
 
