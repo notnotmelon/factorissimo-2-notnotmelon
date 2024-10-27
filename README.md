@@ -1,6 +1,6 @@
 [![](https://img.shields.io/badge/dynamic/json?color=orange&label=Factorio&query=downloads_count&suffix=%20downloads&url=https%3A%2F%2Fmods.factorio.com%2Fapi%2Fmods%2Ffactorissimo-2-notnotmelon&style=for-the-badge)](https://mods.factorio.com/mod/factorissimo-2-notnotmelon) [![](https://img.shields.io/badge/Discord-Community-blue?style=for-the-badge)](https://discord.gg/SAUq8hcZkq) [![](https://img.shields.io/github/issues/notnotmelon/factorissimo-2-notnotmelon?label=Bug%20Reports&style=for-the-badge)](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues) [![](https://img.shields.io/github/issues-pr/notnotmelon/factorissimo-2-notnotmelon?label=Pull%20Requests&style=for-the-badge)](https://github.com/notnotmelon/factorissimo-2-notnotmelon/pulls)
 
-### Factorissimo 2
+## Factorissimo 3
 
     Factorio is the mind killer. Factorio is the little death that brings total obliteration.
     I will face my Factorio. I will build conveyor belts to let it launch rockets over me and through me.
@@ -16,104 +16,100 @@ This mod supports [Factorio Maps](https://youtu.be/zDkEtZGG0IQ)
 
 ---
 
-#### Electric connections
+## Features
 
-Electric connections in the original mod were costly for UPS. They were updated every tick for every factory building.
-This mod replaces the old system with "cross surface power poles".
-This change reduces UPS usage drastically and also makes power connections bi-directional. No more fiddling with power connection settings!
-
-Connecting factory buildings via cross surface poles also makes the power graph look much nicer.
-
----
-
-#### Belt connections
-
-Factorio update 1.1 added "linked belts" which can connect to each other regardless of distance.
-This mod replaces Factorissimo belt connections with these linked belts. This change reduces the mod's UPS usage greatly.
-Linked belt connections are roughly equal to chest connections in terms of performance.
-
-![](https://assets-mod.factorio.com/assets/e6f468f778e6efefcb9ad3130ed73ebf3b70ba77.png)
+- **Factory Buildings**: Create dedicated factory buildings where you can place machines, belts, pipes, and more, all inside a compact space.
+- **Space-Saving Design**: Keep your main surface efficient by placing your production lines and logistics inside buildings, saving valuable room for expansion.
+- **Expandable Interiors**: Factorissimo 3 offers multiple building tiers, each with increasing interior space and higher connection count.
+- **Recursive Factory Planning**: Design buildings inside of buildings inside of buildings with recursive technology.
+- **Space Age**: Factorissimo 3 has 100% compatibility with the Space Age DLC. Every planet has a factory floor that inherits the special mechanics of the parent. How will you design a factory building when all your machines are frozen, puking out spores, or consuming crazy amounts of lava?
+- **Multiplayer**: Play with your friends! All scripts are written with multiplayer in mind.
+- **Mod Support**: Factorissimo 3 is designed to support all mods. Is a mod misbehaving? Create a bug report on the [GitHub](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues).
 
 ---
 
-#### Fluid connections
+## Connections
 
-This mod reworks fluid connections to be much easier to use. No more "bulk factory input/output" pipes. Instead, all factory fluid connections will have high speed automatically.
+Place an electric pole near a factory building to connect it to the grid. Once inside a factory building, power is transmitted everywhere without the need for additional electric poles.
 
-![](https://assets-mod.factorio.com/assets/20c5cf177254c32c078313ff8db63f087a501c6a.png)
+![](https://files.catbox.moe/n99rh6.mp4)
 
-Additionally, a pipe connection will now only form if there are pipes on both sides of the Factory building.
+Belt, pipe, heat, chest, and circuit connections are formed by placing their respective entity on a factory port. Enable ALT-mode to see the port markers.
 
----
-
-#### Item with tags
-
-In the original mod factories were saved to items by making 99 hidden items, each with a factory save data.
-In this fork factories are instead saved directly to the items as item tag data.
-
-This has several advantages
-- No more 99 save slot limit. You can have unlimited factory items
-- Removed factory requester chests. You can use a normal requester chest now
-- The factory overlay config now also shows on the items as a custom item description. No more clicking every factory to see what's inside.
-
-![](https://assets-mod.factorio.com/assets/865bcb203e01f0d14f9dd6bdc804395903bb65eb.png)
+![](https://assets-mod.factorio.com/assets/d7e68a857db8c6c98f06db2cd3e5d3ed701918f9.png)
 
 ---
 
-#### Heat connections
+## Factory Overlay and Preview Upgrades
 
-This fork adds heat connections to Factorissimo!
+This mod contains several quality of life features designed to make expanding the factory as easy as possible.
 
-![](https://assets-mod.factorio.com/assets/cd1048268ef2e0ad53a97ccba3543ec8f2f0f8af.png)
+Hold out any factory building to get a preview camera of what's inside.
 
----
+![](https://assets-mod.factorio.com/assets/45a9a5801c3beaf17f8b8e334a9d200f64d9a725.png)
 
-#### Blueprints
+Set custom ALT-mode icons using the factory overlay combinator. Pack up the factory building to save all contents inside the item.
 
-Factory buildings now support blueprints!
-
-![](https://assets-mod.factorio.com/assets/576731baa0392a50702fd3247dc6a1ab674d88a9.png)
-
-NOTE: Factorio blueprints only allow one mod to modify them. If this feature is not working for you, see if anything in your mod list can modify blueprints.
+![](https://assets-mod.factorio.com/assets/3cfecea1399ba0668a61a64fa6676b76c3960ccd.png)
 
 ---
 
-#### Spidertrons
+## Recursive Deepcopy
 
-You can now enter and exit factory buildings from inside a Spidertron.
+Blueprinting a factory building also clones all of its children. _Infinite production?_
 
-![](https://assets-mod.factorio.com/assets/035c890100e2f95671c07aef4e612a645eb5bcf1.png)
+![](https://files.catbox.moe/2lxnxd.mp4)
+
+After researching the factory roboport upgrade, construction bots can enter factory buildings and construct ghosts.
 
 ---
 
+## Quality
 
-#### API
+Factorissimo 3 supports quality! Higher quality factory buildings mean more connections that transfer faster.
+
+![](https://assets-mod.factorio.com/assets/d94d181f2f35e65e0bc9df8a6c4dbb510df9178e.png)
+
+---
+
+## Factory floor: Aquilo
+
+The air is frozen. Even inside your shelter the mist and snow are inescapable. Design aquilo production lines inside factory buildings and use factory heat connections to prevent machines from freezing.
+
+![](https://files.catbox.moe/gwrsss.mp4)
+
+---
+
+## Space exploration compatibility
+Check out the awesome [space exploration compatibility mod](https://mods.factorio.com/mod/space-factorissimo-lizard) made by Crazy_Editor & Yariazen.
+
+![https://mods.factorio.com/mod/space-factorissimo-lizard](https://assets-mod.factorio.com/assets/7888beb1108a2a7227c95654596b6ef4970f1580.png)
+
+---
+
+## UPS Impact & Optimizations
+
+If you are familiar with Factorissimo 1 or Factorissimo 2, you may also be used to major performance issues while using the mod.  
+Good news! Various powerful new modding API features have been added over the years and modern versions of Factorissimo are essentially free for UPS.
+
+- **Linked power poles**: Old versions of the factorio modding API had a bug which allowed power poles to be connected cross-surface. This bug has since been promoted to a feature and is used by Factorissimo 3 to efficiently update the electric network. This technology is also used for factory circuit connections.
+- **Linked belts**: Factorio 1.1 added the `linked-belt` prototype. This means belt connections across surfaces no longer are processed `on_tick`.
+- **Linked pipes**: Factorio 2.0 added support for linked fluidboxes. This means that factory fluid connections are not updated by script and instead fluid is transferred automatically at the engine level.
+- **Item with tags**: Factorio now allows storage of arbitrary metadata on the item stack. This means you are no longer limited to only 99 saved factory buildings.
+
+---
+
+## API
 
 This fork adds an API for better compatibility with other mods. Now you can make mods for a fork of a mod in a game.
 For more information see the [FAQ](https://mods.factorio.com/mod/factorissimo-2-notnotmelon/faq)
 
 ---
 
-#### Installation instructions
+## Credits
 
-If you are making a new save you can install this mod normally from the in-game mod browser.
-
-If you have an existing Factorissimo 2 save from 1.1, follow these steps to migrate
-- Backup your save
-- Blueprint and deconstruct all your factory building interiors
-- Delete Factorissimo2 and install this fork
-- Save your game
-
----
-
-#### Happy Factorissimoing!
-
-![](https://i.redd.it/7mum2yx4lfv71.png)
-(Gold star if you can name all the mods in this image)
-
----
-
-#### Space exploration compatibility
-Check out the awesome space exploration compatibility mod made by Crazy_Editor
-https://mods.factorio.com/mod/space-factorissimo-lizard
-![https://mods.factorio.com/mod/space-factorissimo-lizard](https://assets-mod.factorio.com/assets/7888beb1108a2a7227c95654596b6ef4970f1580.png)
+- **MagmaMcFry**: Original creator of Factorissimo 1 and Factorissimo 2.
+- **TheKingJo**: Upscaled all factory graphics into high-resolution.
+- **Crazy_Editor & Yariazen**: Added space exploration compatibility.
+- **Calcwizard**: "Packed" factory icon graphic. (MIT)
+- **fishbus**: Supplied open-source (MIT) graphics for the borehole pump from the [Factorio+](https://mods.factorio.com/mod/factorioplus) overhaul. Go play it!
