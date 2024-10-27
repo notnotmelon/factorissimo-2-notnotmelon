@@ -1,6 +1,9 @@
 -- if you don't have space age, this thing would just produce water
 if not feature_flags.space_travel then return end
 
+-- py basically already has this feature
+if mods.pypetroleumhandling then return end
+
 local hit_effects = require("__base__.prototypes.entity.hit-effects")
 local sounds = require("__base__.prototypes.entity.sounds")
 

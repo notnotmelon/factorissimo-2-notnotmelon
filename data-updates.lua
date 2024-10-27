@@ -42,7 +42,7 @@ for _, type in ipairs {"linked-belt", "transport-belt", "underground-belt", "loa
 	end
 end
 
-if feature_flags.space_travel then
+if data.raw["assembling-machine"]["borehole-pump"] then
 	local borehole_fluids = {}
 	for _, tile in pairs(data.raw.tile) do
 		if tile.autoplace and tile.fluid and not tile.hidden and not borehole_fluids[tile.fluid] then
@@ -81,5 +81,5 @@ if feature_flags.space_travel then
 	add_surface_conditions_to_borehole_recipe("borehole-pump-heavy-oil", data.raw.recipe["electromagnetic-science-pack"])
 	add_surface_conditions_to_borehole_recipe("borehole-pump-ammoniacal-solution", data.raw.recipe["cryogenic-science-pack"])
 	add_surface_conditions_to_borehole_recipe("borehole-pump-lava", data.raw.recipe["metallurgic-science-pack"])
-	add_surface_conditions_to_borehole_recipe("borehole-pump-water", data.raw["agricultural-tower"]["agricultural-tower"])
+	add_surface_conditions_to_borehole_recipe("borehole-pump-water", (data.raw["agricultural-tower"] or {})["agricultural-tower"])
 end
