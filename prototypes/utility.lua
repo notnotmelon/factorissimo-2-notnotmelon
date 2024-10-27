@@ -29,11 +29,23 @@ data:extend {{
 	selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
 	auto_connect_up_to_n_wires = 0,
 	pictures = {
-		direction_count = 1,
-		filename = F .. "/graphics/utility/factory-combinators.png",
-		width = 79,
-		height = 63,
-		shift = {0.140625, 0.140625},
+		layers = {
+			{
+				direction_count = 1,
+				filename = F .. "/graphics/entity/factory-circuit-connector.png",
+				width = 64,
+				height = 64,
+				scale = 0.51,
+			},
+			{
+				direction_count = 1,
+				filename = F .. "/graphics/entity/factory-circuit-connector-sh.png",
+				width = 85,
+				height = 85,
+				scale = 0.51,
+				draw_as_shadow = true,
+			},
+		}
 	},
 	connection_points = {{
 		shadow = {
