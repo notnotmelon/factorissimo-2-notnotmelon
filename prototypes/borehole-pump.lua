@@ -268,3 +268,28 @@ data:extend {{
     type = "recipe-category",
     name = "borehole-pump"
 }}
+
+data:extend {{
+    name = "borehole-pump-smokestack",
+    type = "fire",
+    damage_per_tick = {amount = 0, type = "physical"},
+    spread_delay = 0,
+    spread_delay_deviation = 0,
+    smoke = {{
+        name = "light-smoke",
+        north_position = {0.9, 0.0},
+        east_position = {-2.0, -2.0},
+        frequency = 10 / 32 * 20,
+        starting_vertical_speed = 0.08,
+        starting_frame_deviation = 60,
+        deviation = {0.3, 0.3},
+        vertical_speed_slowdown = 0.965,
+    }},
+    flags = {"placeable-off-grid", "not-on-map"},
+    initial_lifetime = 33,
+    maximum_lifetime = 33,
+    lifetime_increase_by = 0,
+    burnt_patch_lifetime = 0,
+    icon = data.raw.fire["fire-flame"].icon,
+    icon_size = 64,
+}}
