@@ -74,6 +74,7 @@ data:extend {{
     type = "assembling-machine",
     name = "borehole-pump",
     fixed_quality = "normal",
+    heating_energy = data.raw["assembling-machine"]["assembling-machine-3"].heating_energy,
     flags = {"placeable-neutral", "player-creation"},
     icon = F .. "/graphics/icon/borehole-pump.png",
     icon_size = 64,
