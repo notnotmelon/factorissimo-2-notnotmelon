@@ -26,6 +26,7 @@ for _, type in ipairs {"linked-belt", "transport-belt", "underground-belt", "loa
 			direction_in = blank(),
 			direction_out = blank()
 		}
+		linked.heating_energy = nil
 		linked.selection_box = nil
 		linked.minable = nil
 		linked.hidden = true
@@ -41,7 +42,7 @@ for _, type in ipairs {"linked-belt", "transport-belt", "underground-belt", "loa
 	end
 end
 
-if mods["space-age"] then
+if feature_flags.space_travel then
 	local borehole_fluids = {}
 	for _, tile in pairs(data.raw.tile) do
 		if tile.autoplace and tile.fluid and not tile.hidden and not borehole_fluids[tile.fluid] then

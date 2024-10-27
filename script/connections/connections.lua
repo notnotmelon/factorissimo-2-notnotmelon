@@ -66,47 +66,6 @@ local function get_connection_settings(factory, cid, ctype)
 end
 Connections.get_connection_settings = get_connection_settings
 
--- Aquilo logic --
-
-local function build_aquilo_invisible_heaters(factory, cid)
-	local cpos = factory.layout.connections[cid]
-	factory.aquilo_invisible_heaters = factory.aquilo_invisible_heaters or {inside = {}, outside = {}}
-
-	if factory.inside_surface.planet and factory.inside_surface.planet.prototype.entities_require_heating then
-		local inside = factory.inside_surface.create_entity {
-			name = "factory-heat-source",
-			force = factory.force,
-			position = {x = factory.inside_x + cpos.inside_x + cpos.indicator_dx * 2, y = factory.inside_y + cpos.inside_y + cpos.indicator_dy * 2},
-			create_build_effect_smoke = false
-		}
-		inside.destructible = false
-		inside.operable = false
-		inside.temperature = inside.prototype.heat_buffer_prototype.max_temperature
-		factory.aquilo_invisible_heaters.inside[cid] = inside
-	end
-
-	if factory.outside_surface.planet and factory.outside_surface.planet.prototype.entities_require_heating then
-		local outside = factory.outside_surface.create_entity {
-			name = "factory-heat-source",
-			force = factory.force,
-			position = {x = factory.outside_x + cpos.outside_x - cpos.indicator_dx * 2, y = factory.outside_y + cpos.outside_y - cpos.indicator_dy * 2},
-			create_build_effect_smoke = false
-		}
-		outside.destructible = false
-		outside.operable = false
-		outside.temperature = outside.prototype.heat_buffer_prototype.max_temperature
-		factory.aquilo_invisible_heaters.outside[cid] = outside
-	end
-end
-
-local function delete_aquilo_invisible_heaters(factory, cid)
-	if not factory.aquilo_invisible_heaters then return end
-	local inside = factory.aquilo_invisible_heaters.inside[cid]
-	if inside and inside.valid then inside.destroy() end
-	local outside = factory.aquilo_invisible_heaters.outside[cid]
-	if outside and outside.valid then outside.destroy() end
-end
-
 -- Connection indicators --
 
 local function set_connection_indicator(factory, cid, ctype, setting, dir)
@@ -123,14 +82,11 @@ local function set_connection_indicator(factory, cid, ctype, setting, dir)
 	}
 	new_indicator.destructible = false
 	factory.connection_indicators[cid] = new_indicator
-
-	build_aquilo_invisible_heaters(factory, cid)
 end
 
 local function delete_connection_indicator(factory, cid, ctype)
 	local old_indicator = factory.connection_indicators[cid]
 	if old_indicator and old_indicator.valid then old_indicator.destroy() end
-	delete_aquilo_invisible_heaters(factory, cid)
 end
 
 -- Connection changes --

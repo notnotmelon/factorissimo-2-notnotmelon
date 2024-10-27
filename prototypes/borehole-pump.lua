@@ -1,5 +1,5 @@
 -- if you don't have space age, this thing would just produce water
-if not mods["space-age"] then return end
+if not feature_flags.space_travel then return end
 
 local hit_effects = require("__base__.prototypes.entity.hit-effects")
 local sounds = require("__base__.prototypes.entity.sounds")

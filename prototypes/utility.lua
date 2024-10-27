@@ -61,29 +61,3 @@ factory_circuit_connector_invisible.draw_circuit_wires = false
 factory_circuit_connector_invisible.draw_copper_wires = false
 factory_circuit_connector_invisible.factoriopedia_alternative = "factory-circuit-connector"
 data:extend {factory_circuit_connector_invisible}
-
--- Heat source to make aquilo work
-
-if feature_flags.space_travel then
-	data:extend {{
-		type = "heat-pipe",
-		name = "factory-heat-source",
-		localised_name = "",
-		icon = F .. "/graphics/icon/factory-circuit-connector.png",
-		icon_size = 64,
-		flags = {"not-blueprintable", "not-deconstructable", "not-on-map", "not-flammable", "not-repairable"},
-		max_health = 50,
-		corpse = "small-remnants",
-		hidden = true,
-		heat_buffer = {
-			max_temperature = 1000000,
-			default_temperature = 15,
-			min_working_temperature = 15,
-			specific_heat = "1QJ", -- I don't want to mess with heat interface nonsense. This should last forever.
-			max_transfer = "1QW",
-			connections = table.deepcopy(data.raw["heat-pipe"]["heat-pipe"].heat_buffer.connections),
-		},
-		collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
-		collision_mask = {layers = {}},
-	}}
-end
