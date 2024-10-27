@@ -12,7 +12,8 @@ data:extend {
         },
         results = {{type = "item", name = "factory-1", amount = 1}},
         main_product = "factory-1",
-        localised_name = {"entity-name.factory-1"}
+        localised_name = {"entity-name.factory-1"},
+        category = data.raw["recipe-category"]["metallurgy-or-assembling"] and "metallurgy-or-assembling" or nil
     },
     {
         type = "recipe",
@@ -26,7 +27,8 @@ data:extend {
         },
         results = {{type = "item", name = "factory-2", amount = 1}},
         main_product = "factory-2",
-        localised_name = {"entity-name.factory-2"}
+        localised_name = {"entity-name.factory-2"},
+        category = data.raw["recipe-category"]["metallurgy-or-assembling"] and "metallurgy-or-assembling" or nil
     },
     {
         type = "recipe",
@@ -40,7 +42,8 @@ data:extend {
         },
         results = {{type = "item", name = "factory-3", amount = 1}},
         main_product = "factory-3",
-        localised_name = {"entity-name.factory-3"}
+        localised_name = {"entity-name.factory-3"},
+        category = data.raw["recipe-category"]["metallurgy-or-assembling"] and "metallurgy-or-assembling" or nil
     },
     -- Utilities
     {
@@ -55,3 +58,8 @@ data:extend {
         results = {{type = "item", name = "factory-circuit-connector", amount = 1}},
     }
 }
+
+-- small vanilla change to allow factories to be crafted at the start of the game
+if data.raw["recipe-category"]["metallurgy-or-assembling"] then
+    table.insert(data.raw["assembling-machine"]["assembling-machine-1"].crafting_categories or {}, "metallurgy-or-assembling")
+end
