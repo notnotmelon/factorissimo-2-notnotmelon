@@ -49,6 +49,13 @@ end
 data:extend(linked_belts)
 
 if data.raw["assembling-machine"]["borehole-pump"] then
+	data:extend{{
+		type = "item-subgroup",
+		name = "borehole-pump",
+		group = "space",
+		order = "x-a"
+	}}
+
 	local borehole_fluids = {}
 	for _, tile in pairs(data.raw.tile) do
 		if tile.autoplace and tile.fluid and not tile.hidden and not borehole_fluids[tile.fluid] then
@@ -64,6 +71,7 @@ if data.raw["assembling-machine"]["borehole-pump"] then
 				energy_required = 4,
 				allow_productivity = true,
 				category = "borehole-pump",
+				subgroup = "borehole-pump",
 				results = {
 					{type = "fluid", name = tile.fluid, amount = 600}
 				},
