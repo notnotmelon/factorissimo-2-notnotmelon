@@ -18,6 +18,10 @@ data:extend {{
             ["entity"] = {treat_missing_as_default = false, settings = {}},
             ["tile"] = {treat_missing_as_default = false, settings = {}},
         }
+    },
+    surface_properties = mods["space-age"] and {
+        gravity = -1,
+        pressure = 10000,
     }
 }}
 
