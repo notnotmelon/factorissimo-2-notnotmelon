@@ -566,7 +566,7 @@ script.on_event({
 
 	if has_layout(entity_name) then
 		local inventory = event.consumed_items
-		local tags = event.tags or (inventory and inventory[1] and inventory[1].valid_for_read and inventory[1].is_item_with_tags and inventory[1].tags) or nil
+		local tags = event.tags or (inventory and not inventory.is_empty() and inventory[1].valid_for_read and inventory[1].is_item_with_tags and inventory[1].tags) or nil
 		handle_factory_placed(entity, tags)
 		return
 	end
