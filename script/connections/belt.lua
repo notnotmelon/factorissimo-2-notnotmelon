@@ -1,7 +1,7 @@
 local Belt = {}
 
 Belt.color = {r = 0, g = 183 / 255, b = 0}
-Belt.entity_types = {"transport-belt", "underground-belt", "loader", "loader-1x1", "linked-belt", "splitter", "lane-splitter"}
+Belt.entity_types = {"transport-belt", "underground-belt", "loader", "loader-1x1", "linked-belt", "splitter", "lane-splitter", "inserter"}
 Belt.unlocked = function(force) return true end
 
 Belt.indicator_settings = {"d0"}
@@ -23,11 +23,25 @@ local function get_belt_type(entity)
 	end
 end
 
+local belt_prototypes_which_do_not_care_about_direction = {
+	["transport-belt"] = true,
+	["splitter"] = true,
+	["lane-splitter"] = true,
+	["inserter"] = true,
+}
+
 local function get_conn_facing(outside_entity, inside_entity, direction_out, direction_in)
 	local outside_entity_type, inside_entity_type = outside_entity.type, inside_entity.type
 	local outside_dir, inside_dir = outside_entity.direction, inside_entity.direction
 
-	if outside_entity_type ~= "transport-belt" and outside_entity_type ~= "splitter" and outside_entity_type ~= "lane-splitter" then
+	if outside_entity_type == "inserter" then
+		outside_dir = (outside_dir + 8) % 16
+	end
+	if inside_entity_type == "inserter" then
+		inside_dir = (inside_dir + 8) % 16
+	end
+
+	if not belt_prototypes_which_do_not_care_about_direction[outside_entity_type] then
 		if get_belt_type(outside_entity) == "input" then
 			if direction_out ~= outside_dir then return nil end
 		else
@@ -35,7 +49,7 @@ local function get_conn_facing(outside_entity, inside_entity, direction_out, dir
 		end
 	end
 
-	if inside_entity_type ~= "transport-belt" and inside_entity_type ~= "splitter" and inside_entity_type ~= "lane-splitter" then
+	if not belt_prototypes_which_do_not_care_about_direction[inside_entity_type] then
 		if get_belt_type(inside_entity) == "input" then
 			if direction_in ~= inside_dir then return nil end
 		else
@@ -50,10 +64,26 @@ end
 Belt.connect = function(factory, cid, cpos, outside_entity, inside_entity)
 	local conn_facing = get_conn_facing(outside_entity, inside_entity, cpos.direction_out, cpos.direction_in)
 	if not (conn_facing == cpos.direction_in or conn_facing == cpos.direction_out) then return end
-	if not prototypes.entity["factory-linked-" .. inside_entity.name] or not prototypes.entity["factory-linked-" .. outside_entity.name] then return end
+
+	if inside_entity.type == "inserter" and outside_entity.type == "inserter" then return end
+	local inside_link_name, outside_link_name
+	if inside_entity.type == "inserter" then
+		if inside_entity.name:find("long") then return end
+		inside_link_name = "factory-linked-" .. outside_entity.name
+	else
+		inside_link_name = "factory-linked-" .. inside_entity.name
+	end
+	if outside_entity.type == "inserter" then
+		if outside_entity.name:find("long") then return end
+		outside_link_name = "factory-linked-" .. inside_entity.name
+	else
+		outside_link_name = "factory-linked-" .. outside_entity.name
+	end
+
+	if not prototypes.entity[inside_link_name] or not prototypes.entity[outside_link_name] then return end
 
 	local inside_link = inside_entity.surface.create_entity {
-		name = "factory-linked-" .. inside_entity.name,
+		name = inside_link_name,
 		position = {factory.inside_x + cpos.inside_x + cpos.indicator_dx, factory.inside_y + cpos.inside_y + cpos.indicator_dy},
 		create_build_effect_smoke = false,
 		raise_built = false,
@@ -63,7 +93,7 @@ Belt.connect = function(factory, cid, cpos, outside_entity, inside_entity)
 	inside_link.destructible = false
 
 	local outside_link = outside_entity.surface.create_entity {
-		name = "factory-linked-" .. outside_entity.name,
+		name = outside_link_name,
 		position = {factory.outside_x + cpos.outside_x - cpos.indicator_dx, factory.outside_y + cpos.outside_y - cpos.indicator_dy},
 		create_build_effect_smoke = false,
 		raise_built = false,
