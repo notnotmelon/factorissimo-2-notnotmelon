@@ -30,16 +30,17 @@ local belt_prototypes_which_do_not_care_about_direction = {
 	["inserter"] = true,
 }
 
+local function get_entity_direction(entity)
+	local direction = entity.direction
+	if entity.type == "inserter" then
+		direction = (direction + 8) % 16
+	end
+	return direction
+end
+
 local function get_conn_facing(outside_entity, inside_entity, direction_out, direction_in)
 	local outside_entity_type, inside_entity_type = outside_entity.type, inside_entity.type
-	local outside_dir, inside_dir = outside_entity.direction, inside_entity.direction
-
-	if outside_entity_type == "inserter" then
-		outside_dir = (outside_dir + 8) % 16
-	end
-	if inside_entity_type == "inserter" then
-		inside_dir = (inside_dir + 8) % 16
-	end
+	local outside_dir, inside_dir = get_entity_direction(outside_entity), get_entity_direction(inside_entity)
 
 	if not belt_prototypes_which_do_not_care_about_direction[outside_entity_type] then
 		if get_belt_type(outside_entity) == "input" then
@@ -56,9 +57,8 @@ local function get_conn_facing(outside_entity, inside_entity, direction_out, dir
 			if direction_out ~= inside_dir then return nil end
 		end
 	end
-	if outside_dir ~= inside_dir then return nil end
 
-	return outside_dir
+	return (outside_dir == inside_dir) and outside_dir or nil
 end
 
 Belt.connect = function(factory, cid, cpos, outside_entity, inside_entity)
@@ -128,8 +128,8 @@ Belt.connect = function(factory, cid, cpos, outside_entity, inside_entity)
 	connection.from_link.linked_belt_type = "input"
 	connection.to_link.linked_belt_type = "output"
 	connection.to_link.connect_linked_belts(connection.from_link)
-	connection.to_link.direction = connection.from.direction
-	connection.from_link.direction = connection.from.direction
+	connection.to_link.direction = get_entity_direction(connection.from)
+	connection.from_link.direction = get_entity_direction(connection.from)
 
 	return connection
 end
