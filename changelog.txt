@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.1.8
+Date: 2024-10-28
+  Bugfixes:
+    - Remove unneeded persistent state from storage table
+  Changes:
+    - Changed the position of "factory overlay controller"
+---------------------------------------------------------------------------------------------------
 Version: 3.1.7
 Date: 2024-10-27
   Bugfixes:
