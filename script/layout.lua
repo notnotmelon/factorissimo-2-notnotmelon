@@ -117,8 +117,8 @@ local layout_generators = {
 			outside_y = -1,
 			outside_w = 8,
 			outside_h = 6,
-			inside_x = 3.5,
-			inside_y = 16.5,
+			inside_x = -3.5,
+			inside_y = 18.5,
 		},
 	},
 	["factory-2"] = {
@@ -213,8 +213,8 @@ local layout_generators = {
 			outside_y = -1,
 			outside_w = 12,
 			outside_h = 10,
-			inside_x = 3.5,
-			inside_y = 24.5,
+			inside_x = -3.5,
+			inside_y = 26.5,
 		},
 	},
 	["factory-3"] = {
@@ -321,8 +321,8 @@ local layout_generators = {
 			outside_y = -1,
 			outside_w = 16,
 			outside_h = 14,
-			inside_x = 3.5,
-			inside_y = 31.5,
+			inside_x = -3.5,
+			inside_y = 33.5,
 		},
 	}
 }
