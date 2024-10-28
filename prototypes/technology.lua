@@ -168,6 +168,20 @@ data:extend {
 		},
 		order = pf .. "d-c",
 	},
+	{
+		type = "technology",
+		name = "factory-interior-upgrade-roboport",
+		icon = F .. "/graphics/technology/factory-interior-upgrade-roboport.png",
+		icon_size = 128,
+		prerequisites = {"factory-architecture-t2", "construction-robotics"},
+		effects = {},
+		unit = {
+			count = 1000,
+			ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}, {"chemical-science-pack", 1}},
+			time = 45
+		},
+		order = pf .. "d-d",
+	},
 
 	-- Recursion!
 

@@ -21,6 +21,7 @@ require "script.travel"
 require "script.overlay"
 require "script.pollution"
 require "script.electricity"
+require "script.roboport"
 require "compat.factoriomaps"
 
 local update_hidden_techs -- Function stub
@@ -312,6 +313,10 @@ local function create_factory_exterior(factory, building)
 	factory.building = building
 	factory.built = true
 
+	if force.technologies["factory-interior-upgrade-roboport"].researched then
+		Roboport.build_roboport_upgrade(factory)
+	end
+
 	Connections.recheck_factory(factory, nil, nil)
 	Electricity.update_power_connection(factory)
 	Overlay.update_overlay(factory)
@@ -347,6 +352,8 @@ end
 
 local function cleanup_factory_exterior(factory, building)
 	factory.outside_energy_receiver.destroy()
+
+	Roboport.cleanup_factory_exterior(factory)
 
 	Connections.disconnect_factory(factory)
 	for _, render_id in pairs(factory.outside_overlay_displays) do
@@ -908,7 +915,7 @@ script.on_event(defines.events.on_research_finished, function(event)
 	elseif name == "factory-interior-upgrade-display" then
 		for _, factory in pairs(storage.factories) do Overlay.build_display_upgrade(factory) end
 	elseif name == "factory-interior-upgrade-roboport" then
-		for _, factory in pairs(storage.factories) do build_roboport_upgrade(factory) end
+		for _, factory in pairs(storage.factories) do Roboport.build_roboport_upgrade(factory) end
 	elseif name == "factory-recursion-t1" or name == "factory-recursion-t2" then
 		activate_factories()
 	elseif name == "factory-preview" then

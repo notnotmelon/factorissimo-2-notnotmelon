@@ -89,4 +89,13 @@ remote_api.find_surrounding_factory = function(surface, position)
 	return factories[8 * y + x + 1]
 end
 
+remote_api.find_surrounding_factory_by_surface_index = function(surface_index, position)
+	local factories = storage.surface_factories[surface_index]
+	if factories == nil then return nil end
+	local x = math.floor(0.5 + position.x / (16 * 32))
+	local y = math.floor(0.5 + position.y / (16 * 32))
+	if (x > 7 or x < 0) then return nil end
+	return factories[8 * y + x + 1]
+end
+
 return remote_api

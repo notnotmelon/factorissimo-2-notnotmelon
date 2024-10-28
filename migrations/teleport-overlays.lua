@@ -13,7 +13,8 @@ for _, factory in pairs(storage.factories) do
         end
         factory.quality = quality
     end
-    if not factory.quality then return end
+    local quality = factory.quality
+    if not quality or not quality.valid then return end
 
     factory.layout = Layout.create_layout(factory.layout.name, factory.quality)
     if not factory.inside_overlay_controller or not factory.inside_overlay_controller.valid then goto continue end
