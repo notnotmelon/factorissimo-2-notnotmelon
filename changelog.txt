@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.3.6
+Date: 2024-10-29
+  Bugfixes:
+    - Fixed factory roboport upgrade was building entities even if the factory is inactive due to missing recursion research technology.
+---------------------------------------------------------------------------------------------------
 Version: 3.3.5
 Date: 2024-10-29
   Bugfixes:
