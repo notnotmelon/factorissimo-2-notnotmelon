@@ -1,13 +1,13 @@
 {
   "name": "factorissimo-2-notnotmelon",
-  "version": "3.3.1",
+  "version": "3.3.0",
   "title": "Factorissimo 3",
   "author": "MagmaMcFry, notnotmelon",
   "homepage": "https://github.com/notnotmelon/factorissimo-2-notnotmelon",
   "description": "Factorissimo adds factory buildings to Factorio. Place them down, walk in, build your factories inside! Now updated for space age!",
   "factorio_version": "2.0",
   "dependencies": [
-    "base >= 2.0.11",
+    "base >= 2.0.12",
     "? space-age",
     "! Factorissimo2",
     "(?) Bio_Industries",
