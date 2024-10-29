@@ -77,7 +77,14 @@ Roboport.cleanup_factory_exterior = function(factory)
     for i = 1, #inventory do
         local stack = inventory[i]
         if stack.valid_for_read then
-            surface.spill_item_stack(requester.position, stack)
+            surface.spill_item_stack{
+                position = requester.position,
+                stack = stack,
+                enable_looted = true,
+                force = requester.force_index,
+                allow_belts = false,
+                use_start_position_on_failure = true,
+            }
         end
     end
     requester.destroy()
