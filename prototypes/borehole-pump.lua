@@ -292,4 +292,5 @@ data:extend {{
     burnt_patch_lifetime = 0,
     icon = data.raw.fire["fire-flame"].icon,
     icon_size = 64,
+    hidden = true
 }}

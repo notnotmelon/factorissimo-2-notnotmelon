@@ -134,7 +134,7 @@ data:extend {{
 	type = "electric-pole",
 	name = "factory-power-pole",
 	minable = nil,
-	max_health = 1,
+	max_health = 500,
 	selection_box = {{-j, -j}, {j, j}},
 	collision_box = {{-j, -j}, {j, j}},
 	collision_mask = {layers = {}},
@@ -148,12 +148,12 @@ data:extend {{
 	connection_points = {cwc0c(), cwc0c(), cwc0c(), cwc0c()},
 }}
 
+-- This is required to allow the overlay controller to exist in blueprints.
 data:extend {{
 	type = "item",
 	name = "factory-overlay-controller-settings",
 	icon_size = data.raw.item["display-panel"].icon_size,
 	icon = data.raw.item["display-panel"].icon,
-	icon_mipmaps = data.raw.item["display-panel"].icon_mipmaps,
 	stack_size = 1,
 	hidden = true,
 	hidden_in_factoriopedia = true,
@@ -165,6 +165,8 @@ local overlay_controller = table.deepcopy(data.raw["constant-combinator"]["const
 overlay_controller.sprites = table.deepcopy(data.raw["display-panel"]["display-panel"].sprites)
 overlay_controller.name = "factory-overlay-controller"
 overlay_controller.circuit_wire_max_distance = 0
+overlay_controller.max_health = 500
+table.insert(overlay_controller.flags, "not-on-map")
 overlay_controller.collision_mask = {layers = {}}
 data:extend {overlay_controller}
 
