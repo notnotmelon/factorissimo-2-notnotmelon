@@ -1,4 +1,17 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.3.5
+Date: 2024-10-29
+  Bugfixes:
+    - Comment out some broken code related to the factory roboport upgrade.
+    - Fixed crash in Roboport.cleanup_factory_exterior()
+    - Fixed rare crash when deconstructing a factory building.
+    - Hid the "quality indicator pips" from the outside surface hidden requester chest entity.
+    - Ignore ghosts already registered for construction.
+  Changes:
+    - Decreased the frequency of the roboport upgrade being ticked.
+    - Increase the amount of inital construction bots requested in the roboport upgrade based on factory quality.
+    - Increased the inventory size of the factory construction chest from 48 slots to 100 slots
+---------------------------------------------------------------------------------------------------
 Version: 3.3.4
 Date: 2024-10-29
   Changes:
