@@ -19,7 +19,7 @@ This mod supports [Factorio Maps](https://youtu.be/zDkEtZGG0IQ)
 ## Features
 
 - **Factory Buildings**: Create dedicated factory buildings where you can place machines, belts, pipes, and more, all inside a compact space.
-- **Space-Saving Design**: Keep your main surface efficient by placing your production lines and logistics inside buildings, saving valuable room for expansion.
+- **Modular Design**: Need to move? Pack up the building and deploy it somewhere else! The interior will stay intact!
 - **Expandable Interiors**: Factorissimo 3 offers multiple building tiers, each with increasing interior space and higher connection count.
 - **Recursive Factory Planning**: Design buildings inside of buildings inside of buildings with recursive technology.
 - **Space Age**: Factorissimo 3 has 100% compatibility with the Space Age DLC. Every planet has a factory floor that inherits the special mechanics of the parent. How will you design a factory building when all your machines are frozen, puking out spores, or consuming crazy amounts of lava?
@@ -61,6 +61,16 @@ Blueprinting a factory building also clones all of its children. _Infinite produ
 ![](https://files.catbox.moe/2lxnxd.mp4)
 
 After researching the factory roboport upgrade, construction bots can enter factory buildings and construct ghosts.
+
+![](https://assets-mod.factorio.com/assets/624cbd5f97d000cba0a10cffd32cd1708de39cd2.png)
+
+**WARNING:** While this feature is extremely powerful, creating a blueprint of a factory that contains copies of itself can lead to unbounded infinite recursion. Factories building factories building factories, consuming the entire universe. Slowly at first, then EXTREMELY quickly as your O(2^N) super exponential growth far exceeds the finite size of reality. Destroy the entire cosmos and convert every remaining particle until there is only...
+
+# FACTORISSIMO
+
+![](https://assets-mod.factorio.com/assets/3f019209ba6a140bc62580cb861643246073f904.png)
+
+...or not. Up to you. Don't forget to set a base case 😉 
 
 ---
 
