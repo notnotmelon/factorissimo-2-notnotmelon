@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.3.2
+Date: 2024-10-29
+  Bugfixes:
+    - Added hard dependancy on experimental factorio to prevent hard crashes. Resolves [#38](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/38) Resolves [#42](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/42) Resolves [#40](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/40)
+---------------------------------------------------------------------------------------------------
 Version: 3.3.1
 Date: 2024-10-29
   Bugfixes:
