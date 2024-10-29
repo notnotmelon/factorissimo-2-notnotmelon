@@ -141,7 +141,7 @@ script.on_event(defines.events.on_gui_opened, function(event)
 	local player = game.get_player(event.player_index)
 	local entity = event.entity
 	if not entity then return end
-	local factory = remote_api.get_factory_by_building(entity)
+	local factory = remote_api.get_factory_by_entity(entity)
 	if not factory then return end
 
 	player.set_controller{
