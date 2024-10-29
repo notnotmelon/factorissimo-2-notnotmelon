@@ -121,17 +121,26 @@ data.raw.technology["factory-recursion-t1"].prerequisites = {
 }
 
 data.raw.technology["factory-interior-upgrade-display"].unit = {
+    count = 200,
+    ingredients = {
+        {"automation-science-pack", 1},
+        {"logistic-science-pack",   1},
+    },
+    time = 30
+}
+data.raw.technology["factory-interior-upgrade-display"].prerequisites = {
+    "factory-preview",
+}
+
+data.raw.technology["factory-interior-upgrade-roboport"].unit = {
     count = 1000,
     ingredients = {
         {"automation-science-pack", 1},
         {"logistic-science-pack",   1},
         {"chemical-science-pack",   1},
-        {"space-science-pack",      1},
+        {"space-science-pack",   1},
     },
     time = 45
-}
-data.raw.technology["factory-interior-upgrade-display"].prerequisites = {
-    "factory-architecture-t2",
 }
 
 data.raw["storage-tank"]["factory-1"].surface_conditions = {{

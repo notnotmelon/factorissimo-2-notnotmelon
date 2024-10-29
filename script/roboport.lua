@@ -22,6 +22,8 @@ local function set_default_roboport_construction_robot_request(roboport)
 end
 
 Roboport.build_roboport_upgrade = function(factory)
+    if not factory.inside_surface.valid or not factory.outside_surface.valid then return end
+
     local requester = factory.roboport_upgrade and factory.roboport_upgrade.requester.valid and factory.roboport_upgrade.requester
     local roboport = factory.roboport_upgrade and factory.roboport_upgrade.roboport.valid and factory.roboport_upgrade.roboport
     local storage = factory.roboport_upgrade and factory.roboport_upgrade.storage.valid and factory.roboport_upgrade.storage
@@ -286,7 +288,7 @@ script.on_nth_tick(43, function()
         local storage = roboport_upgrade.storage
         local roboport = roboport_upgrade.roboport
         if not requester.valid or not storage.valid or not roboport.valid then goto continue end
-        
+
         local requester_inventory = requester.get_inventory(defines.inventory.chest)
         if requester_inventory.is_empty() then goto continue end
         local robot_inventory = roboport.get_inventory(defines.inventory.roboport_robot)
