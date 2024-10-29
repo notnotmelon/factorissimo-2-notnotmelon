@@ -164,7 +164,7 @@ local function teleport_players()
 			}
 
 			if factory ~= nil and not factory.inactive then
-				local is_standing_in_doorway = airborne or (player.physical_position.y > factory.outside_y + 1 and math.abs(player.physical_position.x - factory.outside_x) < 0.6)
+				local is_standing_in_doorway = player.physical_position.y > factory.outside_y + 1 and math.abs(player.physical_position.x - factory.outside_x) < 0.6
 				if is_standing_in_doorway then
 					enter_factory(driving and player.vehicle or player, factory, player)
 					return
