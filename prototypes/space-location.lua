@@ -97,6 +97,18 @@ local function update_surface_render_parameters(planet, factory_floor)
     end
 end
 
+local function add_music(planet, factory_floor)
+    for _, music in pairs(data.raw["ambient-sound"]) do
+        if music.planet == planet.name then
+            local new_music = table.deepcopy(music)
+            new_music.name = music.name .. "-" .. factory_floor.name
+            new_music.planet = factory_floor.name
+            data:extend {new_music}
+            return
+        end
+    end
+end
+
 -- we need to copy all existing planets in order to create factory floors for them
 local factory_floors = {}
 for _, planet in pairs(data.raw.planet) do
@@ -131,6 +143,7 @@ for _, planet in pairs(data.raw.planet) do
     factory_floor.factoriopedia_alternative = planet.name
     factory_floor.hidden_in_factoriopedia = true
     update_surface_render_parameters(planet, factory_floor)
+    add_music(planet, factory_floor)
     table.insert(factory_floors, factory_floor)
 
     ::continue::
