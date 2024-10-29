@@ -170,7 +170,7 @@ end
 local create_or_remove_item_request_proxies -- function stub
 local create_new_item_request_proxies       -- function stub
 
-script.on_nth_tick(157, function()
+script.on_nth_tick(257, function()
     local construction_requests_by_factory = get_construction_requests_by_factory()
 
     -- update each factory and create item-request-proxy for unfulfilled construction requests
