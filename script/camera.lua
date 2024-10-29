@@ -136,3 +136,19 @@ script.on_event(defines.events.on_gui_click, function(event)
 		end
 	end
 end)
+
+script.on_event(defines.events.on_gui_opened, function(event)
+	local player = game.get_player(event.player_index)
+	local entity = event.entity
+	if not entity then return end
+	local factory = remote_api.get_factory_by_building(entity)
+	if not factory then return end
+
+	player.set_controller{
+		type = defines.controllers.remote,
+		position = {factory.inside_x, factory.inside_y},
+		surface = factory.inside_surface
+	}
+
+	player.opened = nil
+end)
