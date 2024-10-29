@@ -144,7 +144,7 @@ script.on_event(defines.events.on_gui_opened, function(event)
 	local factory = remote_api.get_factory_by_entity(entity)
 	if not factory then return end
 
-	player.set_controller{
+	player.set_controller {
 		type = defines.controllers.remote,
 		position = {factory.inside_x, factory.inside_y},
 		surface = factory.inside_surface

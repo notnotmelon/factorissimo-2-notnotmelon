@@ -19,7 +19,7 @@ for _, factory in pairs(storage.factories) do
     factory.layout = Layout.create_layout(factory.layout.name, factory.quality)
     if not factory.inside_overlay_controller or not factory.inside_overlay_controller.valid then goto continue end
     local overlay = factory.inside_overlay_controller
-    overlay.teleport{
+    overlay.teleport {
         x = factory.layout.overlays.inside_x + factory.inside_x,
         y = factory.layout.overlays.inside_y + factory.inside_y,
     }

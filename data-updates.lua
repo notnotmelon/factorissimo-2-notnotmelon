@@ -49,7 +49,7 @@ end
 data:extend(linked_belts)
 
 if data.raw["assembling-machine"]["borehole-pump"] then
-	data:extend{{
+	data:extend {{
 		type = "item-subgroup",
 		name = "borehole-pump",
 		group = "space",
@@ -62,7 +62,7 @@ if data.raw["assembling-machine"]["borehole-pump"] then
 			borehole_fluids[tile.fluid] = true
 			local fluid = data.raw.fluid[tile.fluid]
 			local recipe_name = "borehole-pump-" .. tile.fluid
-			data:extend{{
+			data:extend {{
 				type = "recipe",
 				name = recipe_name,
 				localised_name = fluid.localised_name or {"fluid-name." .. fluid.name},
@@ -92,7 +92,7 @@ if data.raw["assembling-machine"]["borehole-pump"] then
 			table.insert(recipe.surface_conditions, condition)
 		end
 	end
-	
+
 	add_surface_conditions_to_borehole_recipe("borehole-pump-heavy-oil", data.raw.recipe["electromagnetic-science-pack"])
 	add_surface_conditions_to_borehole_recipe("borehole-pump-ammoniacal-solution", data.raw.recipe["cryogenic-science-pack"])
 	add_surface_conditions_to_borehole_recipe("borehole-pump-lava", data.raw.recipe["metallurgic-science-pack"])

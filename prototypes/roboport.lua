@@ -62,7 +62,7 @@ storage_chest.inventory_size = 100
 storage_chest.animation.layers[1].filename = "__factorissimo-2-notnotmelon__/graphics/entity/construction-chest.png"
 entities_to_extend[#entities_to_extend + 1] = storage_chest
 
-for _, factory_name in pairs{"factory-1", "factory-2", "factory-3"} do
+for _, factory_name in pairs {"factory-1", "factory-2", "factory-3"} do
     -- all materials are delivered via the construction network. there is no need for this to be a requester.
     local requester_chest = table.deepcopy(data.raw.container["steel-chest"])
     requester_chest.name = "factory-requester-chest-" .. factory_name

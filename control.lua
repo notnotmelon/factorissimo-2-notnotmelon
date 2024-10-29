@@ -218,7 +218,7 @@ local function add_hidden_tile_rect(factory)
 	local ymin = factory.inside_y - 64
 	local xmax = factory.inside_x + 64
 	local ymax = factory.inside_y + 64
-	
+
 	local position = {0, 0}
 	for x = xmin, xmax - 1 do
 		for y = ymin, ymax - 1 do
@@ -592,7 +592,7 @@ script.on_event({
 
 	if entity_type ~= "entity-ghost" then return end
 	local ghost_name = entity.ghost_name
-	
+
 	if Connections.indicator_names[ghost_name] then
 		Blueprint.unpack_connection_settings_from_blueprint(entity)
 		entity.destroy()

@@ -89,7 +89,7 @@ local function update_power_connection(factory, pole) -- pole parameter is optio
 			candidates[#candidates + 1] = entity
 		end
 	end
-	
+
 	if #candidates == 0 then return end
 	connect_power(factory, surface.get_closest({x, y}, candidates))
 end

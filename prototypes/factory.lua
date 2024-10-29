@@ -136,7 +136,7 @@ data:extend {
 		circuit_wire_max_distance = 0,
 		map_color = {r = 0.8, g = 0.7, b = 0.55},
 		is_military_target = true
-	},	
+	},
 	{
 		type = "item-with-tags",
 		name = "factory-2-instantiated",

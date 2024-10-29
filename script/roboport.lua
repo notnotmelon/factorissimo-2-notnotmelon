@@ -77,7 +77,7 @@ Roboport.cleanup_factory_exterior = function(factory)
     for i = 1, #inventory do
         local stack = inventory[i]
         if stack.valid_for_read then
-            surface.spill_item_stack{
+            surface.spill_item_stack {
                 position = requester.position,
                 stack = stack,
                 enable_looted = true,
@@ -143,7 +143,7 @@ local function get_construction_requests_by_factory()
             if ghost.name == GHOST_PROTOTYPE_NAME then
                 items_to_place = ghost.ghost_prototype.items_to_place_this -- collect all items_to_place_this for construction ghosts
             else
-                items_to_place = ghost.item_requests -- items can also be delived to the `item-request-proxy` prototype
+                items_to_place = ghost.item_requests                       -- items can also be delived to the `item-request-proxy` prototype
             end
 
             for _, item_to_place in pairs(items_to_place) do
@@ -163,7 +163,7 @@ local function get_construction_requests_by_factory()
 
         construction_requests_by_factory[factory] = requests_by_itemname
     end
-    
+
     return construction_requests_by_factory
 end
 
@@ -234,7 +234,7 @@ create_or_remove_item_request_proxies = function(factory, requests_by_itemname)
             ::we_are_no_longer_requesting_this_item::
         end
     end
-    
+
     roboport_upgrade.item_request_proxies = proxies
 
     create_new_item_request_proxies(factory, requests_by_itemname, already_occupied_inventory_indexes)
@@ -248,7 +248,7 @@ create_new_item_request_proxies = function(factory, requests_by_itemname, alread
     -- "modules" is the name of the list of all items to be requested by the item request proxy.
     -- it has nothing to do with modules this is a legacy name from 1.1
     local modules = {}
-    
+
     for item_name, requests_by_quality in pairs(requests_by_itemname) do
         for quality, count in pairs(requests_by_quality) do
             while count > 0 do
@@ -264,7 +264,7 @@ create_new_item_request_proxies = function(factory, requests_by_itemname, alread
 
                 local insertion_count = math.min(count, prototypes.item[item_name].stack_size)
                 count = count - insertion_count
-                
+
                 local module = {
                     id = {
                         name = item_name,
