@@ -1,3 +1,13 @@
+if mods["space-age"] then
+	data:extend {{
+		type = "bool-setting",
+		name = "Factorissimo2-cheap-research",
+		setting_type = "startup",
+		default_value = false,
+		order = "a-c",
+	}}
+end
+
 data:extend {
 	-- Startup
 	{
