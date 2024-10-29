@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.3.3
+Date: 2024-10-29
+  Bugfixes:
+    - Fixed crash when researching the factory upgrade: roboport technology. Resolves [#39](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/39)
+---------------------------------------------------------------------------------------------------
 Version: 3.3.2
 Date: 2024-10-29
   Bugfixes:
