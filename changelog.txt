@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.3.1
+Date: 2024-10-29
+  Bugfixes:
+    - Fixed "Unbound factory" errors spamming the logs.
+    - Fixed a crash when researching the factory roboport upgrade.
+---------------------------------------------------------------------------------------------------
 Version: 3.3.0
 Date: 2024-10-29
   Features:
