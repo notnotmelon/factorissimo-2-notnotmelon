@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.3.8
+Date: 2024-10-29
+  Bugfixes:
+    - Fixed a crash related to the upgrade planner interaction with the factory roboport upgrade. Resolves [#47](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/47)
+---------------------------------------------------------------------------------------------------
 Version: 3.3.7
 Date: 2024-10-29
   Bugfixes:
