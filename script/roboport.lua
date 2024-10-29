@@ -200,12 +200,13 @@ create_or_remove_item_request_proxies = function(factory, requests_by_itemname)
 
     local requester = roboport_upgrade.requester
     if not requester.valid then return end
+    local storage = roboport_upgrade.storage
+    if not storage.valid then return end
 
-    for _, already_has in pairs(requester.get_inventory(defines.inventory.chest).get_contents()) do
-        local name, quality = already_has.name, already_has.quality -- subtract off all the items we already have in storage
-        if requests_by_itemname[name] and requests_by_itemname[name][quality] then
-            requests_by_itemname[name][quality] = requests_by_itemname[name][quality] - already_has.count
-            if requests_by_itemname[name][quality] <= 0 then
+    for _, chest in pairs {requester, storage} do
+        for _, already_has in pairs(chest.get_inventory(defines.inventory.chest).get_contents()) do
+            local name, quality = already_has.name, already_has.quality -- subtract off all the items we already have in storage
+            if requests_by_itemname[name] and requests_by_itemname[name][quality] then
                 requests_by_itemname[name][quality] = nil
             end
         end
@@ -257,32 +258,29 @@ create_new_item_request_proxies = function(factory, requests_by_itemname, alread
 
     for item_name, requests_by_quality in pairs(requests_by_itemname) do
         for quality, count in pairs(requests_by_quality) do
-            while count > 0 do
-                local next_available_inventory_slot
-                for i = 1, #requester_inventory do
-                    if not already_occupied_inventory_indexes[i] and not requester_inventory[i].valid_for_read then
-                        next_available_inventory_slot = i
-                        already_occupied_inventory_indexes[i] = true
-                        break
-                    end
+            local next_available_inventory_slot
+            for i = 1, #requester_inventory do
+                if not already_occupied_inventory_indexes[i] and not requester_inventory[i].valid_for_read then
+                    next_available_inventory_slot = i
+                    already_occupied_inventory_indexes[i] = true
+                    break
                 end
-                if not next_available_inventory_slot then goto no_more_inventory_space end
-
-                local insertion_count = math.min(count, prototypes.item[item_name].stack_size)
-                count = count - insertion_count
-
-                local module = {
-                    id = {
-                        name = item_name,
-                        quality = quality,
-                    },
-                    items = {
-                        in_inventory = {{inventory = defines.inventory.chest, stack = next_available_inventory_slot - 1, count = insertion_count}}
-                    }
-                }
-
-                modules[#modules + 1] = module
             end
+            if not next_available_inventory_slot then goto no_more_inventory_space end
+
+            count = math.min(count, prototypes.item[item_name].stack_size)
+
+            local module = {
+                id = {
+                    name = item_name,
+                    quality = quality,
+                },
+                items = {
+                    in_inventory = {{inventory = defines.inventory.chest, stack = next_available_inventory_slot - 1, count = count}}
+                }
+            }
+
+            modules[#modules + 1] = module
         end
     end
 
