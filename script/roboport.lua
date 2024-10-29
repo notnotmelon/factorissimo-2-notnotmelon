@@ -117,7 +117,7 @@ local function get_construction_requests_by_factory()
             for _, ghost in pairs(missing) do
                 ghost = ghost.target
                 if not ghost then goto continue end -- this can happen if the alerts are not updated yet but the entity is invalid
-                if ghost.is_registered_for_construction() then goto continue end -- we only care about ghosts that are not already being constructed
+                --if ghost.is_registered_for_construction() then goto continue end -- we only care about ghosts that are not already being constructed
                 local factory = remote_api.find_surrounding_factory_by_surface_index(surface_index, ghost.position)
                 if not factory.roboport_upgrade then goto continue end
                 if not factory.built or not factory.building.valid then goto continue end
