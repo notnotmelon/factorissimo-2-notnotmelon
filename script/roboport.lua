@@ -30,7 +30,7 @@ Roboport.build_roboport_upgrade = function(factory)
 
     if factory.building and factory.building.valid then
         requester = requester or factory.outside_surface.create_entity {
-            name = factory.layout.outside_requester_chest_type,
+            name = factory.layout.outside_requester_chest_type or "factory-requester-chest-factory-3",
             position = factory.building.position,
             force = factory.force,
             quality = factory.quality,
