@@ -13,7 +13,7 @@ local function set_default_roboport_construction_robot_request(roboport)
             },
             items = {
                 in_inventory = {
-                    {inventory = defines.inventory.roboport_robot, stack = 0, count = 10}
+                    {inventory = defines.inventory.roboport_robot, stack = 0, count = 10 * math.min(5, roboport.quality.level + 1)}
                 }
             }
         }},
