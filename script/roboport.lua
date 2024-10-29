@@ -69,7 +69,7 @@ Roboport.build_roboport_upgrade = function(factory)
 end
 
 Roboport.cleanup_factory_exterior = function(factory)
-    local requester = factory.roboport_upgrade and factory.roboport_upgrade.requester.valid and factory.roboport_upgrade.requester
+    local requester = factory.roboport_upgrade and factory.roboport_upgrade.requester and factory.roboport_upgrade.requester.valid and factory.roboport_upgrade.requester
     if not requester then return end
     local surface = requester.surface
 
