@@ -58,6 +58,7 @@ storage_chest.name = "factory-construction-chest"
 storage_chest.inventory_type = "with_bar"
 storage_chest.icon = "__factorissimo-2-notnotmelon__/graphics/icon/construction-chest.png"
 storage_chest.icon_size = 64
+storage_chest.inventory_size = 100
 storage_chest.animation.layers[1].filename = "__factorissimo-2-notnotmelon__/graphics/entity/construction-chest.png"
 entities_to_extend[#entities_to_extend + 1] = storage_chest
 
@@ -67,6 +68,7 @@ for _, factory_name in pairs{"factory-1", "factory-2", "factory-3"} do
     requester_chest.name = "factory-requester-chest-" .. factory_name
     requester_chest.collision_box = table.deepcopy(data.raw["storage-tank"][factory_name].collision_box)
     requester_chest.selection_box = nil
+    requester_chest.inventory_size = 100
     requester_chest.picture = nil
     requester_chest.factoriopedia_alternative = factory_name
     requester_chest.hidden_in_factoriopedia = true
