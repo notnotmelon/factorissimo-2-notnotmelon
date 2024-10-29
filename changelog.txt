@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.3.7
+Date: 2024-10-29
+  Bugfixes:
+    - Fixed missing music in factory floors. Resolves [#44](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/44)
+---------------------------------------------------------------------------------------------------
 Version: 3.3.6
 Date: 2024-10-29
   Bugfixes:
