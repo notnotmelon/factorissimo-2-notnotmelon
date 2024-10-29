@@ -72,6 +72,9 @@ for _, factory_name in pairs{"factory-1", "factory-2", "factory-3"} do
     requester_chest.picture = nil
     requester_chest.factoriopedia_alternative = factory_name
     requester_chest.hidden_in_factoriopedia = true
+    requester_chest.quality_indicator_scale = 0
+    table.insert(requester_chest.flags, "not-on-map")
+    table.insert(requester_chest.flags, "hide-alt-info")
     entities_to_extend[#entities_to_extend + 1] = requester_chest
 end
 
