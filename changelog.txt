@@ -1,4 +1,16 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.3.0
+Date: 2024-10-29
+  Features:
+    - Allowed construction robots to travel inside factory buildings and construct ghosts.
+    - Clicking on a factory building now opens the inner surface in remote view.
+  Bugfixes:
+    - Fixed a crash with the "stack inserters" mod by Xorimuth. Resolves [#36](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/36)
+    - Resolves [#35](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/35)
+  Changes:
+    - Changed the mechanics for mech armor entering factory buildings. Resolves [#37](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/37)
+    - Moved the factory overlay tech from space science to green science.
+---------------------------------------------------------------------------------------------------
 Version: 3.2.1
 Date: 2024-10-28
   Bugfixes:
