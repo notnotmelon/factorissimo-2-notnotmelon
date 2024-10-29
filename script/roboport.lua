@@ -142,8 +142,14 @@ local function get_construction_requests_by_factory()
             local items_to_place
             if ghost.name == GHOST_PROTOTYPE_NAME then
                 items_to_place = ghost.ghost_prototype.items_to_place_this -- collect all items_to_place_this for construction ghosts
-            else
+            elseif ghost.type == "item-request-proxy" then
                 items_to_place = ghost.item_requests                       -- items can also be delived to the `item-request-proxy` prototype
+            elseif ghost.to_be_upgraded() then
+                local upgrade_target, quality = ghost.get_upgrade_target()
+                items_to_place = upgrade_target.items_to_place_this -- collect all items_to_place_this for upgrade planner ghosts
+                for _, item in pairs(items_to_place) do item.quality = quality.name end
+            else
+                error("unknown ghost type: " .. ghost.type)
             end
 
             for _, item_to_place in pairs(items_to_place) do
