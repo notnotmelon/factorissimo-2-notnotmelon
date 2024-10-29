@@ -24,16 +24,20 @@ end
 Roboport.build_roboport_upgrade = function(factory)
     if not factory.inside_surface.valid or not factory.outside_surface.valid then return end
 
-    local requester = factory.roboport_upgrade and factory.roboport_upgrade.requester.valid and factory.roboport_upgrade.requester
+    local requester = factory.roboport_upgrade and factory.roboport_upgrade.requester and factory.roboport_upgrade.requester.valid and factory.roboport_upgrade.requester
     local roboport = factory.roboport_upgrade and factory.roboport_upgrade.roboport.valid and factory.roboport_upgrade.roboport
     local storage = factory.roboport_upgrade and factory.roboport_upgrade.storage.valid and factory.roboport_upgrade.storage
 
-    requester = requester or factory.outside_surface.create_entity {
-        name = factory.layout.outside_requester_chest_type,
-        position = factory.building.position,
-        force = factory.force,
-        quality = factory.quality,
-    }
+    if factory.building and factory.building.valid then
+        requester = requester or factory.outside_surface.create_entity {
+            name = factory.layout.outside_requester_chest_type,
+            position = factory.building.position,
+            force = factory.force,
+            quality = factory.quality,
+        }
+    else
+        requester = nil
+    end
     roboport = roboport or factory.inside_surface.create_entity {
         name = "factory-construction-roboport",
         position = {-factory.layout.inside_energy_x + factory.inside_x, factory.layout.inside_energy_y + factory.inside_y},
@@ -285,9 +289,10 @@ script.on_nth_tick(43, function()
         local roboport_upgrade = factory.roboport_upgrade
         if not roboport_upgrade then goto continue end
         local requester = roboport_upgrade.requester
+        if not requester or not requester.valid then goto continue end
         local storage = roboport_upgrade.storage
         local roboport = roboport_upgrade.roboport
-        if not requester.valid or not storage.valid or not roboport.valid then goto continue end
+        if not storage.valid or not roboport.valid then goto continue end
 
         local requester_inventory = requester.get_inventory(defines.inventory.chest)
         if requester_inventory.is_empty() then goto continue end
