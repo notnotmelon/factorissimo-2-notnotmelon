@@ -120,7 +120,7 @@ local function get_construction_requests_by_factory()
                 --if ghost.is_registered_for_construction() then goto continue end -- we only care about ghosts that are not already being constructed
                 local factory = remote_api.find_surrounding_factory_by_surface_index(surface_index, ghost.position)
                 if not factory.roboport_upgrade then goto continue end
-                if not factory.built or not factory.building.valid then goto continue end
+                if factory.inactive or not factory.built or not factory.building.valid then goto continue end
                 if not factory.inside_surface.valid or not factory.outside_surface.valid then goto continue end
 
                 local missing_ghosts = missing_ghosts_per_factory[factory]
@@ -175,14 +175,16 @@ script.on_nth_tick(257, function()
 
     -- update each factory and create item-request-proxy for unfulfilled construction requests
     for _, factory in pairs(storage.factories) do
-        local requests_by_itemname = construction_requests_by_factory[factory]
-        if requests_by_itemname then
-            create_or_remove_item_request_proxies(factory, requests_by_itemname)
-        elseif factory.roboport_upgrade and next(factory.roboport_upgrade.item_request_proxies) then
-            for _, proxy in pairs(factory.roboport_upgrade.item_request_proxies) do
-                proxy.destroy()
+        if not factory.inactive and factory.built then
+            local requests_by_itemname = construction_requests_by_factory[factory]
+            if requests_by_itemname then
+                create_or_remove_item_request_proxies(factory, requests_by_itemname)
+            elseif factory.roboport_upgrade and next(factory.roboport_upgrade.item_request_proxies) then
+                for _, proxy in pairs(factory.roboport_upgrade.item_request_proxies) do
+                    proxy.destroy()
+                end
+                factory.roboport_upgrade.item_request_proxies = {}
             end
-            factory.roboport_upgrade.item_request_proxies = {}
         end
     end
 end)
