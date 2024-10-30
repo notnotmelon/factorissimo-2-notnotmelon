@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.3.12
+Date: 2024-10-30
+  Bugfixes:
+    - Fixed a crash related to out-of-bounds construction ghosts in the factory floor.
+  Graphics:
+    - Heat connections are now red (previously yellow)
+---------------------------------------------------------------------------------------------------
 Version: 3.3.11
 Date: 2024-10-30
   Changes:
