@@ -98,3 +98,7 @@ if data.raw["assembling-machine"]["borehole-pump"] then
 	add_surface_conditions_to_borehole_recipe("borehole-pump-lava", data.raw.recipe["metallurgic-science-pack"])
 	add_surface_conditions_to_borehole_recipe("borehole-pump-water", (data.raw["agricultural-tower"] or {})["agricultural-tower"])
 end
+
+data.raw.recipe["factory-1-instantiated-recycling"] = nil
+data.raw.recipe["factory-2-instantiated-recycling"] = nil
+data.raw.recipe["factory-3-instantiated-recycling"] = nil
