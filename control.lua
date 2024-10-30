@@ -127,7 +127,7 @@ end
 
 script.on_event(defines.events.on_surface_created, function(event)
 	local surface = game.get_surface(event.surface_index)
-	if not surface.name:find("%-factory%-floor$") then return end
+	if not surface.name:find("%-factory%-floor$") and not surface.name:find("^factory%-floor%-%d+$") then return end
 
 	surface.freeze_daytime = true
 	surface.daytime = 0.5
