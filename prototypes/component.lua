@@ -109,13 +109,13 @@ create_indicator("chest", "b600", "brown-dot")
 
 create_indicator("fluid", "d0", "blue-dir")
 
-create_indicator("heat", "b0", "yellow-dot")
-create_indicator("heat", "b5", "yellow-dot")
-create_indicator("heat", "b10", "yellow-dot")
-create_indicator("heat", "b30", "yellow-dot")
-create_indicator("heat", "b120", "yellow-dot")
+create_indicator("heat", "b0", "red-dot")
+create_indicator("heat", "b5", "red-dot")
+create_indicator("heat", "b10", "red-dot")
+create_indicator("heat", "b30", "red-dot")
+create_indicator("heat", "b120", "red-dot")
 
-create_indicator("circuit", "b0", "red-dot")
+create_indicator("circuit", "b0", "yellow-dot")
 
 -- Other auxiliary entities
 
