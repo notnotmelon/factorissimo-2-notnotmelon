@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.0
+Date: 2024-10-30
+  Features:
+    - Shift-clicking the factory power monitor now opens the outside surface in remote-view.
+  Locale:
+    - Improved the english locale for the factory circuit connector so its more obvious how it works.
+  Changes:
+    - Entering a factory via remote view is now performed by SHIFT+right click (previously just right click)
+---------------------------------------------------------------------------------------------------
 Version: 3.3.12
 Date: 2024-10-30
   Bugfixes:
