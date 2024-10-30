@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.3.11
+Date: 2024-10-30
+  Changes:
+    - Use a more sensible zoom level with remote view entering a factory
+    - We no longer support spidertrons entry into factory buildings.
+---------------------------------------------------------------------------------------------------
 Version: 3.3.10
 Date: 2024-10-30
   Bugfixes:
