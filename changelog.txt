@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.3
+Date: 2024-10-30
+  Bugfixes:
+    - The factory construction chest now has a logistic filter set to "deconstruction planner" by default. Resolves [#54](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/54)
+---------------------------------------------------------------------------------------------------
 Version: 3.4.2
 Date: 2024-10-30
   Bugfixes:
