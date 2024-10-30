@@ -41,6 +41,7 @@ roboport.charging_station_count_affected_by_quality = true
 roboport.logistics_radius = 4
 roboport.construction_radius = 64
 roboport.radar_range = 0
+table.insert(roboport.flags, "not-on-map")
 downscale(roboport.base)
 downscale(roboport.base_patch)
 downscale(roboport.frozen_patch)
@@ -59,6 +60,9 @@ storage_chest.inventory_type = "with_bar"
 storage_chest.icon = "__factorissimo-2-notnotmelon__/graphics/icon/construction-chest.png"
 storage_chest.icon_size = 64
 storage_chest.inventory_size = 100
+table.insert(storage_chest.flags, "no-automated-item-removal")
+table.insert(storage_chest.flags, "no-automated-item-insertion")
+table.insert(storage_chest.flags, "not-on-map")
 storage_chest.animation.layers[1].filename = "__factorissimo-2-notnotmelon__/graphics/entity/construction-chest.png"
 entities_to_extend[#entities_to_extend + 1] = storage_chest
 
@@ -75,6 +79,11 @@ for _, factory_name in pairs {"factory-1", "factory-2", "factory-3"} do
     requester_chest.quality_indicator_scale = 0
     table.insert(requester_chest.flags, "not-on-map")
     table.insert(requester_chest.flags, "hide-alt-info")
+    table.insert(requester_chest.flags, "no-automated-item-removal")
+    table.insert(requester_chest.flags, "no-automated-item-insertion")
+    table.insert(requester_chest.flags, "not-in-kill-statistics")
+    table.insert(requester_chest.flags, "not-rotatable")
+    table.insert(requester_chest.flags, "not-on-map")
     entities_to_extend[#entities_to_extend + 1] = requester_chest
 end
 
@@ -87,7 +96,6 @@ for _, prototype in pairs(entities_to_extend) do
     prototype.minable = nil
     prototype.placeable_by = nil
     prototype.heating_energy = nil
-    prototype.flags = table.deepcopy(data.raw["constant-combinator"]["factory-overlay-controller"].flags)
 end
 
 data:extend(entities_to_extend)
