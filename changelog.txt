@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.3.10
+Date: 2024-10-30
+  Bugfixes:
+    - Fixed exploit allowing players to teleport between factory buildings.
+  Changes:
+    - Instantiated factory buildings can no longer be recycled
+---------------------------------------------------------------------------------------------------
 Version: 3.3.9
 Date: 2024-10-29
   Bugfixes:
