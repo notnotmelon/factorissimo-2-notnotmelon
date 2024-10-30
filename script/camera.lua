@@ -149,6 +149,7 @@ script.on_event(defines.events.on_gui_opened, function(event)
 		position = {factory.inside_x, factory.inside_y},
 		surface = factory.inside_surface
 	}
+	player.zoom = 0.8
 
 	player.opened = nil
 end)
