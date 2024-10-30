@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.4
+Date: 2024-10-30
+  Bugfixes:
+    - Fixed grass surfaces appearing in some cases. Resolves [#56](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/56)
+---------------------------------------------------------------------------------------------------
 Version: 3.4.3
 Date: 2024-10-30
   Bugfixes:
