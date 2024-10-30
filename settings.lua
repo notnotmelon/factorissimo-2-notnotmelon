@@ -60,13 +60,6 @@ data:extend {
 		default_value = false,
 		order = "a-e",
 	},
-	{
-		type = "bool-setting",
-		name = "Factorissimo2-prevent-spidertron-travel",
-		setting_type = "runtime-global",
-		default_value = false,
-		order = "a-f",
-	},
 
 	-- Per user
 

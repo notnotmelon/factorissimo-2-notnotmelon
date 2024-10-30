@@ -1,19 +1,10 @@
+-- This file contains frankly way too much code to basically make doors work.
+-- Warning to future mainainers: do not attempt to rewrite this with landmines. Trust me.
+
 local find_surrounding_factory = remote_api.find_surrounding_factory
 local find_factory_by_building = remote_api.find_factory_by_building
 local get_factory_by_building = remote_api.get_factory_by_building
 local has_layout = Layout.has_layout
-
-local function find_connected_spidertron_remotes(player, e)
-	local inventory = player.get_main_inventory()
-	local result = {}
-	for i = 0, #inventory do
-		local stack; if i == 0 then stack = player.cursor_stack else stack = inventory[i] end
-		if stack and stack.valid_for_read and stack.type == "spidertron-remote" and stack.connected_entity == e then
-			result[#result + 1] = stack
-		end
-	end
-	return result
-end
 
 --- This function exists in order to teleport the personal robopots of a player along with the player when moving between factories.
 local function purgatory_surface()
@@ -31,56 +22,20 @@ end
 
 local function teleport_safely(e, surface, position, player, leaving)
 	position = {x = position.x or position[1], y = position.y or position[2]}
-	local is_spider = not e.is_player() and e.type == "spider-vehicle"
-
-	if is_spider and settings.global["Factorissimo2-prevent-spidertron-travel"].value then
-		return
-	end
-
-	if is_spider and e.autopilot_destination then
-		if player then
-			local current_factory = find_surrounding_factory(e.surface, e.position)
-			local destination_factory = find_surrounding_factory(surface, position)
-			if current_factory and destination_factory then
-				e.autopilot_destination = {
-					e.autopilot_destination.x - current_factory.inside_x + destination_factory.inside_x,
-					e.autopilot_destination.y - current_factory.inside_y + destination_factory.inside_y
-				}
-			else
-				e.autopilot_destination = nil
-			end
-		else
-			e.autopilot_destination = nil
-		end
-	end
-
-	if is_spider and e.surface ~= surface then
-		local remotes = {}
-		for _, player in pairs(player and {player} or game.players) do
-			for _, stack in pairs(find_connected_spidertron_remotes(player, e)) do remotes[#remotes + 1] = stack end
-		end
-
-		if player then player.teleport(position, surface) end
-		e.teleport(leaving and {e.position.x, e.position.y + 1.5} or e.position, surface)
-		if player then e.set_driver(player) end
-
-		for _, stack in pairs(remotes) do stack.connected_entity = e end
-	end
-
-	if is_spider then
-		e.teleport(leaving and {position.x, position.y + 1.5} or position, surface)
-	elseif e.is_player() and not e.character then -- god controller
+	
+	if e.is_player() and not e.character then -- god controller
 		e.teleport(position, surface)
+		storage.last_player_teleport[player.index] = game.tick
 	else
 		position = surface.find_non_colliding_position(
-			e.is_player() and e.character.name or e.name,
+			e.character.name,
 			position, 5, 0.5, false
 		) or position
 		e.teleport({0, 0}, purgatory_surface())
 		e.teleport(position, surface)
+		storage.last_player_teleport[player.index] = game.tick
 	end
 
-	storage.last_player_teleport[player and player.index or e.unit_number] = game.tick
 	if player then Camera.update_camera(player) end
 end
 
@@ -92,21 +47,6 @@ local function leave_factory(e, factory, player)
 	teleport_safely(e, factory.outside_surface, {factory.outside_door_x, factory.outside_door_y}, player, true)
 end
 
-script.on_event(defines.events.on_spider_command_completed, function(event)
-	if settings.global["Factorissimo2-prevent-spidertron-travel"].value then return end
-	local spider = event.vehicle
-	if not spider.get_driver() then return end
-	for _, building in pairs(spider.surface.find_entities_filtered {type = BUILDING_TYPE, position = spider.position}) do
-		if has_layout(building.name) then
-			local factory = get_factory_by_building(building)
-			if factory then
-				enter_factory(spider, factory, nil)
-			end
-			return
-		end
-	end
-end)
-
 -- https://mods.factorio.com/mod/jetpack
 local function get_jetpacks()
 	local jetpack = script.active_mods.jetpack
@@ -116,6 +56,9 @@ local function get_jetpacks()
 	return nil
 end
 
+-- Check for the mech suit or the jetpack mod
+-- I could not find a good way to check if the mech suit jetpack is "active" so just it returns true
+-- This is fine as the mech suit is effectively always active
 local function is_airborne(jetpacks, player)
 	local armor_inventory = player.get_inventory(defines.inventory.character_armor)
 	if armor_inventory then
@@ -133,60 +76,80 @@ local function is_airborne(jetpacks, player)
 	return data.status == "flying"
 end
 
-local function is_riding_spider(player)
-	return player.driving and player.vehicle and player.vehicle.type == "spider-vehicle"
+local function check_position_and_leave_factory(player, is_airbone)
+	local is_remote_view = player.controller_type == defines.controllers.remote
+	if is_remote_view then return end
+
+	local walking_state = player.walking_state
+	local position = player.physical_position
+
+	local walking_direction = player.walking_state.direction
+	local is_moving_downwards =
+		walking_direction == defines.direction.south or
+		walking_direction == defines.direction.southeast or
+		walking_direction == defines.direction.southwest
+
+	if not is_moving_downwards then return end
+	
+	local factory = find_surrounding_factory(player.physical_surface, position)
+	if not factory then return end
+
+	local y = position.y + (is_airbone and 0.5 or -1)
+	if y <= factory.inside_door_y then return end
+
+	if math.abs(position.x - factory.inside_door_x) >= 4 then return end
+
+	leave_factory(player, factory, player)
+	Camera.update_camera(player)
+	Overlay.update_overlay(factory)
+	return true
+end
+
+local function check_position_and_enter_factory(player, is_airborne)
+	if player.controller_type == defines.controllers.remote then return end
+
+	local physical_position = player.physical_position
+
+	local walking_direction = player.walking_state.direction
+	local is_moving_upwards = is_airbone
+		or walking_direction == defines.direction.north
+		or walking_direction == defines.direction.northeast
+		or walking_direction == defines.direction.northwest
+
+	if not is_moving_upwards then return end
+	
+	local factory = find_factory_by_building {
+		surface = player.physical_surface,
+		area = (not is_airbone) and {
+			{physical_position.x - 0.2, physical_position.y - 0.3},
+			{physical_position.x + 0.2, physical_position.y}
+		} or nil,
+		position = is_airbone and player.physical_position or nil
+	}
+
+	if not factory or factory.inactive then return end
+
+	local is_standing_in_doorway = physical_position.y > factory.outside_y + 1 and math.abs(physical_position.x - factory.outside_x) < 0.6
+	if not is_standing_in_doorway then return end
+
+	enter_factory(player, factory, player)
+	return true
 end
 
 local function teleport_players()
 	local tick = game.tick
 	local jetpacks = get_jetpacks()
 	for player_index, player in pairs(game.connected_players) do
+		if player.driving then goto continue end
 		if tick - (storage.last_player_teleport[player_index] or 0) < 45 then goto continue end
-		local walking_state = player.walking_state
-		local driving = player.driving
-		if not walking_state.walking and not driving then goto continue end
-		if player.controller_type == defines.controllers.remote then goto continue end
-		if driving and not player.vehicle then goto continue end -- if the player is riding a rocket silo
-		local airborne = player.character ~= nil and is_airborne(jetpacks, player)
-		local is_spider = is_riding_spider(player)
+		if not player.walking_state.walking then goto continue end
 
-		if is_spider or airborne
-			or walking_state.direction == defines.direction.north
-			or walking_state.direction == defines.direction.northeast
-			or walking_state.direction == defines.direction.northwest
-		then
-			local factory = find_factory_by_building {
-				surface = player.surface,
-				area = (not airborne) and {
-					{player.physical_position.x - 0.2, player.physical_position.y - 0.3},
-					{player.physical_position.x + 0.2, player.physical_position.y}
-				} or nil,
-				position = airborne and player.physical_position or nil
-			}
+		local is_airbone = player.character ~= nil and is_airborne(jetpacks, player)
 
-			if factory ~= nil and not factory.inactive then
-				local is_standing_in_doorway = player.physical_position.y > factory.outside_y + 1 and math.abs(player.physical_position.x - factory.outside_x) < 0.6
-				if is_standing_in_doorway then
-					enter_factory(driving and player.vehicle or player, factory, player)
-					return
-				end
-			end
+		if not check_position_and_enter_factory(player, is_airbone) then
+			check_position_and_leave_factory(player, is_airbone)
 		end
 
-		if (is_spider and player.vehicle.autopilot_destination and player.vehicle.autopilot_destination.y > player.vehicle.position.y)
-			or walking_state.direction == defines.direction.south
-			or walking_state.direction == defines.direction.southeast
-			or walking_state.direction == defines.direction.southwest
-		then
-			local factory = find_surrounding_factory(player.surface, player.physical_position)
-			if factory and player.physical_position.y > factory.inside_door_y + (airborne and -0.5 or 1) then
-				if math.abs(player.physical_position.x - factory.inside_door_x) < 4 then
-					leave_factory(driving and player.vehicle or player, factory, player)
-					Camera.update_camera(player)
-					Overlay.update_overlay(factory)
-				end
-			end
-		end
 		::continue::
 	end
 end
