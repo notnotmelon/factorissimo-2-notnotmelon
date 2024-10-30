@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.1
+Date: 2024-10-30
+  Changes:
+    - Improved the user experience of the editor/god controller trying to teleport into a factory building.
+---------------------------------------------------------------------------------------------------
 Version: 3.4.0
 Date: 2024-10-30
   Features:
