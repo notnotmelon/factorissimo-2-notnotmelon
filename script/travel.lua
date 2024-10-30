@@ -145,6 +145,7 @@ local function teleport_players()
 		local walking_state = player.walking_state
 		local driving = player.driving
 		if not walking_state.walking and not driving then goto continue end
+		if player.controller_type == defines.controllers.remote then goto continue end
 		if driving and not player.vehicle then goto continue end -- if the player is riding a rocket silo
 		local airborne = player.character ~= nil and is_airborne(jetpacks, player)
 		local is_spider = is_riding_spider(player)
