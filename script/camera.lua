@@ -137,6 +137,28 @@ script.on_event(defines.events.on_gui_click, function(event)
 	end
 end)
 
+local god_controllers = {
+	[defines.controllers.god] = true,
+	[defines.controllers.editor] = true,
+	[defines.controllers.spectator] = true,
+}
+local function camera_teleport(player, surface, position)
+	local old_controller = player.controller_type
+
+	if god_controllers[old_controller] then
+		player.teleport(position, surface, true, false)
+		return
+	end
+	
+	player.set_controller {
+		type = defines.controllers.remote,
+		position = position,
+		surface = surface
+	}
+	player.zoom = 0.6
+	player.opened = nil
+end
+
 local function open_outside_in_remote_view(player, pole)
 	for _, factory in pairs(storage.factories) do
 		if factory.built and factory.outside_surface.valid and Electricity.get_or_create_inside_power_pole(factory) == pole then
@@ -145,13 +167,7 @@ local function open_outside_in_remote_view(player, pole)
 			local recursive_parent = remote_api.find_surrounding_factory(factory.outside_surface, teleport_position)
 			if recursive_parent then teleport_position = {recursive_parent.inside_x, recursive_parent.inside_y} end
 
-			player.set_controller {
-				type = defines.controllers.remote,
-				position = teleport_position,
-				surface = factory.outside_surface
-			}
-			player.zoom = 0.7
-			player.opened = nil
+			camera_teleport(player, factory.outside_surface, teleport_position)
 			return
 		end
 	end
@@ -170,11 +186,6 @@ script.on_event("factory-open-outside-surface-to-remote-view", function(event)
 	local factory = remote_api.get_factory_by_entity(entity)
 	if not factory then return end
 
-	player.set_controller {
-		type = defines.controllers.remote,
-		position = {factory.inside_x, factory.inside_y},
-		surface = factory.inside_surface
-	}
-	player.zoom = 0.7
-	player.opened = nil
+	local teleport_position = {factory.inside_x, factory.inside_y}
+	camera_teleport(player, factory.inside_surface, teleport_position)
 end)

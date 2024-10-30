@@ -76,9 +76,17 @@ local function is_airborne(jetpacks, player)
 	return data.status == "flying"
 end
 
+-- floating controllers that don't have a well-defined concept of "position"
+-- we ignore these and its instead handled by shift clicking the factory/power monitor
+local god_controllers = {
+	[defines.controllers.god] = true,
+	[defines.controllers.editor] = true,
+	[defines.controllers.spectator] = true,
+	[defines.controllers.remote] = true,
+}
+
 local function check_position_and_leave_factory(player, is_airbone)
-	local is_remote_view = player.controller_type == defines.controllers.remote
-	if is_remote_view then return end
+	if god_controllers[player.controller_type] then return end
 
 	local walking_state = player.walking_state
 	local position = player.physical_position
