@@ -149,7 +149,26 @@ script.on_event(defines.events.on_gui_opened, function(event)
 		position = {factory.inside_x, factory.inside_y},
 		surface = factory.inside_surface
 	}
-	player.zoom = 0.8
+	player.zoom = 0.7
 
 	player.opened = nil
+end)
+
+
+script.on_event("factory-open-outside-surface-to-remote-view", function(event)
+	local player = game.get_player(event.player_index)
+	local entity = player.selected
+	if not entity or not entity.valid or entity.name ~= "factory-power-pole" then return end
+	
+	for _, factory in pairs(storage.factories) do
+		if factory.built and factory.outside_surface.valid and Electricity.get_or_create_inside_power_pole(factory) == entity then
+			player.set_controller {
+				type = defines.controllers.remote,
+				position = {factory.outside_x, factory.outside_y},
+				surface = factory.outside_surface
+			}
+			player.zoom = 0.7
+			return
+		end
+	end
 end)

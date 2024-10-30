@@ -30,6 +30,12 @@ data:extend {
 		name = "factory-decrease",
 		key_sequence = "CONTROL + R",
 	},
+	{
+		type = "custom-input",
+		name = "factory-open-outside-surface-to-remote-view",
+		key_sequence = "",
+		linked_game_control = "build-ghost"
+	},
 }
 
 if mods["power-grid-comb"] then
