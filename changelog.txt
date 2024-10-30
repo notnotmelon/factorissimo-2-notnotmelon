@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.2
+Date: 2024-10-30
+  Bugfixes:
+    - Fixed inserters able to insert items into the factory construction chest. Resolves [#55](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/55)
+---------------------------------------------------------------------------------------------------
 Version: 3.4.1
 Date: 2024-10-30
   Changes:
