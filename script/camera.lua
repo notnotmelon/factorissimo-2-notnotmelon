@@ -137,10 +137,36 @@ script.on_event(defines.events.on_gui_click, function(event)
 	end
 end)
 
-script.on_event(defines.events.on_gui_opened, function(event)
+local function open_outside_in_remote_view(player, pole)
+	for _, factory in pairs(storage.factories) do
+		if factory.built and factory.outside_surface.valid and Electricity.get_or_create_inside_power_pole(factory) == pole then
+			local teleport_position = {x = factory.outside_x, y = factory.outside_y}
+
+			local recursive_parent = remote_api.find_surrounding_factory(factory.outside_surface, teleport_position)
+			if recursive_parent then teleport_position = {recursive_parent.inside_x, recursive_parent.inside_y} end
+
+			player.set_controller {
+				type = defines.controllers.remote,
+				position = teleport_position,
+				surface = factory.outside_surface
+			}
+			player.zoom = 0.7
+			player.opened = nil
+			return
+		end
+	end
+end
+
+script.on_event("factory-open-outside-surface-to-remote-view", function(event)
 	local player = game.get_player(event.player_index)
-	local entity = event.entity
-	if not entity then return end
+	local entity = player.selected
+	if not entity or not entity.valid then return end
+	
+	if entity.name == "factory-power-pole" then -- teleport the camera to the outside of the factory
+		open_outside_in_remote_view(player, entity)
+		return
+	end
+
 	local factory = remote_api.get_factory_by_entity(entity)
 	if not factory then return end
 
@@ -150,25 +176,5 @@ script.on_event(defines.events.on_gui_opened, function(event)
 		surface = factory.inside_surface
 	}
 	player.zoom = 0.7
-
 	player.opened = nil
-end)
-
-
-script.on_event("factory-open-outside-surface-to-remote-view", function(event)
-	local player = game.get_player(event.player_index)
-	local entity = player.selected
-	if not entity or not entity.valid or entity.name ~= "factory-power-pole" then return end
-	
-	for _, factory in pairs(storage.factories) do
-		if factory.built and factory.outside_surface.valid and Electricity.get_or_create_inside_power_pole(factory) == entity then
-			player.set_controller {
-				type = defines.controllers.remote,
-				position = {factory.outside_x, factory.outside_y},
-				surface = factory.outside_surface
-			}
-			player.zoom = 0.7
-			return
-		end
-	end
 end)
