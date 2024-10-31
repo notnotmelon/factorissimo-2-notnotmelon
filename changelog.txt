@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.5
+Date: 2024-10-31
+  Bugfixes:
+    - Fixed a crash when biters fully eat a factory building. Resolves [#57](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/57)
+---------------------------------------------------------------------------------------------------
 Version: 3.4.4
 Date: 2024-10-30
   Bugfixes:
