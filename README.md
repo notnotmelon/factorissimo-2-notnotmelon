@@ -123,3 +123,5 @@ For more information see the [FAQ](https://mods.factorio.com/mod/factorissimo-2-
 - **Crazy_Editor & Yariazen**: Added space exploration compatibility.
 - **Calcwizard**: "Packed" factory icon graphic. (MIT)
 - **fishbus**: Supplied open-source (MIT) graphics for the borehole pump from the [Factorio+](https://mods.factorio.com/mod/factorioplus) overhaul. Go play it!
+- **PlexPt**: Chinese locale.
+- **AlexandrPavlovski**: Russian locale.
