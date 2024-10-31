@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.8
+Date: 2024-10-31
+  Locale:
+    - Fixed incorrect localised name for "packed" factory buildings. Resolves [#59](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/59)
+---------------------------------------------------------------------------------------------------
 Version: 3.4.7
 Date: 2024-10-31
   Bugfixes:
