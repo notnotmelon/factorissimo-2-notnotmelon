@@ -351,8 +351,7 @@ local function toggle_port_markers(factory)
 end
 
 local function cleanup_factory_exterior(factory, building)
-	factory.outside_energy_receiver.destroy()
-
+	Electricity.cleanup_factory_exterior(factory)
 	Roboport.cleanup_factory_exterior(factory)
 
 	Connections.disconnect_factory(factory)
@@ -751,7 +750,6 @@ local clone_forbidden_prefixes = {
 	"factory-connection-indicator-",
 	"factory-power-pole",
 	"factory-overlay-controller",
-	"factory-overlay-display",
 	"factory-port-marker",
 	"factory-fluid-dummy-connector-"
 }

@@ -2,7 +2,7 @@
 -- Warning to future mainainers: do not attempt to rewrite this with landmines. Trust me.
 
 local find_surrounding_factory = remote_api.find_surrounding_factory
-local find_factory_by_building = remote_api.find_factory_by_building
+local find_factory_by_area = remote_api.find_factory_by_area
 local get_factory_by_building = remote_api.get_factory_by_building
 local has_layout = Layout.has_layout
 
@@ -128,7 +128,7 @@ local function check_position_and_enter_factory(player, is_airborne)
 
 	if not is_moving_upwards then return end
 	
-	local factory = find_factory_by_building {
+	local factory = find_factory_by_area {
 		surface = player.physical_surface,
 		area = (not is_airborne) and {
 			{physical_position.x - 0.2, physical_position.y - 0.3},

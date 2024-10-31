@@ -128,7 +128,7 @@ function Electricity.power_pole_destroyed(pole)
 	local wire_connector = pole.get_wire_connector(defines.wire_connector_id.pole_copper)
 
 	local old_connections = wire_connector.connections
-	wire_connector.disconnect_all()
+	Electricity.disconnect_all_copper_connections(pole)
 
 	for _, factory in pairs(get_factories_near_pole(pole)) do
 		update_power_connection(factory, pole)
@@ -169,8 +169,38 @@ script.on_event({defines.events.on_selected_entity_changed, defines.events.on_pl
 				break
 			end
 		end
+		
 		permission.set_allows_action(defines.input_action.remove_cables, not has_cross_surface_connections)
 	end
 
 	Camera.update_camera(player) -- also update camera here
 end)
+
+function Electricity.cleanup_factory_exterior(factory)
+	factory.outside_energy_receiver.destroy()
+	local pole = Electricity.get_or_create_inside_power_pole(factory)
+	Electricity.disconnect_all_copper_connections(pole)
+
+	if not factory.inside_surface.valid then return end
+
+	local recursive_children = remote_api.find_factories_by_area {
+		surface = factory.inside_surface,
+		area = {
+			{factory.inside_x - 128, factory.inside_y - 128},
+			{factory.inside_x + 128, factory.inside_y + 128}
+		}
+	}
+
+	for _, child in pairs(recursive_children) do
+		if child ~= factory then
+			Electricity.update_power_connection(child)
+		end
+	end
+end
+
+function Electricity.disconnect_all_copper_connections(pole)
+	local wire_connector = pole.get_wire_connector(defines.wire_connector_id.pole_copper)
+	wire_connector.disconnect_all(defines.wire_origin.player)
+	wire_connector.disconnect_all(defines.wire_origin.script)
+	wire_connector.disconnect_all(defines.wire_origin.radar)
+end

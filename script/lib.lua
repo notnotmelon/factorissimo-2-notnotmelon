@@ -69,7 +69,7 @@ remote_api.get_factory_by_building = function(entity)
 	return factory
 end
 
-remote_api.find_factory_by_building = function(params)
+remote_api.find_factory_by_area = function(params)
 	local surface = params.surface
 	local position = params.position
 	local area = params.area
@@ -78,6 +78,20 @@ remote_api.find_factory_by_building = function(params)
 		if Layout.has_layout(entity.name) then return remote_api.get_factory_by_building(entity) end
 	end
 	return nil
+end
+
+remote_api.find_factories_by_area = function(params)
+	local surface = params.surface
+	local area = params.area
+
+	local factories = {}
+	for _, entity in pairs(surface.find_entities_filtered {area = area, type = BUILDING_TYPE}) do
+		if Layout.has_layout(entity.name) then
+			local factory = remote_api.get_factory_by_building(entity)
+			if factory then factories[#factories + 1] = factory end
+		end
+	end
+	return factories
 end
 
 remote_api.find_surrounding_factory = function(surface, position)
