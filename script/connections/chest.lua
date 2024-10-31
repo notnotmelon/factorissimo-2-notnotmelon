@@ -4,7 +4,7 @@ Chest.color = {r = 200 / 255, g = 110 / 255, b = 38 / 255}
 Chest.entity_types = {"container", "logistic-container", "infinity-container", "linked-container"}
 Chest.unlocked = function(force) return force.technologies["factory-connection-type-chest"].researched end
 
-local blacklist = {"factory-overlay-controller", "factory-overlay-display"}
+local blacklist = {"factory-overlay-controller", "factory-requester-chest-factory-1", "factory-requester-chest-factory-2", "factory-requester-chest-factory-3"}
 local blacklisted = {}
 for _, name in pairs(blacklist) do blacklisted[name] = true end
 
