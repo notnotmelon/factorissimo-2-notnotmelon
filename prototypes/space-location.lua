@@ -99,12 +99,15 @@ end
 
 local function add_music(planet, factory_floor)
     for _, music in pairs(data.raw["ambient-sound"]) do
-        if music.planet == planet.name then
+        if music.planet == planet.name or (music.track_type == "hero-track" and music.name:find(planet.name)) then
             local new_music = table.deepcopy(music)
             new_music.name = music.name .. "-" .. factory_floor.name
             new_music.planet = factory_floor.name
+            if new_music.track_type == "hero-track" then
+                new_music.track_type = "main-track"
+                new_music.weight = 10
+            end
             data:extend {new_music}
-            return
         end
     end
 end
