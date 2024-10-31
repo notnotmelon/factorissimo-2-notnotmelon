@@ -140,7 +140,7 @@ data:extend {
 	{
 		type = "item-with-tags",
 		name = "factory-2-instantiated",
-		localised_name = {"item-name.factory-packed", {"entity-name.factory-1"}},
+		localised_name = {"item-name.factory-packed", {"entity-name.factory-2"}},
 		icons = {
 			{
 				icon = F .. "/graphics/icon/factory-2.png",
@@ -222,7 +222,7 @@ data:extend {
 	{
 		type = "item-with-tags",
 		name = "factory-3-instantiated",
-		localised_name = {"item-name.factory-packed", {"entity-name.factory-1"}},
+		localised_name = {"item-name.factory-packed", {"entity-name.factory-3"}},
 		icons = {
 			{
 				icon = F .. "/graphics/icon/factory-3.png",
