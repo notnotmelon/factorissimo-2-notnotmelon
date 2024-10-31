@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.10
+Date: 2024-10-31
+  Bugfixes:
+    - Fixed factory floor stays connected to power grid after you move the building away from power poles. Resolves [#60](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/60)
+---------------------------------------------------------------------------------------------------
 Version: 3.4.9
 Date: 2024-10-31
   Bugfixes:
