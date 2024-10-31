@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.7
+Date: 2024-10-31
+  Bugfixes:
+    - Improved collision detection for mech suit flying into a factory building. Resolves [#58](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/58)
+---------------------------------------------------------------------------------------------------
 Version: 3.4.6
 Date: 2024-10-31
   Locale:
