@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.11
+Date: 2024-10-31
+  Bugfixes:
+    - Fixed crash related to 3rd party mod removing surface conditions to science pack recipes.
+---------------------------------------------------------------------------------------------------
 Version: 3.4.10
 Date: 2024-10-31
   Bugfixes:
