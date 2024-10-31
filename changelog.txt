@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.12
+Date: 2024-10-31
+  Bugfixes:
+    - Fixed that each of the factory floor surfaces only played 1 track of music. Resolves [#52](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/52)
+---------------------------------------------------------------------------------------------------
 Version: 3.4.11
 Date: 2024-10-31
   Bugfixes:
