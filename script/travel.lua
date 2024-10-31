@@ -60,6 +60,8 @@ end
 -- I could not find a good way to check if the mech suit jetpack is "active" so just it returns true
 -- This is fine as the mech suit is effectively always active
 local function is_airborne(jetpacks, player)
+	if not player.character then return false end
+
 	local armor_inventory = player.get_inventory(defines.inventory.character_armor)
 	if armor_inventory then
 		for i = 1, #armor_inventory do
@@ -85,7 +87,7 @@ local god_controllers = {
 	[defines.controllers.remote] = true,
 }
 
-local function check_position_and_leave_factory(player, is_airbone)
+local function check_position_and_leave_factory(player, is_airborne)
 	if god_controllers[player.controller_type] then return end
 
 	local walking_state = player.walking_state
@@ -102,7 +104,7 @@ local function check_position_and_leave_factory(player, is_airbone)
 	local factory = find_surrounding_factory(player.physical_surface, position)
 	if not factory then return end
 
-	local y = position.y + (is_airbone and 0.5 or -1)
+	local y = position.y + (is_airborne and 0.5 or -1)
 	if y <= factory.inside_door_y then return end
 
 	if math.abs(position.x - factory.inside_door_x) >= 4 then return end
@@ -119,7 +121,7 @@ local function check_position_and_enter_factory(player, is_airborne)
 	local physical_position = player.physical_position
 
 	local walking_direction = player.walking_state.direction
-	local is_moving_upwards = is_airbone
+	local is_moving_upwards = is_airborne
 		or walking_direction == defines.direction.north
 		or walking_direction == defines.direction.northeast
 		or walking_direction == defines.direction.northwest
@@ -128,16 +130,18 @@ local function check_position_and_enter_factory(player, is_airborne)
 	
 	local factory = find_factory_by_building {
 		surface = player.physical_surface,
-		area = (not is_airbone) and {
+		area = (not is_airborne) and {
 			{physical_position.x - 0.2, physical_position.y - 0.3},
 			{physical_position.x + 0.2, physical_position.y}
 		} or nil,
-		position = is_airbone and player.physical_position or nil
+		position = is_airborne and player.physical_position or nil
 	}
 
 	if not factory or factory.inactive then return end
 
-	local is_standing_in_doorway = physical_position.y > factory.outside_y + 1 and math.abs(physical_position.x - factory.outside_x) < 0.6
+	local door_width = is_airborne and 4 or 0.6
+	local door_height = is_airborne and 3 or 1
+	local is_standing_in_doorway = physical_position.y > factory.outside_y + door_height and math.abs(physical_position.x - factory.outside_x) < door_width
 	if not is_standing_in_doorway then return end
 
 	enter_factory(player, factory, player)
@@ -149,13 +153,13 @@ local function teleport_players()
 	local jetpacks = get_jetpacks()
 	for player_index, player in pairs(game.connected_players) do
 		if player.driving then goto continue end
-		if tick - (storage.last_player_teleport[player_index] or 0) < 45 then goto continue end
+		if tick - (storage.last_player_teleport[player_index] or 0) < 35 then goto continue end
 		if not player.walking_state.walking then goto continue end
 
-		local is_airbone = player.character ~= nil and is_airborne(jetpacks, player)
+		local is_airborne = is_airborne(jetpacks, player)
 
-		if not check_position_and_enter_factory(player, is_airbone) then
-			check_position_and_leave_factory(player, is_airbone)
+		if not check_position_and_enter_factory(player, is_airborne) then
+			check_position_and_leave_factory(player, is_airborne)
 		end
 
 		::continue::
