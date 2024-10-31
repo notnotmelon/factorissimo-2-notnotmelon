@@ -707,7 +707,7 @@ script.on_event(defines.events.on_entity_died, function(event)
 			stack = {
 				name = factory.layout.name,
 				tags = {id = factory.id},
-				quality = entity.quality,
+				quality = entity.quality.name,
 				health = entity.health / entity.max_health,
 				count = 1,
 				custom_description = generate_factory_item_description(factory)
