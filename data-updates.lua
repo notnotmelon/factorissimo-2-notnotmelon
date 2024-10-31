@@ -88,7 +88,7 @@ if data.raw["assembling-machine"]["borehole-pump"] then
 		if not conditions_source_to_copy then return end
 
 		recipe.surface_conditions = recipe.surface_conditions or {}
-		for _, condition in pairs(table.deepcopy(conditions_source_to_copy.surface_conditions)) do
+		for _, condition in pairs(table.deepcopy(conditions_source_to_copy.surface_conditions) or {}) do
 			table.insert(recipe.surface_conditions, condition)
 		end
 	end
