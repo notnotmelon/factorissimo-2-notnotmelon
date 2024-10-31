@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.9
+Date: 2024-10-31
+  Bugfixes:
+    - Fixed ghost chest connections lingering in certian cases. Resolves [#65](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/65)
+---------------------------------------------------------------------------------------------------
 Version: 3.4.8
 Date: 2024-10-31
   Locale:
