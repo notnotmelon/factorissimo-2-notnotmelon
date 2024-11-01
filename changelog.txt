@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.13
+Date: 2024-11-01
+  Bugfixes:
+    - Fixed use of shift+click to exit remote-view factory building does not update the overlay combinator. Resolves [#68](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/68)
+---------------------------------------------------------------------------------------------------
 Version: 3.4.12
 Date: 2024-10-31
   Bugfixes:
