@@ -22,6 +22,7 @@ data:extend {{
     surface_properties = mods["space-age"] and {
         gravity = -1,
         pressure = 10000,
+        ["solar-power"] = 0,
     }
 }}
 

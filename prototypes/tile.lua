@@ -80,6 +80,16 @@ local function make_tile(tinfo)
 		map_color = tinfo.map_color or {r = 1},
 		frozen_variant = freezable and (tinfo.name .. "-frozen") or nil,
 	}}
+
+	if tinfo.growable then
+		for _, overgrowth_tile in pairs{"overgrowth-yumako-soil", "overgrowth-jellynut-soil"} do
+			local tile_item = data.raw.item[overgrowth_tile]
+			if not tile_item then goto continue end
+			if not tile_item.place_as_tile or not tile_item.place_as_tile.tile_condition then goto continue end
+			table.insert(tile_item.place_as_tile.tile_condition, tinfo.name)
+			::continue::
+		end
+	end
 end
 
 local function wall_mask()
@@ -182,6 +192,7 @@ make_tile {
 	layer = 30,
 	pictures = pictures_ff(1),
 	map_color = f1fc(),
+	growable = true,
 }
 
 -- Factory 1
@@ -192,7 +203,7 @@ make_tile {
 	layer = 70,
 	pictures = pictures_fw(1),
 	map_color = f1wc(),
-	frozen_tint = {1, 0.85, 0.85}
+	frozen_tint = {1, 0.85, 0.85},
 }
 
 make_tile {
@@ -201,7 +212,8 @@ make_tile {
 	layer = 70,
 	pictures = alt_graphics and pictures_ff(1) or pictures_fw(1),
 	map_color = f1wc(),
-	frozen_tint = {1, 0.85, 0.85}
+	frozen_tint = {1, 0.85, 0.85},
+	growable = true,
 }
 
 -- Factory 2
@@ -212,7 +224,7 @@ make_tile {
 	layer = 70,
 	pictures = pictures_fw(2),
 	map_color = f2wc(),
-	frozen_tint = {0.85, 0.85, 1}
+	frozen_tint = {0.85, 0.85, 1},
 }
 
 make_tile {
@@ -221,7 +233,8 @@ make_tile {
 	layer = 70,
 	pictures = alt_graphics and pictures_ff(1) or pictures_fw(2),
 	map_color = f2wc(),
-	frozen_tint = {0.85, 0.85, 1}
+	frozen_tint = {0.85, 0.85, 1},
+	growable = true,
 }
 
 -- Factory 3
@@ -232,7 +245,7 @@ make_tile {
 	layer = 70,
 	pictures = pictures_fw(3),
 	map_color = f3wc(),
-	frozen_tint = {1, 1, 0.7}
+	frozen_tint = {1, 1, 0.7},
 }
 
 make_tile {
@@ -241,7 +254,8 @@ make_tile {
 	layer = 70,
 	pictures = alt_graphics and pictures_ff(1) or pictures_fw(3),
 	map_color = f3wc(),
-	frozen_tint = {1, 1, 0.7}
+	frozen_tint = {1, 1, 0.7},
+	growable = true,
 }
 
 if feature_flags.expansion_shaders then

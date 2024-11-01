@@ -21,6 +21,8 @@ require "script.travel"
 require "script.overlay"
 require "script.pollution"
 require "script.electricity"
+require "script.greenhouse"
+require "script.lights"
 require "script.roboport"
 require "compat.factoriomaps"
 
@@ -100,12 +102,6 @@ script.on_configuration_changed(function(config_changed_data)
 	storage.items_with_metadata = nil
 end)
 
--- FACTORY UPGRADES --
-
-local function build_lights_upgrade(factory)
-	if factory.inside_surface.valid then factory.inside_surface.daytime = 1 end
-end
-
 -- FACTORY GENERATION --
 
 local function update_destructible(factory)
@@ -147,7 +143,8 @@ script.on_event(defines.events.on_surface_created, function(event)
 	end
 end)
 
-local function create_factory_position(layout, parent_surface)
+local function create_factory_position(layout, building)
+	local parent_surface = building.surface	
 	local surface_name = get_surface_name(layout, parent_surface)
 	local surface = game.get_surface(surface_name)
 
@@ -190,6 +187,11 @@ local function create_factory_position(layout, parent_surface)
 	factory.inside_x = 32 * cx
 	factory.inside_y = 32 * cy
 	factory.stored_pollution = 0
+	factory.outside_x = building.position.x
+	factory.outside_y = building.position.y
+	factory.outside_door_x = factory.outside_x + layout.outside_door_x
+	factory.outside_door_y = factory.outside_y + layout.outside_door_y
+	factory.outside_surface = building.surface
 
 	storage.surface_factories[surface.index] = storage.surface_factories[surface.index] or {}
 	storage.surface_factories[surface.index][n + 1] = factory
@@ -241,10 +243,17 @@ local function add_tile_mosaic(tiles, tile_name, xmin, ymin, xmax, ymax, pattern
 	end
 end
 
+local function build_factory_upgrades(factory)
+	Lights.build_lights_upgrade(factory)
+	Greenhouse.build_greenhouse_upgrade(factory)
+	Overlay.build_display_upgrade(factory)
+	Roboport.build_roboport_upgrade(factory)
+end
+
 local function create_factory_interior(layout, building)
 	local force = building.force
 
-	local factory = create_factory_position(layout, building.surface)
+	local factory = create_factory_position(layout, building)
 	factory.building = building
 	factory.layout = layout
 	factory.force = force
@@ -273,16 +282,7 @@ local function create_factory_interior(layout, building)
 	}
 	radar.destructible = false
 	factory.radar = radar
-
-	if force.technologies["factory-interior-upgrade-lights"].researched then
-		build_lights_upgrade(factory)
-	end
-
 	factory.inside_overlay_controllers = {}
-
-	if force.technologies["factory-interior-upgrade-display"].researched then
-		Overlay.build_display_upgrade(factory)
-	end
 
 	factory.connections = {}
 	factory.connection_settings = {}
@@ -313,14 +313,11 @@ local function create_factory_exterior(factory, building)
 	factory.building = building
 	factory.built = true
 
-	if force.technologies["factory-interior-upgrade-roboport"].researched then
-		Roboport.build_roboport_upgrade(factory)
-	end
-
 	Connections.recheck_factory(factory, nil, nil)
 	Electricity.update_power_connection(factory)
 	Overlay.update_overlay(factory)
 	update_destructible(factory)
+	build_factory_upgrades(factory)
 	return factory
 end
 
@@ -904,10 +901,12 @@ activate_factories = function()
 			factory.outside_surface,
 			{x = factory.outside_x, y = factory.outside_y}
 		)
+
+		build_factory_upgrades(factory)
 	end
 end
 
-script.on_event(defines.events.on_research_finished, function(event)
+script.on_event({defines.events.on_research_finished, defines.events.on_research_reversed}, function(event)
 	if not storage.factories then return end -- In case any mod or scenario script calls LuaForce.research_all_technologies() during its on_init
 	local research = event.research
 	local name = research.name
@@ -916,11 +915,13 @@ script.on_event(defines.events.on_research_finished, function(event)
 			if factory.built then Connections.recheck_factory(factory, nil, nil) end
 		end
 	elseif name == "factory-interior-upgrade-lights" then
-		for _, factory in pairs(storage.factories) do build_lights_upgrade(factory) end
+		for _, factory in pairs(storage.factories) do Lights.build_lights_upgrade(factory) end
 	elseif name == "factory-interior-upgrade-display" then
 		for _, factory in pairs(storage.factories) do Overlay.build_display_upgrade(factory) end
 	elseif name == "factory-interior-upgrade-roboport" then
 		for _, factory in pairs(storage.factories) do Roboport.build_roboport_upgrade(factory) end
+	elseif name == "factory-upgrade-greenhouse" then
+		for _, factory in pairs(storage.factories) do Greenhouse.build_greenhouse_upgrade(factory) end
 	elseif name == "factory-recursion-t1" or name == "factory-recursion-t2" then
 		activate_factories()
 	elseif name == "factory-preview" then

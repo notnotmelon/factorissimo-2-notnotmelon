@@ -12,7 +12,6 @@ local banned_from_being_placed_indoors = {
     "artillery-turret",
     "rocket-silo",
     "cargo-landing-pad",
-    --"solar-panel"
 }
 
 for _, prototype in pairs(banned_from_being_placed_indoors) do
@@ -23,4 +22,14 @@ for _, prototype in pairs(banned_from_being_placed_indoors) do
             min = 1,
         })
     end
+end
+
+if not mods["space-age"] then return end
+
+for _, entity in pairs(data.raw["solar-panel"]) do
+    entity.surface_conditions = entity.surface_conditions or {}
+    table.insert(entity.surface_conditions, {
+        property = "solar-power",
+        min = 1,
+    })
 end

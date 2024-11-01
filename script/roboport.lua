@@ -23,6 +23,9 @@ end
 
 Roboport.build_roboport_upgrade = function(factory)
     if not factory.inside_surface.valid or not factory.outside_surface.valid then return end
+    local force = factory.force
+    if not force.valid then return end
+    if not force.technologies["factory-interior-upgrade-roboport"].researched then return end
 
     local requester = factory.roboport_upgrade and factory.roboport_upgrade.requester and factory.roboport_upgrade.requester.valid and factory.roboport_upgrade.requester
     local roboport = factory.roboport_upgrade and factory.roboport_upgrade.roboport.valid and factory.roboport_upgrade.roboport

@@ -144,6 +144,27 @@ data.raw.technology["factory-interior-upgrade-roboport"].unit = {
     time = 45
 }
 
+data.raw.technology["factory-upgrade-greenhouse"].prerequisites = {
+    "factory-architecture-t3",
+    "electromagnetic-science-pack",
+    "overgrowth-soil",
+    "factory-interior-upgrade-lights",
+}
+data.raw.technology["factory-upgrade-greenhouse"].unit = {
+    count = 2000,
+    ingredients = {
+        {"automation-science-pack",      1},
+        {"logistic-science-pack",        1},
+        {"chemical-science-pack",        1},
+        {"space-science-pack",           1},
+        {"production-science-pack",      1},
+        {"utility-science-pack",         1},
+        {"agricultural-science-pack",    1},
+        {"electromagnetic-science-pack", 1},
+    },
+    time = 60
+}
+
 data.raw["storage-tank"]["factory-1"].surface_conditions = {{
     property = "gravity",
     min = 3

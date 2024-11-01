@@ -6,6 +6,7 @@ require "prototypes.technology"
 require "prototypes.tile"
 require "prototypes.borehole-pump"
 require "prototypes.roboport"
+require "prototypes.greenhouse"
 require "prototypes.space-age-rebalance"
 
 data:extend {
