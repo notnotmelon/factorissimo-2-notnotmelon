@@ -700,20 +700,21 @@ script.on_event(defines.events.on_entity_died, function(event)
 		storage.saved_factories[factory.id] = factory
 		cleanup_factory_exterior(factory, entity)
 
-		local item = entity.surface.create_entity {
-			name = "item-on-ground",
+		entity.surface.spill_item_stack {
 			position = entity.position,
 			stack = {
-				name = factory.layout.name,
+				name = factory.layout.name .. "-instantiated",
 				tags = {id = factory.id},
 				quality = entity.quality.name,
-				health = entity.health / entity.max_health,
 				count = 1,
 				custom_description = generate_factory_item_description(factory)
-			}
+			},
+			enable_looted = true,
+			force = entity.force_index,
+			allow_belts = false,
+			max_radius = 0,
+			use_start_position_on_failure = true
 		}
-		item.order_deconstruction(entity.force)
-		item.to_be_looted = true
 	elseif Connections.is_connectable(entity) then
 		recheck_nearby_connections(entity, true) -- Delay
 	elseif entity.type == "electric-pole" then
