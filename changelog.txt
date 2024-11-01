@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.17
+Date: 2024-11-01
+  Bugfixes:
+    - Fixed incorrect collision box checking for inserter -> belt connection formation. Resolves [#69](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/69)
+---------------------------------------------------------------------------------------------------
 Version: 3.4.16
 Date: 2024-11-01
   Bugfixes:
