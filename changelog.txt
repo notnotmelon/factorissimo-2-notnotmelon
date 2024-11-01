@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.14
+Date: 2024-11-01
+  Changes:
+    - The factory construction chest no longer has a deconstruction planner being filtered by default.
+---------------------------------------------------------------------------------------------------
 Version: 3.4.13
 Date: 2024-11-01
   Bugfixes:
