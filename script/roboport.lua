@@ -148,9 +148,7 @@ local function get_construction_requests_by_factory()
                 local upgrade_target, quality = ghost.get_upgrade_target()
                 items_to_place = upgrade_target.items_to_place_this -- collect all items_to_place_this for upgrade planner ghosts
                 for _, item in pairs(items_to_place) do item.quality = quality.name end
-            else
-                error("unknown ghost type: " .. ghost.type)
-            end
+            else goto continue end
 
             for _, item_to_place in pairs(items_to_place) do
                 local item_name = item_to_place.name
@@ -160,6 +158,8 @@ local function get_construction_requests_by_factory()
                 requests_by_quality[quality] = requests_by_quality[quality] or 0
                 requests_by_quality[quality] = requests_by_quality[quality] + item_to_place.count
             end
+
+            ::continue::
         end
 
         -- dont request instantiated factories. it already requests the raw factory item
