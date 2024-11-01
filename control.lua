@@ -412,33 +412,38 @@ local function recheck_nearby_connections(entity, delayed)
 	local surface = entity.surface
 	local pos = entity.position
 
-	local sbox = table.deepcopy(entity.prototype.selection_box)
-	local orientation = entity.orientation
+	local collision_box = entity.prototype.collision_box
 	if orientation == 0 then     -- north
-		-- sbox is fine
+		-- collision_box is fine
 	elseif orientation == 0.5 then -- south
-		sbox.left_top.y, sbox.right_bottom.y = -sbox.right_bottom.y, -sbox.left_top.y
+		collision_box.left_top.y, collision_box.right_bottom.y = -collision_box.right_bottom.y, -collision_box.left_top.y
 	elseif orientation == 0.25 then -- east
-		sbox.left_top.y, sbox.left_top.x, sbox.right_bottom.x, sbox.right_bottom.y = -sbox.right_bottom.x, -sbox.right_bottom.y, -sbox.left_top.y, -sbox.left_top.x
+		collision_box.left_top.y, collision_box.left_top.x, collision_box.right_bottom.x, collision_box.right_bottom.y = -collision_box.right_bottom.x, -collision_box.right_bottom.y, -collision_box.left_top.y, -collision_box.left_top.x
 	elseif orientation == 0.75 then -- west
-		sbox.left_top.y, sbox.right_bottom.y = -sbox.right_bottom.y, -sbox.left_top.y
-		sbox.left_top.y, sbox.left_top.x, sbox.right_bottom.x, sbox.right_bottom.y = -sbox.right_bottom.x, -sbox.right_bottom.y, -sbox.left_top.y, -sbox.left_top.x
+		collision_box.left_top.y, collision_box.right_bottom.y = -collision_box.right_bottom.y, -collision_box.left_top.y
+		collision_box.left_top.y, collision_box.left_top.x, collision_box.right_bottom.x, collision_box.right_bottom.y = -collision_box.right_bottom.x, -collision_box.right_bottom.y, -collision_box.left_top.y, -collision_box.left_top.x
 	end
 
+	-- Expand collision box to grid-aligned
+	collision_box.left_top.x = math.floor(collision_box.left_top.x)
+	collision_box.left_top.y = math.floor(collision_box.left_top.y)
+	collision_box.right_bottom.x = math.ceil(collision_box.right_bottom.x)
+	collision_box.right_bottom.y = math.ceil(collision_box.right_bottom.y)
+
 	-- Expand box to catch factories and also avoid illegal zero-area finds
-	local bbox = {
-		left_top = {x = pos.x - 0.3 + sbox.left_top.x, y = pos.y - 0.3 + sbox.left_top.y},
-		right_bottom = {x = pos.x + 0.3 + sbox.right_bottom.x, y = pos.y + 0.3 + sbox.right_bottom.y}
+	local bounding_box = {
+		left_top = {x = pos.x - 0.3 + collision_box.left_top.x, y = pos.y - 0.3 + collision_box.left_top.y},
+		right_bottom = {x = pos.x + 0.3 + collision_box.right_bottom.x, y = pos.y + 0.3 + collision_box.right_bottom.y}
 	}
 
-	for _, candidate in pairs(surface.find_entities_filtered {area = bbox, type = BUILDING_TYPE}) do
+	for _, candidate in pairs(surface.find_entities_filtered {area = bounding_box, type = BUILDING_TYPE}) do
 		if candidate ~= entity and has_layout(candidate.name) then
 			local factory = get_factory_by_building(candidate)
 			if factory then
 				if delayed then
-					Connections.recheck_factory_delayed(factory, bbox, nil)
+					Connections.recheck_factory_delayed(factory, bounding_box, nil)
 				else
-					Connections.recheck_factory(factory, bbox, nil)
+					Connections.recheck_factory(factory, bounding_box, nil)
 				end
 			end
 		end
