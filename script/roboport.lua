@@ -52,7 +52,6 @@ Roboport.build_roboport_upgrade = function(factory)
         force = factory.force,
         quality = factory.quality,
     }
-    storage.set_filter(1, {name = "deconstruction-planner"})
 
     for _, entity in pairs {roboport, storage, requester} do
         entity.destructible = false
