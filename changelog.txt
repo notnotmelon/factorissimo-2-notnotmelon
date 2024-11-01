@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.4.16
+Date: 2024-11-01
+  Bugfixes:
+    - Fixed crash when cancelling an upgrade planner construction request inside a factory building with the factory roboport enabled. Resolves [#71](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/71)
+---------------------------------------------------------------------------------------------------
 Version: 3.4.15
 Date: 2024-11-01
   Bugfixes:
