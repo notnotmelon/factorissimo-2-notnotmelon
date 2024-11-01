@@ -167,6 +167,7 @@ local function open_outside_in_remote_view(player, pole)
 			local recursive_parent = remote_api.find_surrounding_factory(factory.outside_surface, teleport_position)
 			if recursive_parent then teleport_position = {recursive_parent.inside_x, recursive_parent.inside_y} end
 
+			Overlay.update_overlay(factory)
 			camera_teleport(player, factory.outside_surface, teleport_position)
 			return
 		end
