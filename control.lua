@@ -528,6 +528,7 @@ local function on_build_borehole_pump(borehole)
 		position = get_borehole_smoke_position(borehole),
 		force = borehole.force_index
 	}
+	smokestack.destroy() -- Instantly destroy the first smokestack. This handles the case when the borehole is initally unpowered.
 
 	storage.borehole_smokestacks = storage.borehole_smokestacks or {}
 	storage.borehole_smokestacks[borehole.unit_number] = {borehole = borehole, smokestack = smokestack}
@@ -541,7 +542,7 @@ local function update_borehole_smokestacks()
 			storage.borehole_smokestacks[unit_number] = nil
 			update_borehole_smokestacks()
 			return
-		elseif not smokestack.valid and borehole.is_crafting() and borehole.crafting_progress ~= 1 then
+		elseif not smokestack.valid and borehole.energy > 0 and borehole.is_crafting() and borehole.crafting_progress ~= 1 then
 			smokestack_data.smokestack = borehole.surface.create_entity {
 				name = "borehole-pump-smokestack",
 				position = get_borehole_smoke_position(borehole),
