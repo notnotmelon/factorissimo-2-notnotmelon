@@ -551,6 +551,13 @@ end
 
 script.on_nth_tick(33, update_borehole_smokestacks)
 
+local blueprintable_factory_peripherals = {
+	["factory-construction-roboport"] = true,
+	["factory-construction-chest"] = true,
+	["factory-overlay-controller"] = true,
+	["factory-blueprint-anchor"] = true,
+}
+
 script.on_event({
 	defines.events.on_built_entity,
 	defines.events.on_robot_built_entity,
@@ -560,6 +567,11 @@ script.on_event({
 }, function(event)
 	local entity = event.created_entity or event.entity
 	local entity_name, entity_type = entity.name, entity.type
+
+	if blueprintable_factory_peripherals[entity_name] then
+		entity.destroy()
+		return
+	end
 
 	if entity_name == "borehole-pump" then
 		on_build_borehole_pump(entity)
@@ -595,10 +607,13 @@ script.on_event({
 	if entity_type ~= "entity-ghost" then return end
 	local ghost_name = entity.ghost_name
 
+	if blueprintable_factory_peripherals[ghost_name] then
+		entity.destroy()
+		return
+	end
+
 	if Connections.indicator_names[ghost_name] then
 		Blueprint.unpack_connection_settings_from_blueprint(entity)
-		entity.destroy()
-	elseif ghost_name == "factory-overlay-controller" or ghost_name == "factory-blueprint-anchor" then
 		entity.destroy()
 	elseif has_layout(ghost_name) and entity.tags then
 		local copied_from_factory = storage.factories[entity.tags.id]
