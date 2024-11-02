@@ -95,6 +95,8 @@ Roboport.cleanup_factory_exterior = function(factory)
 end
 
 local GHOST_PROTOTYPE_NAME = "entity-ghost"
+local TILE_GHOST_PROTOTYPE_NAME = "tile-ghost"
+
 local function get_construction_requests_by_factory()
     local missing_ghosts_per_factory = {}
 
@@ -143,7 +145,7 @@ local function get_construction_requests_by_factory()
         local requests_by_itemname = {}
         for _, ghost in pairs(missing_ghosts) do
             local items_to_place
-            if ghost.name == GHOST_PROTOTYPE_NAME then
+            if ghost.name == GHOST_PROTOTYPE_NAME or ghost.name == TILE_GHOST_PROTOTYPE_NAME then
                 items_to_place = ghost.ghost_prototype.items_to_place_this -- collect all items_to_place_this for construction ghosts
             elseif ghost.type == "item-request-proxy" then
                 items_to_place = ghost.item_requests                       -- items can also be delived to the `item-request-proxy` prototype
