@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.5.2
+Date: 2024-11-02
+  Changes:
+    - Amount of initally requested robobots in the factory roboport upgrade no longer scales with quality (always 10)
+---------------------------------------------------------------------------------------------------
 Version: 3.5.1
 Date: 2024-11-02
   Bugfixes:
