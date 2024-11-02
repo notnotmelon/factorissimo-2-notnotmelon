@@ -10,6 +10,7 @@
     "base >= 2.0.12",
     "? space-age",
     "! Factorissimo2",
+    "! Factorissimo2-Space-Age-Port",
     "(?) Bio_Industries",
     "(?) power-grid-comb",
     "(?) EfficientSmelting",
