@@ -140,8 +140,7 @@ local function check_position_and_enter_factory(player, is_airborne)
 	if not factory or factory.inactive then return end
 
 	local door_width = is_airborne and 4 or 0.6
-	local door_height = is_airborne and 3 or 1
-	local is_standing_in_doorway = physical_position.y > factory.outside_y + door_height and math.abs(physical_position.x - factory.outside_x) < door_width
+	local is_standing_in_doorway = physical_position.y > factory.outside_y + 1 and math.abs(physical_position.x - factory.outside_x) < door_width
 	if not is_standing_in_doorway then return end
 
 	enter_factory(player, factory, player)
