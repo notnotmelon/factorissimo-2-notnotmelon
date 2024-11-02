@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.5.7
+Date: 2024-11-02
+  Bugfixes:
+    - Fixed a crash when using certain mods or commands that remove pollution. Resolves [#74](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/74)
+---------------------------------------------------------------------------------------------------
 Version: 3.5.6
 Date: 2024-11-02
   Bugfixes:
