@@ -101,6 +101,8 @@ local function get_construction_requests_by_factory()
     local missing_ghosts_per_factory = {}
 
     for surface_index, factories in pairs(storage.surface_factories) do
+        if not game.get_surface(surface_index) then goto invalid_surface end
+
         local forces_to_check = {}
         for _, factory in pairs(factories) do
             local force = factory.force
@@ -138,6 +140,8 @@ local function get_construction_requests_by_factory()
                 ::continue::
             end
         end
+
+        ::invalid_surface::
     end
 
     local construction_requests_by_factory = {}
