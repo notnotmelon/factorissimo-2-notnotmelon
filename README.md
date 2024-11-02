@@ -40,6 +40,34 @@ Belt, pipe, heat, chest, and circuit connections are formed by placing their res
 
 ---
 
+## Factory floor: Gleba
+
+DAMN what's he cookin in there? Research the Factory upgrade: Greenhouse to create an indoor garden with agricultural towers.
+
+![](https://files.catbox.moe/0rurd2.mp4)
+
+**WARNING:** Growing indoors creates 50% more spores! Don't blame me if you get some extra visitors to your greenhouse.
+
+![](https://files.catbox.moe/5o3st0.png)
+
+---
+
+## Factory floor: Aquilo
+
+The air is frozen. Even inside your shelter the mist and snow are inescapable. Design aquilo production lines inside factory buildings and use factory heat connections to prevent machines from freezing.
+
+![](https://files.catbox.moe/gwrsss.mp4)
+
+---
+
+## Quality
+
+Factorissimo 3 supports quality! Higher quality factory buildings mean more connections that transfer faster.
+
+![](https://assets-mod.factorio.com/assets/d94d181f2f35e65e0bc9df8a6c4dbb510df9178e.png)
+
+---
+
 ## Factory Overlay and Preview Upgrades
 
 This mod contains several quality of life features designed to make expanding the factory as easy as possible.
@@ -71,22 +99,6 @@ After researching the factory roboport upgrade, construction bots can enter fact
 ![](https://assets-mod.factorio.com/assets/3f019209ba6a140bc62580cb861643246073f904.png)
 
 ...or not. Up to you. Don't forget to set a base case 😉 
-
----
-
-## Quality
-
-Factorissimo 3 supports quality! Higher quality factory buildings mean more connections that transfer faster.
-
-![](https://assets-mod.factorio.com/assets/d94d181f2f35e65e0bc9df8a6c4dbb510df9178e.png)
-
----
-
-## Factory floor: Aquilo
-
-The air is frozen. Even inside your shelter the mist and snow are inescapable. Design aquilo production lines inside factory buildings and use factory heat connections to prevent machines from freezing.
-
-![](https://files.catbox.moe/gwrsss.mp4)
 
 ---
 
