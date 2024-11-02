@@ -42,6 +42,7 @@ roboport.logistics_radius = 4
 roboport.construction_radius = 64
 roboport.icon = "__factorissimo-2-notnotmelon__/graphics/icon/construction-chest.png"
 roboport.icon_size = 64
+roboport.hidden = true
 roboport.radar_range = 0
 roboport.flags = {"player-creation", "placeable-player", "not-on-map"}
 downscale(roboport.base)
@@ -62,6 +63,7 @@ storage_chest.inventory_type = "with_bar"
 storage_chest.icon = "__factorissimo-2-notnotmelon__/graphics/icon/construction-chest.png"
 storage_chest.icon_size = 64
 storage_chest.inventory_size = 100
+storage_chest.hidden = true
 storage_chest.flags = {"player-creation", "placeable-player", "no-automated-item-removal", "no-automated-item-insertion", "not-on-map"}
 storage_chest.animation.layers[1].filename = "__factorissimo-2-notnotmelon__/graphics/entity/construction-chest.png"
 entities_to_extend[#entities_to_extend + 1] = storage_chest
@@ -74,8 +76,8 @@ for _, factory_name in pairs {"factory-1", "factory-2", "factory-3"} do
     requester_chest.selection_box = nil
     requester_chest.inventory_size = 100
     requester_chest.picture = nil
+    requester_chest.hidden = true
     requester_chest.factoriopedia_alternative = factory_name
-    requester_chest.hidden_in_factoriopedia = true
     requester_chest.quality_indicator_scale = 0
     requester_chest.flags = {"not-on-map", "hide-alt-info", "no-automated-item-removal", "no-automated-item-insertion", "not-in-kill-statistics", "not-rotatable"}
     entities_to_extend[#entities_to_extend + 1] = requester_chest
@@ -86,7 +88,7 @@ for _, prototype in pairs(entities_to_extend) do
     prototype.fast_replaceable_group = nil
     prototype.next_upgrade = nil
     prototype.surface_conditions = nil
-    prototype.health = 500
+    prototype.max_health = 500
     prototype.minable = nil
     prototype.placeable_by = nil
     prototype.heating_energy = nil

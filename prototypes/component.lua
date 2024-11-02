@@ -138,6 +138,8 @@ data:extend {{
 	selection_box = {{-j, -j}, {j, j}},
 	collision_box = {{-j, -j}, {j, j}},
 	collision_mask = {layers = {}},
+	icon = data.raw.item["substation"].icon,
+	icon_size = data.raw.item["substation"].icon_size,
 	flags = {"not-on-map"},
 	auto_connect_up_to_n_wires = 0,
 	hidden = true,
@@ -164,8 +166,12 @@ data:extend {{
 local overlay_controller = table.deepcopy(data.raw["constant-combinator"]["constant-combinator"])
 overlay_controller.sprites = table.deepcopy(data.raw["display-panel"]["display-panel"].sprites)
 overlay_controller.name = "factory-overlay-controller"
+overlay_controller.icon_size = data.raw.item["display-panel"].icon_size
+overlay_controller.icon = data.raw.item["display-panel"].icon
+overlay_controller.hidden = true
 overlay_controller.circuit_wire_max_distance = 0
 overlay_controller.max_health = 500
+overlay_controller.minable = nil
 table.insert(overlay_controller.flags, "not-on-map")
 overlay_controller.collision_mask = {layers = {}}
 data:extend {overlay_controller}
