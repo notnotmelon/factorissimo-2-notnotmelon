@@ -5,7 +5,8 @@ local pollution_multipliers = {
 
 local function update_pollution(factory)
 	local inside_surface = factory.inside_surface
-	if not inside_surface.valid then return end
+	if not inside_surface.valid or not inside_surface.pollutant_type then return end
+
 	local chunk
 	local pollution, cp = 0, 0
 	local inside_x, inside_y = factory.inside_x, factory.inside_y
@@ -34,7 +35,10 @@ local function update_pollution(factory)
 
 	local outside_surface = factory.outside_surface
 	if factory.built and outside_surface.valid then
-		local pollutant_type = outside_surface.pollutant_type.name
+		local pollutant_type = outside_surface.pollutant_type
+		if not pollutant_type then return end
+		pollutant_type = pollutant_type.name
+		
 		local multiplier = pollution_multipliers[pollutant_type] or 1
 
 		local pollution_to_release = (pollution + factory.stored_pollution) * multiplier
