@@ -1,19 +1,20 @@
 Roboport = {}
 
-local function set_default_roboport_construction_robot_request(roboport)
+local function set_default_roboport_construction_robot_request(roboport, count)
     -- https://forums.factorio.com/viewtopic.php?f=28&t=118245
+    local inventory_size = #roboport.get_inventory(defines.inventory.roboport_robot)
     return roboport.surface.create_entity {
         name = "item-request-proxy",
         position = roboport.position,
         target = roboport,
         modules = {{
             id = {
-                name = "construction-robot",
+                name = "factory-construction-robot-packed",
                 quality = roboport.quality.name
             },
             items = {
                 in_inventory = {
-                    {inventory = defines.inventory.roboport_robot, stack = 0, count = 10}
+                    {inventory = defines.inventory.roboport_robot, stack = inventory_size - 1, count = count or 10}
                 }
             }
         }},
@@ -67,6 +68,7 @@ Roboport.build_roboport_upgrade = function(factory)
         storage = storage,
         requester = requester,
         inital_ten_robot_request = inital_ten_robot_request,
+        num_robots_requested = 10,
         item_request_proxies = (factory.roboport_upgrade and factory.roboport_upgrade.item_request_proxies) or {}
     }
 end
@@ -320,18 +322,29 @@ script.on_nth_tick(43, function()
         local requester_inventory = requester.get_inventory(defines.inventory.chest)
         if requester_inventory.is_empty() then goto continue end
         local robot_inventory = roboport.get_inventory(defines.inventory.roboport_robot)
-        local needs_robots = robot_inventory.is_empty()
+        local needs_robots = roboport_upgrade.num_robots_requested > 0
         local storage_inventory = storage.get_inventory(defines.inventory.chest)
 
         for i = 1, #requester_inventory do
             local stack = requester_inventory[i]
             if stack.valid_for_read then
-                if needs_robots then
-                    local amount_moved = robot_inventory.insert(stack)
+                if needs_robots and stack.name == "factory-construction-robot-packed" then
+                    local amount_moved = robot_inventory.insert{
+                        name = "construction-robot",
+                        count = math.min(stack.count, roboport_upgrade.num_robots_requested),
+                        quality = stack.quality,
+                        health = stack.health,
+                    }
+                    
                     if amount_moved > 0 then
+                        roboport_upgrade.num_robots_requested = roboport_upgrade.num_robots_requested - amount_moved
                         stack.count = stack.count - amount_moved
-                        needs_robots = false
                         roboport_upgrade.inital_ten_robot_request.destroy()
+                        if roboport_upgrade.num_robots_requested <= 0 then
+                            needs_robots = false
+                        else
+                            factory.roboport_upgrade.inital_ten_robot_request = set_default_roboport_construction_robot_request(roboport, roboport_upgrade.num_robots_requested)
+                        end
                         goto inserted_some_robots
                     end
                 end

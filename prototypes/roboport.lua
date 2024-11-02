@@ -121,3 +121,38 @@ data:extend {{
     flags = {"not-stackable", "only-in-cursor"},
     place_result = "factory-construction-chest"
 }}
+
+data:extend {{
+    type = "recipe",
+    name = "factory-construction-robot-packed",
+    enabled = false,
+    ingredients = {
+        {type = "item", name = "construction-robot", amount = 1},
+        {type = "item", name = "iron-plate",         amount = 1}
+    },
+    results = {
+        {type = "item", name = "factory-construction-robot-packed", amount = 1}
+    },
+    energy_required = 2,
+}}
+
+data.raw.item["construction-robot"].flags = data.raw.item["construction-robot"].flags or {}
+
+data:extend {{
+    type = "item",
+    name = "factory-construction-robot-packed",
+    icons = {
+        {icon = "__base__/graphics/icons/construction-robot.png",                icon_size = 64},
+        {icon = "__factorissimo-2-notnotmelon__/graphics/icon/packing-tape.png", icon_size = 64}
+    },
+    stack_size = data.raw.item["construction-robot"].stack_size,
+    flags = table.deepcopy(data.raw.item["construction-robot"].flags),
+    place_result = data.raw.item["construction-robot"].place_result,
+    subgroup = "factorissimo2",
+    order = "c-d",
+    hidden = true,
+    hidden_in_factorio_pedia = false,
+	localised_name = {"item-name.factory-packed", {"entity-name.construction-robot"}},
+}}
+
+table.insert(data.raw.item["construction-robot"].flags, "primary-place-result")

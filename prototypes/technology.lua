@@ -174,7 +174,12 @@ data:extend {
 		icon = F .. "/graphics/technology/factory-interior-upgrade-roboport.png",
 		icon_size = 128,
 		prerequisites = {"factory-architecture-t2", "construction-robotics"},
-		effects = {},
+		effects = {
+			{
+				type = "unlock-recipe",
+				recipe = "factory-construction-robot-packed"
+			}
+		},
 		unit = {
 			count = 1000,
 			ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}, {"chemical-science-pack", 1}},
