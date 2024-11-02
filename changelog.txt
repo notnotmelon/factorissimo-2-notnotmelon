@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.5.8
+Date: 2024-11-02
+  Changes:
+    - Personal construction bots no longer travel inside factories. Resolves [#75](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/75) Resolves [#67](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/67)
+---------------------------------------------------------------------------------------------------
 Version: 3.5.7
 Date: 2024-11-02
   Bugfixes:
