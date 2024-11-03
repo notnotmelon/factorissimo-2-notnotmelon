@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.5.11
+Date: 2024-11-03
+  Bugfixes:
+    - Fix crash when closing a GUI. Resolves [#82](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/82)
+---------------------------------------------------------------------------------------------------
 Version: 3.5.10
 Date: 2024-11-03
   Changes:
