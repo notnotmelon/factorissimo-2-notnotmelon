@@ -1,6 +1,8 @@
 Roboport = {}
 
 local function set_default_roboport_construction_robot_request(roboport, count)
+    if count and count <= 0 then error("count must be greater than 0") end
+
     -- https://forums.factorio.com/viewtopic.php?f=28&t=118245
     local inventory_size = #roboport.get_inventory(defines.inventory.roboport_robot)
     return roboport.surface.create_entity {
@@ -357,5 +359,36 @@ script.on_nth_tick(43, function()
         end
 
         ::continue::
+    end
+end)
+
+-- https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/79
+-- manually inserting robots should decrement the request count
+script.on_event(defines.events.on_gui_closed, function(event)
+    local entity = event.entity
+    if not entity or not entity.name == "factory-construction-roboport" then return end
+    local inventory = entity.get_inventory(defines.inventory.roboport_robot)
+    if inventory.is_empty() then return end
+    local player = game.get_player(event.player_index)
+    
+    local factory = remote_api.find_surrounding_factory_by_surface_index(entity.surface_index, entity.position)
+    if not factory or not factory.roboport_upgrade then return end
+
+    local roboport_upgrade = factory.roboport_upgrade
+    if roboport_upgrade.num_robots_requested <= 0 then return end
+
+    local count_of_all_robots = 0
+    for i = 1, #inventory do
+        local stack = inventory[i]
+        if stack.valid_for_read then
+            local is_construction = stack.prototype.place_result and stack.prototype.place_result.type == "construction-robot"
+            if is_construction then count_of_all_robots = count_of_all_robots + stack.count end
+        end
+    end
+
+    roboport_upgrade.num_robots_requested = math.max(0, math.min(roboport_upgrade.num_robots_requested, 10 - count_of_all_robots))
+    roboport_upgrade.inital_ten_robot_request.destroy()
+    if roboport_upgrade.num_robots_requested > 0 then
+        roboport_upgrade.inital_ten_robot_request = set_default_roboport_construction_robot_request(roboport_upgrade.roboport, roboport_upgrade.num_robots_requested)
     end
 end)
