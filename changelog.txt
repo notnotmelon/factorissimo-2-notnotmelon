@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.5.9
+Date: 2024-11-02
+  Bugfixes:
+    - Added incompatibility flag with "Factorissimo2-Space-Age-Port". Resolves [#76](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/76)
+---------------------------------------------------------------------------------------------------
 Version: 3.5.8
 Date: 2024-11-02
   Changes:
