@@ -34,15 +34,27 @@ function Blueprint.copy_entity_ghosts(source, destination)
 	local inventory = game.create_inventory(1)
 	inventory.insert {name = "blueprint", count = 1}
 	local stack = inventory[1]
+	local area = {first_anchor.position, second_anchor.position}
 	local mapping = stack.create_blueprint {
 		surface = source.inside_surface,
 		force = source.force,
-		area = {first_anchor.position, second_anchor.position},
+		area = area,
 		always_include_tiles = true,
 		include_trains = true,
 		include_station_names = true
 	}
 	setup_blueprint_tags(stack, mapping)
+	script.raise_event("on_script_setup_blueprint", {
+		surface = source.inside_surface,
+		area = area,
+		stack = stack,
+		alt = false,
+		item = stack.name,
+		quality = stack.quality.name,
+		name = "on_script_setup_blueprint",
+		tick = game.tick,
+		mapping = mapping
+	})
 
 	Overlay.copy_overlay_between_factory_buildings(source, destination)
 

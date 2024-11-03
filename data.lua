@@ -37,6 +37,10 @@ data:extend {
 		key_sequence = "",
 		linked_game_control = "build-ghost"
 	},
+	{
+		type = "custom-event",
+		name = "on_script_setup_blueprint"
+	}
 }
 
 if mods["power-grid-comb"] then
