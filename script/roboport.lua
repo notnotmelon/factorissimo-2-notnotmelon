@@ -366,7 +366,8 @@ end)
 -- manually inserting robots should decrement the request count
 script.on_event(defines.events.on_gui_closed, function(event)
     local entity = event.entity
-    if not entity or not entity.name == "factory-construction-roboport" then return end
+    if not entity or not entity.valid then return end
+    if entity.name ~= "factory-construction-roboport" then return end
     local inventory = entity.get_inventory(defines.inventory.roboport_robot)
     if inventory.is_empty() then return end
     local player = game.get_player(event.player_index)
