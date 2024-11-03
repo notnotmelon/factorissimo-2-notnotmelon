@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.5.10
+Date: 2024-11-03
+  Changes:
+    - Manually inserting robobots will now decrement the construction robot request count. Resolves [#79](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/79)
+---------------------------------------------------------------------------------------------------
 Version: 3.5.9
 Date: 2024-11-02
   Bugfixes:
