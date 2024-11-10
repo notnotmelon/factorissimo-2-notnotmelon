@@ -144,6 +144,7 @@ data:extend {{
 	maximum_wire_distance = 1,
 	supply_area_distance = 63,
 	pictures = table.deepcopy(data.raw["electric-pole"]["substation"].pictures),
+	drawing_box_vertical_extension = data.raw["electric-pole"]["substation"].drawing_box_vertical_extension,
 	connection_points = {cwc0c(), cwc0c(), cwc0c(), cwc0c()},
 }}
 
