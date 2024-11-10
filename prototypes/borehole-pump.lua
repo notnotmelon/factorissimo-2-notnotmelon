@@ -241,7 +241,7 @@ data:extend {{
         },
     },
     circuit_connector = table.deepcopy(circuit_connector_definitions["burner-mining-drill"]),
-    circuit_wire_max_distance = default_circuit_wire_max_distance,
+    circuit_wire_max_distance = _G.default_circuit_wire_max_distance,
     enable_logistic_control_behavior = false,
     ingredient_count = 0,
     allowed_effects = {"consumption", "speed", "productivity", "pollution"},

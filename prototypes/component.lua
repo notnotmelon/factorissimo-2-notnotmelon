@@ -85,8 +85,6 @@ local function create_indicator(ctype, suffix, image)
 			},
 		},
 		flow_length_in_ticks           = 100,
-		circuit_wire_connection_points = table.deepcopy(circuit_connector_definitions["storage-tank"].points),
-		circuit_connector_sprites      = table.deepcopy(circuit_connector_definitions["storage-tank"].sprites),
 		circuit_wire_max_distance      = 0
 	}}
 end

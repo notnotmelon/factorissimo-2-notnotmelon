@@ -49,8 +49,6 @@ data:extend {
 			pipe_connections = {},
 		},
 		flow_length_in_ticks = 1,
-		circuit_wire_connection_points = circuit_connector_definitions["storage-tank"].points,
-		circuit_connector_sprites = circuit_connector_definitions["storage-tank"].sprites,
 		circuit_wire_max_distance = 0,
 		map_color = {r = 0.8, g = 0.7, b = 0.55},
 		is_military_target = true
@@ -131,8 +129,6 @@ data:extend {
 			pipe_connections = {},
 		},
 		flow_length_in_ticks = 1,
-		circuit_wire_connection_points = circuit_connector_definitions["storage-tank"].points,
-		circuit_connector_sprites = circuit_connector_definitions["storage-tank"].sprites,
 		circuit_wire_max_distance = 0,
 		map_color = {r = 0.8, g = 0.7, b = 0.55},
 		is_military_target = true
@@ -213,8 +209,6 @@ data:extend {
 			pipe_connections = {},
 		},
 		flow_length_in_ticks = 1,
-		circuit_wire_connection_points = circuit_connector_definitions["storage-tank"].points,
-		circuit_connector_sprites = circuit_connector_definitions["storage-tank"].sprites,
 		circuit_wire_max_distance = 0,
 		map_color = {r = 0.8, g = 0.7, b = 0.55},
 		is_military_target = true
