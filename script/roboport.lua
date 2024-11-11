@@ -1,7 +1,7 @@
 Roboport = {}
 
 local function set_default_roboport_construction_robot_request(roboport, count)
-    if count and count <= 0 then error("count must be greater than 0") end
+    if count <= 0 then return end
 
     -- https://forums.factorio.com/viewtopic.php?f=28&t=118245
     local inventory_size = #roboport.get_inventory(defines.inventory.roboport_robot)
@@ -16,7 +16,7 @@ local function set_default_roboport_construction_robot_request(roboport, count)
             },
             items = {
                 in_inventory = {
-                    {inventory = defines.inventory.roboport_robot, stack = inventory_size - 1, count = count or 10}
+                    {inventory = defines.inventory.roboport_robot, stack = inventory_size - 1, count = count}
                 }
             }
         }},
@@ -51,7 +51,13 @@ Roboport.build_roboport_upgrade = function(factory)
         quality = factory.quality,
     }
     roboport.backer_name = ""
-    local inital_ten_robot_request = set_default_roboport_construction_robot_request(roboport)
+
+    if factory.roboport_upgrade and factory.roboport_upgrade.inital_ten_robot_request then
+        factory.roboport_upgrade.inital_ten_robot_request.destroy()
+    end
+    local num_robots_requested = (factory.roboport_upgrade and factory.roboport_upgrade.num_robots_requested) or 10
+    local inital_ten_robot_request = set_default_roboport_construction_robot_request(roboport, num_robots_requested)
+    
     storage = storage or factory.inside_surface.create_entity {
         name = "factory-construction-chest",
         position = {-factory.layout.overlays.inside_x + factory.inside_x, factory.layout.overlays.inside_y + factory.inside_y},
@@ -70,7 +76,7 @@ Roboport.build_roboport_upgrade = function(factory)
         storage = storage,
         requester = requester,
         inital_ten_robot_request = inital_ten_robot_request,
-        num_robots_requested = 10,
+        num_robots_requested = num_robots_requested,
         item_request_proxies = (factory.roboport_upgrade and factory.roboport_upgrade.item_request_proxies) or {}
     }
 end
