@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.5.18
+Date: 2024-11-11
+  Bugfixes:
+    - Fixed "missing material" notification spam when researching any tech or loading a save. Resolves [#100](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/100) Resolves [#93](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/93)
+---------------------------------------------------------------------------------------------------
 Version: 3.5.17
 Date: 2024-11-11
   Bugfixes:
