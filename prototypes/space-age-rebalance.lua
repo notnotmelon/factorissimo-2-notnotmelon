@@ -56,6 +56,7 @@ data.raw.technology["factory-recursion-t2"].unit = {
 data.raw.technology["factory-recursion-t2"].prerequisites = {
     "factory-architecture-t3",
     "production-science-pack",
+    "factory-recursion-t1",
 }
 
 data.raw.technology["factory-connection-type-heat"].unit = {
