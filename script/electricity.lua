@@ -116,6 +116,7 @@ end
 
 function Electricity.power_pole_placed(pole)
 	for _, factory in pairs(get_factories_near_pole(pole)) do
+		if not factory.outside_energy_receiver.valid then goto continue end
 		local electric_network = factory.outside_energy_receiver.electric_network_id
 		if not electric_network or electric_network ~= pole.electric_network_id then goto continue end
 		connect_power(factory, pole)
