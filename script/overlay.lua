@@ -168,3 +168,9 @@ local function copy_overlay_between_factory_buildings(source, destination)
 	Overlay.update_overlay(destination)
 end
 Overlay.copy_overlay_between_factory_buildings = copy_overlay_between_factory_buildings
+
+script.on_event(defines.events.on_player_changed_surface, function(event)
+	for _, factory in pairs(storage.factories) do
+		Overlay.update_overlay(factory)
+	end
+end)
