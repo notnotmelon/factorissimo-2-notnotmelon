@@ -8,6 +8,10 @@ local has_layout = Layout.has_layout
 
 --- This function exists in order to teleport the personal robopots of a player along with the player when moving between factories.
 local function purgatory_surface()
+	if remote.interfaces["RSO"] then -- RSO compatibility
+		pcall(remote.call, "RSO", "ignoreSurface", "factory-travel-surface")
+	end
+	
 	local planet = game.planets["factory-travel-surface"]
 	if planet.surface then return planet.surface end
 

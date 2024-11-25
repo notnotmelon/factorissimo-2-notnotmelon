@@ -145,11 +145,15 @@ script.on_event(defines.events.on_surface_created, function(event)
 end)
 
 local function create_factory_position(layout, building)
-	local parent_surface = building.surface	
+	local parent_surface = building.surface
 	local surface_name = get_surface_name(layout, parent_surface)
 	local surface = game.get_surface(surface_name)
 
 	if not surface then
+		if remote.interfaces["RSO"] then -- RSO compatibility
+			pcall(remote.call, "RSO", "ignoreSurface", surface_name)
+		end
+
 		local planet = game.planets[surface_name]
 		if planet then
 			surface = planet.surface or planet.create_surface()
@@ -161,10 +165,6 @@ local function create_factory_position(layout, building)
 
 		surface.daytime = 0.5
 		surface.freeze_daytime = true
-
-		if remote.interfaces["RSO"] then -- RSO compatibility
-			pcall(remote.call, "RSO", "ignoreSurface", surface_name)
-		end
 	end
 
 	local n = 0
