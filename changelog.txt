@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.6.1
+Date: 2024-11-25
+  Bugfixes:
+    - Fixed setting factory icons over map view does not change it. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/107
+---------------------------------------------------------------------------------------------------
 Version: 3.6.0
 Date: 2024-11-25
   Features:
