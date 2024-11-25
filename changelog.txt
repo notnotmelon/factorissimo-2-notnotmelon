@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.6.5
+Date: 2024-11-25
+  Bugfixes:
+    - Fixed crash when combined with 5dim mods. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/121
+---------------------------------------------------------------------------------------------------
 Version: 3.6.4
 Date: 2024-11-25
   Bugfixes:
