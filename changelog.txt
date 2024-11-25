@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.6.0
+Date: 2024-11-25
+  Features:
+    - Removed "packed" construction roboports. Construction requests are now built via the space platform animation. Huge thanks to Quezler for the MIT repository which much of the code is based on. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/113. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/86
+---------------------------------------------------------------------------------------------------
 Version: 3.5.18
 Date: 2024-11-11
   Bugfixes:
