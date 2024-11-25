@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.6.4
+Date: 2024-11-25
+  Bugfixes:
+    - Fixed pipe segmentation with squeak through. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/111
+---------------------------------------------------------------------------------------------------
 Version: 3.6.3
 Date: 2024-11-25
   Bugfixes:
