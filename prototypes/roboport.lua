@@ -63,7 +63,7 @@ data:extend {{
     request_to_open_door_timeout            = data.raw["roboport"]["roboport"].request_to_open_door_timeout,
     charging_station_shift                  = table.deepcopy(data.raw["roboport"]["roboport"].charging_station_shift),
     stationing_offset                       = table.deepcopy(data.raw["roboport"]["roboport"].stationing_offset),
-    charging_offsets                        = table.deepcopy(data.raw["roboport"]["roboport"].charging_offsets),
+    charging_offsets                        = {{0, 0}},
     robots_shrink_when_entering_and_exiting = true,
 }}
 
