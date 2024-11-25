@@ -44,6 +44,7 @@ data:extend {{
     energy_usage = "1W",
     collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
     quality_indicator_scale = 0,
+    squeak_behaviour = false
 }}
 
 data:extend {{
@@ -73,6 +74,7 @@ data:extend {{
     energy_usage = "1W",
     collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
     quality_indicator_scale = 0,
+    squeak_behaviour = false
 }}
 
 local outside_input = table.deepcopy(data.raw["pump"]["factory-inside-pump-input"])
