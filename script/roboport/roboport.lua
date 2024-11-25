@@ -1,28 +1,239 @@
 Roboport = {}
 
-local function set_default_roboport_construction_robot_request(roboport, count)
-    if count <= 0 then return end
+local blacklisted_names = require "script.roboport.blacklist"
+local utility_constants = require "script.roboport.utility-constants"
 
-    -- https://forums.factorio.com/viewtopic.php?f=28&t=118245
-    local inventory_size = #roboport.get_inventory(defines.inventory.roboport_robot)
-    return roboport.surface.create_entity {
-        name = "item-request-proxy",
-        position = roboport.position,
-        target = roboport,
-        modules = {{
-            id = {
-                name = "factory-construction-robot-packed",
-                quality = roboport.quality.name
-            },
-            items = {
-                in_inventory = {
-                    {inventory = defines.inventory.roboport_robot, stack = inventory_size - 1, count = count}
-                }
-            }
-        }},
-        force = roboport.force
-    }
+Roboport.init = function()
+    storage.construction_robots = storage.construction_robots or {}
+    storage.lock = storage.lock or {}
+    storage.deathrattles = storage.deathrattles or {}
+    storage.tasks_at_tick = storage.tasks_at_tick or {}
 end
+
+script.on_event(defines.events.on_object_destroyed, function(event)
+    local deathrattle = storage.deathrattles[event.registration_number]
+    if deathrattle then
+        storage.deathrattles[event.registration_number] = nil
+        if deathrattle.network_id then
+            storage.networkdata[deathrattle.network_id] = nil
+        end
+    end
+end)
+
+local function add_task(tick, task)
+    local tasks_at_tick = storage.tasks_at_tick[tick]
+    if tasks_at_tick then
+        tasks_at_tick[#tasks_at_tick + 1] = task
+    else
+        storage.tasks_at_tick[tick] = {task}
+    end
+end
+
+local function get_tilebox(bounding_box)
+    local left_top = bounding_box.left_top
+    local right_bottom = bounding_box.right_bottom
+    -- expand the bounding_box to the nearest integer
+    left_top.x = math.floor(left_top.x)
+    left_top.y = math.floor(left_top.y)
+    right_bottom.x = math.ceil(right_bottom.x)
+    right_bottom.y = math.ceil(right_bottom.y)
+
+    local positions = {}
+
+    local i = 1
+    for y = left_top.y, right_bottom.y - 1 do
+        for x = left_top.x, right_bottom.x - 1 do
+            positions[i] = {x = x, y = y}
+            i = i + 1
+        end
+    end
+
+    return positions
+end
+
+-- position is expected to have a .5 decimal
+local function get_piece(position, center)
+    if position.x > center.x then
+        return position.y < center.y and "back_right" or "front_right"
+    else
+        return position.y < center.y and "back_left" or "front_left"
+    end
+end
+
+local function is_back_piece(piece)
+    return piece == "back_left" or piece == "back_right"
+end
+
+local function get_manhattan_distance(position, center)
+    local delta_x = position.x - center.x
+    local delta_y = position.y - center.y
+
+    return math.abs(delta_x) + math.abs(delta_y)
+end
+
+local function get_build_sound_path(selection_box)
+    local area = (selection_box.right_bottom.x - selection_box.left_top.x) * (selection_box.right_bottom.y - selection_box.left_top.y)
+
+    if area < utility_constants.small_area_size then return "utility/build_animated_small" end
+    if area < utility_constants.medium_area_size then return "utility/build_animated_medium" end
+    if area < utility_constants.large_area_size then return "utility/build_animated_large" end
+
+    return "utility/build_animated_huge"
+end
+
+local TICKS_PER_FRAME = 2
+local FRAMES_BEFORE_BUILT = 16
+local FRAMES_BETWEEN_BUILDING = 8 * 2
+local FRAMES_BETWEEN_REMOVING = 4
+
+local function request_platform_animation_for(entity)
+    if entity.name ~= "entity-ghost" then return end
+    if blacklisted_names[entity.ghost_name] then return end
+    if storage.lock[entity.unit_number] then return end
+
+    local tick = game.tick
+    local surface = entity.surface
+
+    surface.play_sound {
+        path = get_build_sound_path(entity.selection_box),
+        position = entity.position,
+    }
+
+    local tilebox = get_tilebox(entity.bounding_box)
+    local largest_manhattan_distance = 0
+    for _, position in ipairs(tilebox) do
+        position.center = {x = position.x + 0.5, y = position.y + 0.5}
+        position.manhattan_distance = get_manhattan_distance(position.center, entity.position)
+
+        if position.manhattan_distance > largest_manhattan_distance then
+            largest_manhattan_distance = position.manhattan_distance
+        end
+    end
+
+    local remove_scaffold_delay = (largest_manhattan_distance + 4) * FRAMES_BETWEEN_BUILDING
+    local all_scaffolding_down_at = tick + 1 + largest_manhattan_distance * FRAMES_BETWEEN_REMOVING + remove_scaffold_delay + 16 * TICKS_PER_FRAME
+
+    -- by putting a colliding entity in the center of the building site we'll force the construction robot to wait (between that tick and a second)
+    local all_scaffolding_up_at = tick + 1 + largest_manhattan_distance * FRAMES_BETWEEN_BUILDING + 15 * TICKS_PER_FRAME
+    add_task(all_scaffolding_up_at, {
+        name = "destroy",
+        entity = surface.create_entity {
+            name = "ghost-being-constructed",
+            force = "neutral",
+            position = entity.position,
+            create_build_effect_smoke = false,
+            preserve_ghosts_and_corpses = true,
+        }
+    })
+
+    for _, position in ipairs(tilebox) do
+        local piece = get_piece(position.center, entity.position)
+        local animations = {} -- local animations = {} -- top & body
+
+        local up_base = tick + 1 + position.manhattan_distance * FRAMES_BETWEEN_BUILDING
+        add_task(up_base + 00 * TICKS_PER_FRAME, {name = "start", animations = animations})
+        add_task(up_base + 15 * TICKS_PER_FRAME, {name = "pause", offset = 15, animations = animations})
+
+        local down_base = tick + 1 + position.manhattan_distance * FRAMES_BETWEEN_REMOVING + remove_scaffold_delay
+        add_task(down_base + 00 * TICKS_PER_FRAME, {name = "unpause", offset = 16, animations = animations})
+
+        local ttl = down_base - tick + 16 * TICKS_PER_FRAME
+
+        animations[1] = rendering.draw_animation {
+            target = position.center,
+            surface = surface,
+            animation = "platform_entity_build_animations-" .. piece .. "-top",
+            time_to_live = ttl,
+            animation_offset = 0,
+            animation_speed = 0,
+            render_layer = entity.ghost_type == "cargo-landing-pad" and "above-inserters" or "higher-object-above",
+            visible = false,
+        }
+
+        animations[2] = rendering.draw_animation {
+            target = position.center,
+            surface = surface,
+            animation = "platform_entity_build_animations-" .. piece .. "-body",
+            time_to_live = ttl,
+            animation_offset = 0,
+            animation_speed = 0,
+            render_layer = is_back_piece(piece) and "lower-object-above-shadow" or "object",
+            visible = false,
+        }
+    end
+
+    storage.lock[entity.unit_number] = true
+    add_task(all_scaffolding_down_at, {name = "unlock", unit_number = entity.unit_number})
+end
+
+local function do_tasks_at_tick(tick)
+    local tasks_at_tick = storage.tasks_at_tick[tick]
+    if tasks_at_tick then
+        storage.tasks_at_tick[tick] = nil
+        for _, task in ipairs(tasks_at_tick) do
+            if task.name == "start" then
+                local offset = -(tick * 0.5) % 32
+                task.animations[1].visible = true
+                task.animations[2].visible = true
+                task.animations[1].animation_speed = 1
+                task.animations[2].animation_speed = 1
+                task.animations[1].animation_offset = offset
+                task.animations[2].animation_offset = offset
+            elseif task.name == "pause" then
+                task.animations[1].animation_speed = 0
+                task.animations[2].animation_speed = 0
+                task.animations[1].animation_offset = task.offset
+                task.animations[2].animation_offset = task.offset
+            elseif task.name == "unpause" then
+                local offset = -(tick * 0.5) % 32
+                task.animations[1].animation_speed = 1
+                task.animations[2].animation_speed = 1
+                task.animations[1].animation_offset = offset + task.offset
+                task.animations[2].animation_offset = offset + task.offset
+            elseif task.name == "destroy" then
+                task.entity.destroy()
+            elseif task.name == "unlock" then
+                storage.lock[task.unit_number] = nil
+            end
+        end
+    end
+end
+
+script.on_event(defines.events.on_script_trigger_effect, function(event)
+    if event.effect_id ~= "factory-hidden-construction-robot-created" then return end
+
+    local construction_robot = event.target_entity
+    assert(construction_robot and construction_robot.name == "factory-hidden-construction-robot")
+
+    -- ensure we are actually in a factory floor. prevent contraband construction robots from being created
+    local surface_name = construction_robot.surface.name
+    if not surface_name:find("%-factory%-floor$") and not surface_name:find("^factory%-floor%-%d+$") then
+        add_task(game.tick + 1, {name = "destroy", entity = construction_robot}) -- delay this by a tick to avoid a crash
+        return
+    end
+
+    storage.construction_robots[construction_robot.unit_number] = construction_robot
+end)
+
+script.on_event(defines.events.on_tick, function(event)
+    for unit_number, entity in pairs(storage.construction_robots) do
+        if entity.valid then
+            local robot_order_queue = entity.robot_order_queue
+            local this_order = robot_order_queue[1]
+
+            if this_order and this_order.target then -- target can sometimes be optional
+                if this_order.type == defines.robot_order_type.construct then
+                    request_platform_animation_for(this_order.target)
+                    --entity.destroy()
+                end
+            end
+        else
+            storage.construction_robots[unit_number] = nil
+        end
+    end
+
+    do_tasks_at_tick(event.tick)
+end)
 
 Roboport.build_roboport_upgrade = function(factory)
     if not factory.inside_surface.valid or not factory.outside_surface.valid then return end
@@ -31,8 +242,9 @@ Roboport.build_roboport_upgrade = function(factory)
     if not force.technologies["factory-interior-upgrade-roboport"].researched then return end
 
     local requester = factory.roboport_upgrade and factory.roboport_upgrade.requester and factory.roboport_upgrade.requester.valid and factory.roboport_upgrade.requester
-    local roboport = factory.roboport_upgrade and factory.roboport_upgrade.roboport.valid and factory.roboport_upgrade.roboport
-    local storage = factory.roboport_upgrade and factory.roboport_upgrade.storage.valid and factory.roboport_upgrade.storage
+    local roboport = factory.roboport_upgrade and factory.roboport_upgrade.roboport and factory.roboport_upgrade.roboport.valid and factory.roboport_upgrade.roboport
+    local storage = factory.roboport_upgrade and factory.roboport_upgrade.storage and factory.roboport_upgrade.storage.valid and factory.roboport_upgrade.storage
+    local hidden_roboport = factory.roboport_upgrade and factory.roboport_upgrade.hidden_roboport and factory.roboport_upgrade.hidden_roboport.valid and factory.roboport_upgrade.hidden_roboport
 
     if factory.building and factory.building.valid then
         requester = requester or factory.outside_surface.create_entity {
@@ -52,11 +264,13 @@ Roboport.build_roboport_upgrade = function(factory)
     }
     roboport.backer_name = ""
 
-    if factory.roboport_upgrade and factory.roboport_upgrade.inital_ten_robot_request then
-        factory.roboport_upgrade.inital_ten_robot_request.destroy()
-    end
-    local num_robots_requested = (factory.roboport_upgrade and factory.roboport_upgrade.num_robots_requested) or 10
-    local inital_ten_robot_request = set_default_roboport_construction_robot_request(roboport, num_robots_requested)
+    hidden_roboport = hidden_roboport or factory.inside_surface.create_entity {
+        name = "factory-hidden-construction-roboport",
+        position = roboport.position,
+        force = factory.force,
+    }
+    hidden_roboport.backer_name = ""
+    hidden_roboport.get_inventory(defines.inventory.roboport_robot).insert {name = "factory-hidden-construction-robot", count = 500}
     
     storage = storage or factory.inside_surface.create_entity {
         name = "factory-construction-chest",
@@ -65,7 +279,7 @@ Roboport.build_roboport_upgrade = function(factory)
         quality = factory.quality,
     }
 
-    for _, entity in pairs {roboport, storage, requester} do
+    for _, entity in pairs {roboport, storage, requester, hidden_roboport} do
         entity.destructible = false
         entity.minable = false
         entity.rotatable = false
@@ -75,8 +289,7 @@ Roboport.build_roboport_upgrade = function(factory)
         roboport = roboport,
         storage = storage,
         requester = requester,
-        inital_ten_robot_request = inital_ten_robot_request,
-        num_robots_requested = num_robots_requested,
+        hidden_roboport = hidden_roboport,
         item_request_proxies = (factory.roboport_upgrade and factory.roboport_upgrade.item_request_proxies) or {}
     }
 end
@@ -329,38 +542,15 @@ script.on_nth_tick(43, function()
 
         local requester_inventory = requester.get_inventory(defines.inventory.chest)
         if requester_inventory.is_empty() then goto continue end
-        local robot_inventory = roboport.get_inventory(defines.inventory.roboport_robot)
-        local needs_robots = roboport_upgrade.num_robots_requested > 0
         local storage_inventory = storage.get_inventory(defines.inventory.chest)
 
         for i = 1, #requester_inventory do
             local stack = requester_inventory[i]
             if stack.valid_for_read then
-                if needs_robots and stack.name == "factory-construction-robot-packed" then
-                    local amount_moved = robot_inventory.insert{
-                        name = "construction-robot",
-                        count = math.min(stack.count, roboport_upgrade.num_robots_requested),
-                        quality = stack.quality,
-                        health = stack.health,
-                    }
-                    
-                    if amount_moved > 0 then
-                        roboport_upgrade.num_robots_requested = roboport_upgrade.num_robots_requested - amount_moved
-                        stack.count = stack.count - amount_moved
-                        roboport_upgrade.inital_ten_robot_request.destroy()
-                        if roboport_upgrade.num_robots_requested <= 0 then
-                            needs_robots = false
-                        else
-                            factory.roboport_upgrade.inital_ten_robot_request = set_default_roboport_construction_robot_request(roboport, roboport_upgrade.num_robots_requested)
-                        end
-                        goto inserted_some_robots
-                    end
-                end
                 local amount_moved = storage_inventory.insert(stack)
                 if amount_moved > 0 then
                     stack.count = stack.count - amount_moved
                 end
-                ::inserted_some_robots::
             end
         end
 
@@ -368,34 +558,29 @@ script.on_nth_tick(43, function()
     end
 end)
 
--- https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/79
--- manually inserting robots should decrement the request count
-script.on_event(defines.events.on_gui_closed, function(event)
+-- yet another update function to ensure the hidden roboport is always half filled.
+script.on_nth_tick(367, function()
+    for _, factory in pairs(storage.factories) do
+        local roboport_upgrade = factory.roboport_upgrade
+        if not roboport_upgrade then goto continue end
+        local hidden_roboport = roboport_upgrade.hidden_roboport
+        if not hidden_roboport or not hidden_roboport.valid then goto continue end
+        local robot_inventory = hidden_roboport.get_inventory(defines.inventory.roboport_robot)
+
+        robot_inventory.clear()
+        robot_inventory.insert {name = "factory-hidden-construction-robot", count = 500}
+
+        ::continue::
+    end
+end)
+
+script.on_event(defines.events.on_gui_opened, function(event)
+    local gui_type = event.gui_type
+    if gui_type ~= defines.gui_type.entity then return end
     local entity = event.entity
     if not entity or not entity.valid then return end
-    if entity.name ~= "factory-construction-roboport" then return end
-    local inventory = entity.get_inventory(defines.inventory.roboport_robot)
-    if inventory.is_empty() then return end
-    local player = game.get_player(event.player_index)
-    
-    local factory = remote_api.find_surrounding_factory_by_surface_index(entity.surface_index, entity.position)
-    if not factory or not factory.roboport_upgrade then return end
+    if entity.type ~= "roboport" then return end
 
-    local roboport_upgrade = factory.roboport_upgrade
-    if roboport_upgrade.num_robots_requested <= 0 then return end
-
-    local count_of_all_robots = 0
-    for i = 1, #inventory do
-        local stack = inventory[i]
-        if stack.valid_for_read then
-            local is_construction = stack.prototype.place_result and stack.prototype.place_result.type == "construction-robot"
-            if is_construction then count_of_all_robots = count_of_all_robots + stack.count end
-        end
-    end
-
-    roboport_upgrade.num_robots_requested = math.max(0, math.min(roboport_upgrade.num_robots_requested, 10 - count_of_all_robots))
-    roboport_upgrade.inital_ten_robot_request.destroy()
-    if roboport_upgrade.num_robots_requested > 0 then
-        roboport_upgrade.inital_ten_robot_request = set_default_roboport_construction_robot_request(roboport_upgrade.roboport, roboport_upgrade.num_robots_requested)
-    end
+    local robot_inventory = entity.get_inventory(defines.inventory.roboport_robot)
+    robot_inventory.remove {name = "factory-hidden-construction-robot", count = 10000} -- bad! no contraband
 end)

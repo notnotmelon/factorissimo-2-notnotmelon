@@ -8,6 +8,7 @@ require "prototypes.borehole-pump"
 require "prototypes.roboport"
 require "prototypes.greenhouse"
 require "prototypes.space-age-rebalance"
+require "graphics.space-platform-build-anim.entity-build-animations"
 
 data:extend {
 	{

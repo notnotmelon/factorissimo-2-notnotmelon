@@ -137,3 +137,4 @@ For more information see the [FAQ](https://mods.factorio.com/mod/factorissimo-2-
 - **fishbus**: Supplied open-source (MIT) graphics for the borehole pump from the [Factorio+](https://mods.factorio.com/mod/factorioplus) overhaul. Go play it!
 - **PlexPt**: Chinese locale.
 - **AlexandrPavlovski**: Russian locale.
+- **Quezler**: Supplied open-source code for the factory construction upgrade build animations (MIT). https://mods.factorio.com/mod/platform-construction-only-no-construction-robots

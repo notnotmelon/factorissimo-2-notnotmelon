@@ -23,7 +23,7 @@ require "script.pollution"
 require "script.electricity"
 require "script.greenhouse"
 require "script.lights"
-require "script.roboport"
+require "script.roboport.roboport"
 require "compat.factoriomaps"
 
 local update_hidden_techs -- Function stub
@@ -35,6 +35,7 @@ local function init_globals()
 	Camera.init()
 	Layout.init()
 	Connections.init()
+	Roboport.init()
 
 	-- List of all factories
 	storage.factories = storage.factories or {}

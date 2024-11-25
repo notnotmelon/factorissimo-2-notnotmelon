@@ -32,14 +32,112 @@ local function vector_downscale(vector)
     end
 end
 
+data:extend {{
+    type                                    = "roboport",
+    name                                    = "factory-hidden-construction-roboport",
+    icon                                    = data.raw.item["roboport"].icon,
+    icon_size                               = data.raw.item["roboport"].icon_size,
+    flags                                   = {"not-on-map"},
+    health                                  = 10000,
+    hidden                                  = true,
+    radar_range                             = 0,
+    collision_box                           = {{-0.9, -0.9}, {0.9, 0.9}},
+    selection_box                           = {{-1, -1}, {1, 1}},
+    logistics_radius                        = 2,
+    construction_radius                     = 0,
+    energy_source                           = {type = "void"},
+    energy_usage                            = "1W",
+    recharge_minimum                        = "1W",
+    robot_slots_count                       = 1,
+    material_slots_count                    = 0,
+    draw_logistic_radius_visualization      = false,
+    draw_construction_radius_visualization  = false,
+    logistics_connection_distance           = 2,
+    icon_draw_specification                 = {scale = 0},
+    quality_indicator_scale                 = 0,
+    selectable_in_game                      = false,
+    charging_energy                         = data.raw["roboport"]["roboport"].charging_energy,
+    recharging_animation                    = table.deepcopy(data.raw["roboport"]["roboport"].recharging_animation),
+    charge_approach_distance                = data.raw["roboport"]["roboport"].charge_approach_distance / 2,
+    spawn_and_station_height                = data.raw["roboport"]["roboport"].spawn_and_station_height / 2,
+    request_to_open_door_timeout            = data.raw["roboport"]["roboport"].request_to_open_door_timeout,
+    charging_station_shift                  = table.deepcopy(data.raw["roboport"]["roboport"].charging_station_shift),
+    stationing_offset                       = table.deepcopy(data.raw["roboport"]["roboport"].stationing_offset),
+    charging_offsets                        = table.deepcopy(data.raw["roboport"]["roboport"].charging_offsets),
+    robots_shrink_when_entering_and_exiting = true,
+}}
+
+local hidden_construction_robot = table.deepcopy(data.raw["construction-robot"]["construction-robot"])
+hidden_construction_robot.name = "factory-hidden-construction-robot"
+hidden_construction_robot.minable = nil
+hidden_construction_robot.placeable_by = nil
+hidden_construction_robot.created_effect = {
+        type = "direct",
+        action_delivery = {
+            type = "instant",
+            source_effects = {
+                {
+                    type = "script",
+                    effect_id = "factory-hidden-construction-robot-created",
+                },
+            }
+        }
+    }
+hidden_construction_robot.speed = 0.5
+hidden_construction_robot.energy_per_move = nil
+hidden_construction_robot.energy_per_tick = nil
+hidden_construction_robot.localised_name = data.raw["construction-robot"]["construction-robot"].localised_name or {"entity-name.construction-robot"}
+hidden_construction_robot.icon_draw_specification = {scale = 0}
+hidden_construction_robot.quality_indicator_scale = 0
+hidden_construction_robot.selectable_in_game = false
+hidden_construction_robot.flags = {"not-on-map"}
+hidden_construction_robot.health = 10000
+hidden_construction_robot.hidden = true
+hidden_construction_robot.idle = nil
+hidden_construction_robot.in_motion = nil
+hidden_construction_robot.shadow_idle = nil
+hidden_construction_robot.shadow_in_motion = nil
+hidden_construction_robot.working = nil
+hidden_construction_robot.shadow_working = nil
+hidden_construction_robot.sparks = nil
+hidden_construction_robot.smoke = nil
+data:extend {hidden_construction_robot}
+
+data:extend {{
+    type = "item",
+    name = "factory-hidden-construction-robot",
+    icon = data.raw.item["construction-robot"].icon,
+    icon_size = data.raw.item["construction-robot"].icon_size,
+    hidden = true,
+    flags = {"only-in-cursor"},
+    place_result = "factory-hidden-construction-robot",
+    stack_size = 10000,
+}}
+
+-- borrowed from the ghosts-do-not-kick-you-out-of-their-gui mod
+data:extend {{
+    type = "simple-entity",
+    name = "ghost-being-constructed",
+    icon = "__core__/graphics/icons/mip/ghost-entity.png",
+    flags = {"placeable-neutral", "placeable-off-grid", "not-on-map"},
+    collision_box = {{-0.1, -0.1}, {0.1, 0.1}},
+    selection_box = {{-0.1, -0.1}, {0.1, 0.1}},
+    minable = {mining_time = 1},
+    selectable_in_game = false,
+    hidden = true,
+}}
+
 local roboport = table.deepcopy(data.raw["roboport"]["roboport"])
 roboport.name = "factory-construction-roboport"
 roboport.collision_box = {{-0.9, -0.9}, {0.9, 0.9}}
 roboport.selection_box = {{-1, -1}, {1, 1}}
 roboport.recharging_light.size = roboport.recharging_light.size / 2
 roboport.charging_station_count_affected_by_quality = true
-roboport.logistics_radius = 4
+roboport.logistics_connection_distance = 64
+roboport.logistics_radius = 2
 roboport.construction_radius = 64
+roboport.robot_slots_count = 0
+roboport.material_slots_count = 1
 roboport.icon = "__factorissimo-2-notnotmelon__/graphics/icon/construction-chest.png"
 roboport.icon_size = 64
 roboport.hidden = true
@@ -121,38 +219,3 @@ data:extend {{
     flags = {"not-stackable", "only-in-cursor"},
     place_result = "factory-construction-chest"
 }}
-
-data:extend {{
-    type = "recipe",
-    name = "factory-construction-robot-packed",
-    enabled = false,
-    ingredients = {
-        {type = "item", name = "construction-robot", amount = 1},
-        {type = "item", name = "iron-plate",         amount = 1}
-    },
-    results = {
-        {type = "item", name = "factory-construction-robot-packed", amount = 1}
-    },
-    energy_required = 2,
-}}
-
-data.raw.item["construction-robot"].flags = data.raw.item["construction-robot"].flags or {}
-
-data:extend {{
-    type = "item",
-    name = "factory-construction-robot-packed",
-    icons = {
-        {icon = "__base__/graphics/icons/construction-robot.png",                icon_size = 64},
-        {icon = "__factorissimo-2-notnotmelon__/graphics/icon/packing-tape.png", icon_size = 64}
-    },
-    stack_size = data.raw.item["construction-robot"].stack_size,
-    flags = table.deepcopy(data.raw.item["construction-robot"].flags),
-    place_result = data.raw.item["construction-robot"].place_result,
-    subgroup = "factorissimo2",
-    order = "c-d",
-    hidden = true,
-    hidden_in_factorio_pedia = false,
-	localised_name = {"item-name.factory-packed", {"entity-name.construction-robot"}},
-}}
-
-table.insert(data.raw.item["construction-robot"].flags, "primary-place-result")
