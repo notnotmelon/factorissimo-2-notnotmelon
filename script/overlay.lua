@@ -3,6 +3,7 @@ Overlay = {}
 local function build_display_upgrade(factory)
 	if not factory.force.technologies["factory-interior-upgrade-display"].researched then return end
 	if factory.inside_overlay_controller and factory.inside_overlay_controller.valid then return end
+	if not factory.inside_surface or not factory.inside_surface.valid then return end
 
 	local pos = factory.layout.overlays
 	local controller = factory.inside_surface.create_entity {
