@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.6.6
+Date: 2024-11-29
+  Bugfixes:
+    - Fixed crash when removing a mod that adds planets. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/123
+---------------------------------------------------------------------------------------------------
 Version: 3.6.5
 Date: 2024-11-25
   Bugfixes:
