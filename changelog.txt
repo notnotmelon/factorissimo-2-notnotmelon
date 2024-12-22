@@ -1,3 +1,15 @@
+Version: 3.7.0
+Date: 2024-12-22
+  Graphics:
+    - (Update by snouz)
+    - Icons redone
+    - Tech icons redone
+    - Fixed shadows
+    - Borehole entity retouched
+    - New gui icons
+    - Removed floors from star map
+    - Added names to surface list (e.g. Gleba floor)
+    - Fixed planet/floor icons when planet's icon isn't 64px (Maraxsis...)
 ---------------------------------------------------------------------------------------------------
 Version: 3.6.6
 Date: 2024-11-29
