@@ -7,7 +7,7 @@ data:extend {
 		type = "technology",
 		name = "factory-architecture-t1",
 		icon = F .. "/graphics/technology/factory-architecture-1.png",
-		icon_size = 128,
+		icon_size = 256,
 		prerequisites = {"stone-wall", "logistics"},
 		effects = {
 			{
@@ -17,7 +17,7 @@ data:extend {
 			{
 				type = "unlock-space-location",
 				space_location = "nauvis-factory-floor",
-				use_icon_overlay_constant = true,
+				use_icon_overlay_constant = false,
 			}
 		},
 		unit = {
@@ -31,7 +31,7 @@ data:extend {
 		type = "technology",
 		name = "factory-architecture-t2",
 		icon = F .. "/graphics/technology/factory-architecture-2.png",
-		icon_size = 128,
+		icon_size = 256,
 		prerequisites = {"factory-architecture-t1", "steel-processing", "electric-energy-distribution-1"},
 		effects = {
 			{
@@ -50,7 +50,7 @@ data:extend {
 		type = "technology",
 		name = "factory-architecture-t3",
 		icon = F .. "/graphics/technology/factory-architecture-3.png",
-		icon_size = 128,
+		icon_size = 256,
 		prerequisites = {"factory-architecture-t2", "concrete", "electric-energy-distribution-2", "production-science-pack"},
 		effects = {
 			{
@@ -71,7 +71,7 @@ data:extend {
 		type = "technology",
 		name = "factory-connection-type-fluid",
 		icon = F .. "/graphics/technology/factory-connection-type-fluid.png",
-		icon_size = 128,
+		icon_size = 256,
 		prerequisites = {"factory-architecture-t1"}, -- 'fluid-handling'
 		effects = {},
 		unit = {
@@ -85,7 +85,7 @@ data:extend {
 		type = "technology",
 		name = "factory-connection-type-chest",
 		icon = F .. "/graphics/technology/factory-connection-type-chest.png",
-		icon_size = 128,
+		icon_size = 256,
 		prerequisites = {"factory-architecture-t2", "logistics-2"},
 		effects = {},
 		unit = {
@@ -99,7 +99,7 @@ data:extend {
 		type = "technology",
 		name = "factory-connection-type-circuit",
 		icon = F .. "/graphics/technology/factory-connection-type-circuit.png",
-		icon_size = 128,
+		icon_size = 256,
 		prerequisites = {"factory-architecture-t2", "circuit-network", "logistic-science-pack"},
 		effects = {{type = "unlock-recipe", recipe = "factory-circuit-connector"}},
 		unit = {
@@ -113,7 +113,7 @@ data:extend {
 		type = "technology",
 		name = "factory-connection-type-heat",
 		icon = F .. "/graphics/technology/factory-connection-type-heat.png",
-		icon_size = 128,
+		icon_size = 256,
 		prerequisites = {"factory-architecture-t2"},
 		effects = {},
 		unit = {
@@ -130,7 +130,7 @@ data:extend {
 		type = "technology",
 		name = "factory-interior-upgrade-lights",
 		icon = F .. "/graphics/technology/factory-interior-upgrade-lights.png",
-		icon_size = 128,
+		icon_size = 256,
 		prerequisites = {"factory-architecture-t1", "lamp"},
 		effects = {},
 		unit = {
@@ -144,7 +144,7 @@ data:extend {
 		type = "technology",
 		name = "factory-interior-upgrade-display",
 		icon = F .. "/graphics/technology/factory-interior-upgrade-display.png",
-		icon_size = 128,
+		icon_size = 256,
 		prerequisites = {"factory-architecture-t2", "lamp"},
 		effects = {},
 		unit = {
@@ -158,7 +158,7 @@ data:extend {
 		type = "technology",
 		name = "factory-preview",
 		icon = F .. "/graphics/technology/factory-preview.png",
-		icon_size = 128,
+		icon_size = 256,
 		prerequisites = {"factory-interior-upgrade-lights", "logistic-science-pack"},
 		effects = {},
 		unit = {
@@ -172,7 +172,7 @@ data:extend {
 		type = "technology",
 		name = "factory-interior-upgrade-roboport",
 		icon = F .. "/graphics/technology/factory-interior-upgrade-roboport.png",
-		icon_size = 128,
+		icon_size = 256,
 		prerequisites = {"factory-architecture-t2", "construction-robotics"},
 		effects = {},
 		unit = {
@@ -189,7 +189,7 @@ data:extend {
 		type = "technology",
 		name = "factory-recursion-t1",
 		icon = F .. "/graphics/technology/factory-recursion-1.png",
-		icon_size = 128,
+		icon_size = 256,
 		prerequisites = {"factory-architecture-t2", "logistics-2"},
 		effects = {},
 		unit = {
@@ -203,7 +203,7 @@ data:extend {
 		type = "technology",
 		name = "factory-recursion-t2",
 		icon = F .. "/graphics/technology/factory-recursion-2.png",
-		icon_size = 128,
+		icon_size = 256,
 		prerequisites = {"factory-recursion-t1", "factory-architecture-t3"},
 		effects = {},
 		unit = {

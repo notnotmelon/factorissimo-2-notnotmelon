@@ -41,7 +41,28 @@ data:extend {
 	{
 		type = "custom-event",
 		name = "on_script_setup_blueprint"
-	}
+	},
+
+  {
+    type = "sprite",
+    name = "factorissimo-gui-icon-lens",
+    filename = "__factorissimo-2-notnotmelon__/graphics/icon/factorissimo-gui-icon-lens.png",
+    priority = "extra-high-no-scale",
+    width = 64,
+    height = 64,
+    flags = {"gui-icon"},
+    scale = 0.5
+  },
+  {
+    type = "sprite",
+    name = "factorissimo-gui-icon-no-lens",
+    filename = "__factorissimo-2-notnotmelon__/graphics/icon/factorissimo-gui-icon-no-lens.png",
+    priority = "extra-high-no-scale",
+    width = 64,
+    height = 64,
+    flags = {"gui-icon"},
+    scale = 0.5
+  },
 }
 
 if mods["power-grid-comb"] then
