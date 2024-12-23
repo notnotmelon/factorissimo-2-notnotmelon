@@ -168,17 +168,17 @@ data.raw.technology["factory-upgrade-greenhouse"].unit = {
 
 data.raw["storage-tank"]["factory-1"].surface_conditions = {{
     property = "gravity",
-    min = 3
+    min = 0.1
 }}
 data.raw["storage-tank"]["factory-2"].surface_conditions = {{
     property = "gravity",
-    min = 3
+    min = 0.1
 }}
 data.raw["storage-tank"]["factory-3"].surface_conditions = {{
     property = "gravity",
-    min = 3
+    min = 0.1
 }}
 data.raw["electric-pole"]["factory-circuit-connector"].surface_conditions = {{
     property = "gravity",
-    min = 3
+    min = 0.1
 }}
