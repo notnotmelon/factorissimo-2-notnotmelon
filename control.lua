@@ -25,6 +25,7 @@ require "script.greenhouse"
 require "script.lights"
 require "script.roboport.roboport"
 require "compat.factoriomaps"
+require "compat.cerys"
 
 local update_hidden_techs -- Function stub
 local activate_factories  -- Function stub
@@ -275,6 +276,7 @@ local function create_factory_interior(layout, building)
 	add_hidden_tile_rect(factory)
 
 	Electricity.get_or_create_inside_power_pole(factory)
+	Cerys.spawn_cerys_entities(factory)
 
 	local radar = factory.inside_surface.create_entity {
 		name = "factory-hidden-radar",
@@ -498,6 +500,8 @@ local BOREHOLE_PUMP_FIXED_RECIPES = {
 	["vulcanus"] = "borehole-pump-lava",
 	["fulgora"] = "borehole-pump-heavy-oil",
 	["aquilo"] = "borehole-pump-ammoniacal-solution",
+	["cerys"] = "borehole-pump-water",
+	["maraxsis"] = "borehole-pump-maraxsis-saline-water",
 }
 local BOREHOLE_PUMP_SMOKE_OFFSETS = {
 	[defines.direction.north] = {-1.2, -2.1},

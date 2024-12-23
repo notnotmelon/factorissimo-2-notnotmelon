@@ -121,6 +121,12 @@ local layout_generators = {
 			inside_x = -3.5,
 			inside_y = 18.5,
 		},
+		cerys_radiative_towers = {
+			{-10, 10},
+			{10,  10},
+			{10,  -10},
+			{-10, -10},
+		},
 	},
 	["factory-2"] = {
 		name = "factory-2",
@@ -217,6 +223,12 @@ local layout_generators = {
 			outside_h = 10,
 			inside_x = -3.5,
 			inside_y = 26.5,
+		},
+		cerys_radiative_towers = {
+			{-15, 15},
+			{15, 15},
+			{15, -15},
+			{-15, -15},
 		},
 	},
 	["factory-3"] = {
@@ -326,6 +338,12 @@ local layout_generators = {
 			outside_h = 14,
 			inside_x = -3.5,
 			inside_y = 33.5,
+		},
+		cerys_radiative_towers = {
+			{-20, 20},
+			{20,  20},
+			{20,  -20},
+			{-20, -20},
 		},
 	}
 }
