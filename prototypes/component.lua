@@ -79,8 +79,9 @@ local function create_indicator(ctype, suffix, image)
 					filename = F .. "/graphics/indicator/" .. image .. ".png",
 					priority = "extra-high",
 					frames = 4,
-					width = 32,
-					height = 32
+					width = 64,
+					height = 64,
+					scale = 0.5
 				},
 			},
 		},

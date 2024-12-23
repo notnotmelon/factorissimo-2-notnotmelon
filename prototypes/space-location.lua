@@ -42,17 +42,17 @@ local function generate_factory_floor_planet_icons(planet)
         local x = old_shift.x or old_shift[1] or 0
         local y = old_shift.y or old_shift[2] or 0
 
-        icon.shift = {x - 2, y - 2}
-        icon.scale = (icon.scale or 1) * 0.75
         icon.icon_size = icon.icon_size or planet.icon_size or 64
+        icon.scale = 64 / (icon.icon_size or 64) or 1
+        icon.scale = (icon.scale or 1) * 0.75
+        icon.shift = {x - 4, y - 4}
     end
 
     -- add a factory icon to the bottom right corner
     table.insert(icons, {
-        icon = "__factorissimo-2-notnotmelon__/graphics/technology/factory-architecture-1.png",
-        icon_size = 128,
-        shift = {8, 8},
-        scale = 0.5
+        icon = "__factorissimo-2-notnotmelon__/graphics/icon/factory-subicon.png",
+        icon_size = 64,
+        scale = 1
     })
 
     return icons
@@ -122,7 +122,7 @@ for _, planet in pairs(data.raw.planet) do
     local factory_floor = table.deepcopy(planet)
     local original_localised_name = planet.localised_name or {"space-location-name." .. planet.name}
     factory_floor.name = planet.name .. "-factory-floor"
-    factory_floor.localised_name = ""
+    factory_floor.localised_name = {"space-location-description.factory-floor-in-list", original_localised_name}
     factory_floor.localised_description = {"space-location-description.factory-floor", original_localised_name, planet.name}
     factory_floor.lightning_properties = nil
     factory_floor.distance = factory_floor.distance - (1.25 * (factory_floor.magnitude or 1))
@@ -139,12 +139,13 @@ for _, planet in pairs(data.raw.planet) do
     factory_floor.surface_properties["ceiling"] = 0
     factory_floor.magnitude = (factory_floor.magnitude or 1) / 2
     factory_floor.starmap_icons = nil
-    factory_floor.starmap_icon = "__factorissimo-2-notnotmelon__/graphics/starmap/factory-floor-" .. math.floor((planet.orientation or 0) * 64 + 32) % 64 .. ".png"
+    factory_floor.starmap_icon = nil
     factory_floor.icon = nil
     factory_floor.icon_size = 64
     factory_floor.icons = generate_factory_floor_planet_icons(planet)
     factory_floor.starmap_icon_size = 115
     factory_floor.factoriopedia_alternative = planet.name
+    factory_floor.hidden = true
     factory_floor.hidden_in_factoriopedia = true
     update_surface_render_parameters(planet, factory_floor)
     add_music(planet, factory_floor)
@@ -173,7 +174,7 @@ for _, technology in pairs(data.raw.technology) do
             table.insert(new_effects, {
                 type = "unlock-space-location",
                 space_location = factory_floor.name,
-                use_icon_overlay_constant = true,
+                use_icon_overlay_constant = false,
             })
 
             ::continue::

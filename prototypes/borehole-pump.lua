@@ -42,7 +42,7 @@ data:extend {{
     type = "technology",
     name = "factory-upgrade-borehole-pump",
     icon = F .. "/graphics/technology/factory-upgrade-borehole-pump.png",
-    icon_size = 128,
+    icon_size = 256,
     prerequisites = {"factory-architecture-t3", "electromagnetic-science-pack"},
     effects = {
         {type = "unlock-recipe", recipe = "borehole-pump"},

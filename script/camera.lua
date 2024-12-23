@@ -6,7 +6,7 @@ local find_surrounding_factory = remote_api.find_surrounding_factory
 
 local function get_camera_toggle_button(player)
 	local buttonflow = mod_gui.get_button_flow(player)
-	local button = buttonflow.factory_camera_toggle_button or buttonflow.add {type = "sprite-button", name = "factory_camera_toggle_button", sprite = "technology/factory-architecture-t1"}
+	local button = buttonflow.factory_camera_toggle_button or buttonflow.add {type = "sprite-button", name = "factory_camera_toggle_button", sprite = "factorissimo-gui-icon-no-lens"}
 	button.visible = player.force.technologies["factory-preview"].researched
 	return button
 end
@@ -126,11 +126,11 @@ script.on_event(defines.events.on_gui_click, function(event)
 	local player = game.players[event.player_index]
 	if event.element.valid and event.element.name == "factory_camera_toggle_button" then
 		if storage.player_preview_active[player.index] then
-			get_camera_toggle_button(player).sprite = "technology/factory-architecture-t1"
+			get_camera_toggle_button(player).sprite = "factorissimo-gui-icon-no-lens"
 			storage.player_preview_active[player.index] = false
 			unset_camera(player)
 		else
-			get_camera_toggle_button(player).sprite = "technology/factory-preview"
+			get_camera_toggle_button(player).sprite = "factorissimo-gui-icon-lens"
 			storage.player_preview_active[player.index] = true
 			update_camera(player)
 		end
