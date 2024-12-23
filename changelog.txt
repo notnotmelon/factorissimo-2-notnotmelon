@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.7.0
+Date: 2024-12-23
+  Features:
+    - Redo all tech and item icon graphics. Removed factory floors from starmap. Update by snouz. More info: https://github.com/notnotmelon/factorissimo-2-notnotmelon/pull/142
+  Graphics:
+    - Optimized all PNG sizes via oxipng, pngquant, and spritter. Total bundle size reduced by 48.2% (-3.21 MB).
+---------------------------------------------------------------------------------------------------
 Version: 3.6.6
 Date: 2024-11-29
   Bugfixes:
