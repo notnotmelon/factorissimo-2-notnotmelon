@@ -139,7 +139,7 @@ for _, planet in pairs(data.raw.planet) do
     factory_floor.surface_properties["ceiling"] = 0
     factory_floor.magnitude = (factory_floor.magnitude or 1) / 2
     factory_floor.starmap_icons = nil
-    factory_floor.starmap_icon = "__factorissimo-2-notnotmelon__/graphics/starmap/factory-floor-" .. math.floor((planet.orientation or 0) * 64 + 32) % 64 .. ".png"
+    factory_floor.starmap_icon = nil
     factory_floor.icon = nil
     factory_floor.icon_size = 64
     factory_floor.icons = generate_factory_floor_planet_icons(planet)
