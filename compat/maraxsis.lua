@@ -16,7 +16,6 @@ end
 
 function Compat.spawn_maraxsis_water_shaders(surface, chunk_position)
     if not script.active_mods["maraxsis"] then return end
-    game.print(surface.name)
     if surface.name ~= "maraxsis-factory-floor" and surface.name ~= "maraxsis-trench-factory-floor" then return end
 
     for x = -7, 8 do
