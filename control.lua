@@ -75,6 +75,10 @@ local function init_globals()
 				factory.quality = prototypes.quality.normal
 			end
 		end
+		-- Ensure that original planet is set.
+		if not factory.original_planet and factory.outside_surface and factory.outside_surface.valid then
+			factory.original_planet = factory.outside_surface.planet
+		end
 	end
 end
 
@@ -388,7 +392,12 @@ end)
 
 -- FACTORY PLACEMENT AND DESTRUCTION --
 
-local function can_place_factory_here(tier, surface, position)
+local function can_place_factory_here(tier, surface, position, original_planet)
+	if original_planet and (not original_planet.valid or original_planet.surface ~= surface) then
+		create_flying_text {position = position, text = {"factory-connection-text.invalid-placement-planet", original_planet.name, original_planet.prototype.localised_name}}
+		return false
+	end
+
 	local factory = find_surrounding_factory(surface, position)
 	if not factory then return true end
 	local outer_tier = factory.layout.tier
@@ -462,6 +471,7 @@ local function create_fresh_factory(entity)
 	local layout = Layout.create_layout(entity.name, entity.quality)
 	local factory = create_factory_interior(layout, entity)
 	create_factory_exterior(factory, entity)
+	factory.original_planet = entity.surface.planet
 	factory.inactive = not can_place_factory_here(layout.tier, entity.surface, entity.position)
 	return factory
 end
@@ -478,7 +488,7 @@ local function handle_factory_placed(entity, tags)
 		-- This is a saved factory, we need to unpack it
 		factory.quality = entity.quality
 		create_factory_exterior(factory, entity)
-		factory.inactive = not can_place_factory_here(factory.layout.tier, entity.surface, entity.position)
+		factory.inactive = not can_place_factory_here(factory.layout.tier, entity.surface, entity.position, factory.original_planet)
 		return
 	end
 
@@ -921,7 +931,8 @@ activate_factories = function()
 		factory.inactive = factory.outside_surface.valid and not can_place_factory_here(
 			factory.layout.tier,
 			factory.outside_surface,
-			{x = factory.outside_x, y = factory.outside_y}
+			{x = factory.outside_x, y = factory.outside_y},
+			factory.original_planet
 		)
 
 		build_factory_upgrades(factory)
