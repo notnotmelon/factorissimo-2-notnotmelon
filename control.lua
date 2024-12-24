@@ -502,6 +502,8 @@ local BOREHOLE_PUMP_FIXED_RECIPES = {
 	["aquilo"] = "borehole-pump-ammoniacal-solution",
 	["cerys"] = "borehole-pump-water",
 	["maraxsis"] = "borehole-pump-maraxsis-saline-water",
+	["maraxsis-trench"] = "borehole-pump-lava",
+	["tenebris"] = "borehole-pump-sulfuric-acid",
 }
 local BOREHOLE_PUMP_SMOKE_OFFSETS = {
 	[defines.direction.north] = {-1.2, -2.1},
