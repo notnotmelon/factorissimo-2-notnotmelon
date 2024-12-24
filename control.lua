@@ -26,6 +26,7 @@ require "script.lights"
 require "script.roboport.roboport"
 require "compat.factoriomaps"
 require "compat.cerys"
+require "compat.maraxsis"
 
 local update_hidden_techs -- Function stub
 local activate_factories  -- Function stub
@@ -187,7 +188,8 @@ local function create_factory_position(layout, building)
 		end
 	end
 	surface.destroy_decoratives {area = {{32 * (cx - 2), 32 * (cy - 2)}, {32 * (cx + 2), 32 * (cy + 2)}}}
-
+	Compat.spawn_maraxsis_water_shaders(surface, {x = cx, y = cy})
+	
 	local factory = {}
 	factory.inside_surface = surface
 	factory.inside_x = 32 * cx
@@ -280,7 +282,7 @@ local function create_factory_interior(layout, building)
 	add_hidden_tile_rect(factory)
 
 	Electricity.get_or_create_inside_power_pole(factory)
-	Cerys.spawn_cerys_entities(factory)
+	Compat.spawn_cerys_entities(factory)
 
 	local radar = factory.inside_surface.create_entity {
 		name = "factory-hidden-radar",
