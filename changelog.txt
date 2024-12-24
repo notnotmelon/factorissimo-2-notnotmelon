@@ -1,4 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.7.1
+Date: 2024-12-24
+  Compatibility:
+    - Added compatibility with Cerys
+    - Fix cerys radiative towers being too close together.
+    - Tenebris and maraxsis trenches are now permablack.
+    - The borehole pump now works properly on maraxsis and tenebris.
+    - The maraxsis water shader now spawns inside maraxsis factory floor.
+  Bugfixes:
+    - Fixed that you could place a factory on the wrong planet. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/149
+---------------------------------------------------------------------------------------------------
 Version: 3.7.0
 Date: 2024-12-23
   Features:
