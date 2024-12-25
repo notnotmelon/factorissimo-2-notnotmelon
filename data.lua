@@ -21,16 +21,19 @@ data:extend {
 		type = "custom-input",
 		name = "factory-rotate",
 		key_sequence = "R",
+		controller_key_sequence = "controller-rightstick"
 	},
 	{
 		type = "custom-input",
 		name = "factory-increase",
 		key_sequence = "SHIFT + R",
+		controller_key_sequence = "controller-dpright"
 	},
 	{
 		type = "custom-input",
 		name = "factory-decrease",
 		key_sequence = "CONTROL + R",
+		controller_key_sequence = "controller-dpleft"
 	},
 	{
 		type = "custom-input",
