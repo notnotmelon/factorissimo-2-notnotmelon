@@ -273,3 +273,11 @@ register_connection_type("chest", require("chest"))
 register_connection_type("fluid", require("fluid"))
 register_connection_type("circuit", require("circuit"))
 register_connection_type("heat", require("heat"))
+
+script.on_event(defines.events.on_player_flipped_entity, function(event)
+	local entity = event.entity
+	if not Connections.indicator_names[entity.name] then return end
+	entity.mirroring = false
+	local factory = remote_api.find_surrounding_factory(entity.surface, entity.position)
+	rotate(factory, entity)
+end)
