@@ -58,7 +58,7 @@ function Blueprint.copy_entity_ghosts(source, destination)
 
 	Overlay.copy_overlay_between_factory_buildings(source, destination)
 
-	local update_tick = game.tick + 160 -- Delay this function a bit to give the radars a chance to scan the area
+	local update_tick = game.tick + 240 -- Delay this function a bit to give the radars a chance to scan the area
 	script.on_nth_tick(update_tick, function()
 		script.on_nth_tick(update_tick, nil)
 
