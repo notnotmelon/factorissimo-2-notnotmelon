@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.7.3
+Date: 2024-12-25
+  Bugfixes:
+    - Default keybind is now changed and allowed remapping for the "enter factorissimo from remote view" key. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/117
+---------------------------------------------------------------------------------------------------
 Version: 3.7.2
 Date: 2024-12-25
   Bugfixes:
