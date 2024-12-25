@@ -38,8 +38,8 @@ data:extend {
 	{
 		type = "custom-input",
 		name = "factory-open-outside-surface-to-remote-view",
-		key_sequence = "",
-		linked_game_control = "build-ghost"
+		key_sequence = "SHIFT + mouse-button-2",
+		controller_key_sequence = "controller-leftstick"
 	},
 	{
 		type = "custom-event",
