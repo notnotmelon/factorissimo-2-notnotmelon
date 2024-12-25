@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.7.2
+Date: 2024-12-25
+  Bugfixes:
+    - Flipping a connection now also counts as rotation. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/133
+  Changes:
+    - Added default `controller_key_sequence` when playing on nintendo switch.
+---------------------------------------------------------------------------------------------------
 Version: 3.7.1
 Date: 2024-12-24
   Compatibility:
