@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.7.4
+Date: 2024-12-25
+  Bugfixes:
+    - Increased delay time before performing recursive deepcopy to allow the hidden radars to scan the area. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/136
+---------------------------------------------------------------------------------------------------
 Version: 3.7.3
 Date: 2024-12-25
   Bugfixes:
