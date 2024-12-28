@@ -1,6 +1,11 @@
 local F = "__factorissimo-2-notnotmelon__"
 local pf = "p-q-"
 
+local starting_planet = "nauvis"
+if mods["any-planet-start"] then
+	starting_planet = settings.startup["aps-planet"].value
+end
+
 data:extend {
 	-- Factory buildings
 	{
@@ -16,7 +21,7 @@ data:extend {
 			},
 			{
 				type = "unlock-space-location",
-				space_location = "nauvis-factory-floor",
+				space_location = starting_planet .. "-factory-floor",
 				use_icon_overlay_constant = false,
 			}
 		},
