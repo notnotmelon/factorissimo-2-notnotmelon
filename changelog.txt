@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.7.5
+Date: 2024-12-28
+  Compatibility:
+    - Added compatibility with the any planet start mod.
+  Bugfixes:
+    - Fixed error "this factory is designed for ..." appearing at the wrong times. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/151
+---------------------------------------------------------------------------------------------------
 Version: 3.7.4
 Date: 2024-12-25
   Bugfixes:
