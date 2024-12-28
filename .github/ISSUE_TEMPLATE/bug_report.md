@@ -7,8 +7,8 @@ assignees: ''
 
 ---
 
-**Factorio & Maraxsis version number**
-Please post both the Factorio and Maraxsis version numbers here.
+**Factorio & Factorissimo version number**
+Please post both the Factorio and Factorissimo version numbers here.
 
 **Describe the bug**
 A clear and concise description of what the bug is.
