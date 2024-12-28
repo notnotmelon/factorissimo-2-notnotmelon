@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.7.6
+Date: 2024-12-28
+  Bugfixes:
+    - Fixed that the description of the factory buildings told to open in remote view via Shift+LMB while the actual hotkey was Shift+RMB. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/152
+---------------------------------------------------------------------------------------------------
 Version: 3.7.5
 Date: 2024-12-28
   Compatibility:
