@@ -438,7 +438,7 @@ create_or_remove_item_request_proxies = function(factory, requests_by_itemname)
     for _, chest in pairs {requester, storage} do
         for _, already_has in pairs(chest.get_inventory(defines.inventory.chest).get_contents()) do
             local name, quality = already_has.name, already_has.quality -- subtract off all the items we already have in storage
-            if requests_by_itemname[name] and requests_by_itemname[name][quality] then
+            if requests_by_itemname[name] then
                 requests_by_itemname[name][quality] = nil
             end
         end
@@ -447,31 +447,31 @@ create_or_remove_item_request_proxies = function(factory, requests_by_itemname)
     local already_occupied_inventory_indexes = {}
     local proxies = {}
     for _, proxy in pairs(roboport_upgrade.item_request_proxies) do
-        if proxy.valid then
-            local item_requests = proxy.item_requests
-            for _, request in pairs(item_requests) do
-                local name, quality = request.name, request.quality -- destroy any proxies that have their requests fulfilled already
-                if not requests_by_itemname[name] or not requests_by_itemname[name][quality] then
-                    proxy.destroy()
-                    goto we_are_no_longer_requesting_this_item
-                end
+        if not proxy.valid then goto we_are_no_longer_requesting_this_item end
+
+        local item_requests = proxy.item_requests
+        for _, request in pairs(item_requests) do
+            local name, quality = request.name, request.quality -- destroy any proxies that have their requests fulfilled already
+            if not requests_by_itemname[name] or not requests_by_itemname[name][quality] then
+                proxy.destroy()
+                goto we_are_no_longer_requesting_this_item
             end
-
-            for _, request in pairs(item_requests) do
-                local name, quality = request.name, request.quality -- same logic as above. subtract off all the items we are already requesting
-                requests_by_itemname[name][quality] = nil
-
-                for _, insert_plan in pairs(proxy.insert_plan) do
-                    for _, inventory_locator in pairs(insert_plan.items.in_inventory) do
-                        -- inventory_locator.stack is 0-indexed for some reason. adjust.
-                        already_occupied_inventory_indexes[inventory_locator.stack + 1] = true
-                    end
-                end
-            end
-
-            proxies[#proxies + 1] = proxy
-            ::we_are_no_longer_requesting_this_item::
         end
+
+        for _, request in pairs(item_requests) do
+            local name, quality = request.name, request.quality -- same logic as above. subtract off all the items we are already requesting
+            requests_by_itemname[name][quality] = nil
+
+            for _, insert_plan in pairs(proxy.insert_plan) do
+                for _, inventory_locator in pairs(insert_plan.items.in_inventory) do
+                    -- inventory_locator.stack is 0-indexed for some reason. adjust.
+                    already_occupied_inventory_indexes[inventory_locator.stack + 1] = true
+                end
+            end
+        end
+
+        proxies[#proxies + 1] = proxy
+        ::we_are_no_longer_requesting_this_item::
     end
 
     roboport_upgrade.item_request_proxies = proxies
@@ -484,10 +484,6 @@ create_new_item_request_proxies = function(factory, requests_by_itemname, alread
     local requester = roboport_upgrade.requester
     local requester_inventory = requester.get_inventory(defines.inventory.chest)
 
-    -- "modules" is the name of the list of all items to be requested by the item request proxy.
-    -- it has nothing to do with modules this is a legacy name from 1.1
-    local modules = {}
-
     for item_name, requests_by_quality in pairs(requests_by_itemname) do
         for quality, count in pairs(requests_by_quality) do
             local next_available_inventory_slot
@@ -498,7 +494,7 @@ create_new_item_request_proxies = function(factory, requests_by_itemname, alread
                     break
                 end
             end
-            if not next_available_inventory_slot then goto no_more_inventory_space end
+            if not next_available_inventory_slot then return end
 
             count = math.min(count, prototypes.item[item_name].stack_size)
 
@@ -512,21 +508,16 @@ create_new_item_request_proxies = function(factory, requests_by_itemname, alread
                 }
             }
 
-            modules[#modules + 1] = module
+            local proxies = roboport_upgrade.item_request_proxies
+            proxies[#proxies + 1] = factory.outside_surface.create_entity {
+                name = "item-request-proxy",
+                position = requester.position,
+                target = requester,
+                modules = {module},
+                force = requester.force
+            }
         end
     end
-
-    ::no_more_inventory_space::
-    if not next(modules) then return end
-
-    local proxies = roboport_upgrade.item_request_proxies
-    proxies[#proxies + 1] = factory.outside_surface.create_entity {
-        name = "item-request-proxy",
-        position = requester.position,
-        target = requester,
-        modules = modules,
-        force = requester.force
-    }
 end
 
 -- smaller update function to transfer items from the requester chest to the construction chest
@@ -547,10 +538,7 @@ script.on_nth_tick(43, function()
         for i = 1, #requester_inventory do
             local stack = requester_inventory[i]
             if stack.valid_for_read then
-                local amount_moved = storage_inventory.insert(stack)
-                if amount_moved > 0 then
-                    stack.count = stack.count - amount_moved
-                end
+                stack.count = stack.count - storage_inventory.insert(stack)
             end
         end
 
