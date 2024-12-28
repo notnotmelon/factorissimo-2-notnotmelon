@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.7.7
+Date: 2024-12-28
+  Bugfixes:
+    - Fixed that construction bots would sometimes make it halfway and then "randomly" stop when travelling to a factory building. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/140
+---------------------------------------------------------------------------------------------------
 Version: 3.7.6
 Date: 2024-12-28
   Bugfixes:
