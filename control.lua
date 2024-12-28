@@ -125,12 +125,12 @@ local function get_surface_name(layout, parent_surface)
 	end
 
 	storage.next_factory_surface = storage.next_factory_surface + 1
-	return "factory-floor-" .. storage.next_factory_surface
+	return storage.next_factory_surface .. "-factory-floor"
 end
 
 script.on_event(defines.events.on_surface_created, function(event)
 	local surface = game.get_surface(event.surface_index)
-	if not surface.name:find("%-factory%-floor$") and not surface.name:find("^factory%-floor%-%d+$") then return end
+	if not surface.name:find("%-factory%-floor$") then return end
 
 	surface.freeze_daytime = true
 	surface.daytime = 0.5
@@ -394,9 +394,20 @@ end)
 
 -- FACTORY PLACEMENT AND DESTRUCTION --
 
+local function does_original_planet_match_surface(original_planet, surface)
+	if not original_planet then return true end
+	if not original_planet.valid then return false end
+	local original_planet_name = original_planet.surface.name:gsub("%-factory%-floor$", "")
+	local surface_name = surface.name:gsub("%-factory%-floor$", "")
+	return original_planet_name == surface_name
+end
+
 local function can_place_factory_here(tier, surface, position, original_planet)
-	if original_planet and (not original_planet.valid or original_planet.surface ~= surface) then
-		create_flying_text {position = position, text = {"factory-connection-text.invalid-placement-planet", original_planet.name, original_planet.prototype.localised_name}}
+	if not does_original_planet_match_surface(original_planet, surface) then
+		local original_planet_name = original_planet.name:gsub("%-factory%-floor$", "")
+		local original_planet_prototype = (game.planets[original_planet_name] or original_planet).prototype
+		local flying_text = {"factory-connection-text.invalid-placement-planet", original_planet_name, original_planet_prototype.localised_name}
+		create_flying_text {position = position, text = flying_text}
 		return false
 	end
 
