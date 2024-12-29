@@ -512,6 +512,7 @@ end
 
 factorissimo.on_event(factorissimo.events.on_built(), function(event)
     local entity = event.entity
+    if not entity.valid then return end
     local entity_name = entity.name
 
     if has_layout(entity_name) then

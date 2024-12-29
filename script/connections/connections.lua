@@ -265,21 +265,19 @@ end)
 
 factorissimo.on_event(factorissimo.events.on_built(), function(event)
     local entity = event.entity
+    if not entity.valid or not factorissimo.is_connectable(entity) then return end
     local entity_name = entity.name
 
-    if factorissimo.is_connectable(entity) then
-        if entity_name == "factory-circuit-connector" then
-            entity.operable = false
-        else
-            local _, _, pipe_name_input = entity_name:find("^factory%-(.*)%-input$")
-            local _, _, pipe_name_output = entity_name:find("^factory%-(.*)%-output$")
-            local pipe_name = pipe_name_input or pipe_name_output
-            if pipe_name then entity = remote_api.replace_entity(entity, pipe_name) end
-        end
-
-        recheck_nearby_connections(entity)
-        return
+    if entity_name == "factory-circuit-connector" then
+        entity.operable = false
+    else
+        local _, _, pipe_name_input = entity_name:find("^factory%-(.*)%-input$")
+        local _, _, pipe_name_output = entity_name:find("^factory%-(.*)%-output$")
+        local pipe_name = pipe_name_input or pipe_name_output
+        if pipe_name then entity = remote_api.replace_entity(entity, pipe_name) end
     end
+
+    recheck_nearby_connections(entity)
 end)
 
 -- Connection effects --

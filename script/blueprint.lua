@@ -141,6 +141,7 @@ local BLUEPRINTABLE_FACTORY_PERIPHERALS = {
 
 factorissimo.on_event(factorissimo.events.on_built(), function(event)
     local entity = event.entity
+    if not entity.valid then return end
     local entity_name, entity_type = entity.name, entity.type
 
     local is_ghost = entity_name == "entity-ghost"
