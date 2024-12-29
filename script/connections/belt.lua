@@ -143,9 +143,9 @@ Belt.direction = function(conn)
 	return "d0", conn.facing
 end
 
-Belt.rotate = Connections.beep
+Belt.rotate = factorissimo.beep
 
-Belt.adjust = Connections.beep
+Belt.adjust = factorissimo.beep
 
 local function spill_link_items(belt, link, surface, position)
 	for _, i in pairs {1, 2} do

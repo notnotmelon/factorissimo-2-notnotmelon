@@ -4,14 +4,18 @@
 local find_surrounding_factory = remote_api.find_surrounding_factory
 local find_factory_by_area = remote_api.find_factory_by_area
 local get_factory_by_building = remote_api.get_factory_by_building
-local has_layout = Layout.has_layout
+local has_layout = factorissimo.has_layout
+
+factorissimo.on_event(factorissimo.events.on_init(), function()
+	storage.last_player_teleport = storage.last_player_teleport or {}
+end)
 
 --- This function exists in order to teleport the personal robopots of a player along with the player when moving between factories.
 local function purgatory_surface()
 	if remote.interfaces["RSO"] then -- RSO compatibility
 		pcall(remote.call, "RSO", "ignoreSurface", "factory-travel-surface")
 	end
-	
+
 	local planet = game.planets["factory-travel-surface"]
 	if planet.surface then return planet.surface end
 
@@ -26,7 +30,7 @@ end
 
 local function teleport_safely(e, surface, position, player, leaving)
 	position = {x = position.x or position[1], y = position.y or position[2]}
-	
+
 	if e.is_player() and not e.character then -- god controller
 		e.teleport(position, surface)
 		storage.last_player_teleport[player.index] = game.tick
@@ -40,7 +44,7 @@ local function teleport_safely(e, surface, position, player, leaving)
 		storage.last_player_teleport[player.index] = game.tick
 	end
 
-	if player then Camera.update_camera(player) end
+	if player then factorissimo.update_camera(player) end
 end
 
 local function enter_factory(e, factory, player)
@@ -104,7 +108,7 @@ local function check_position_and_leave_factory(player, is_airborne)
 		walking_direction == defines.direction.southwest
 
 	if not is_moving_downwards then return end
-	
+
 	local factory = find_surrounding_factory(player.physical_surface, position)
 	if not factory then return end
 
@@ -114,8 +118,8 @@ local function check_position_and_leave_factory(player, is_airborne)
 	if math.abs(position.x - factory.inside_door_x) >= 4 then return end
 
 	leave_factory(player, factory, player)
-	Camera.update_camera(player)
-	Overlay.update_overlay(factory)
+	factorissimo.update_camera(player)
+	factorissimo.update_overlay(factory)
 	return true
 end
 
@@ -131,7 +135,7 @@ local function check_position_and_enter_factory(player, is_airborne)
 		or walking_direction == defines.direction.northwest
 
 	if not is_moving_upwards then return end
-	
+
 	local factory = find_factory_by_area {
 		surface = player.physical_surface,
 		area = (not is_airborne) and {
@@ -151,7 +155,8 @@ local function check_position_and_enter_factory(player, is_airborne)
 	return true
 end
 
-local function teleport_players()
+-- teleport players between factory buildings
+factorissimo.on_nth_tick(6, function()
 	local tick = game.tick
 	local jetpacks = get_jetpacks()
 	for player_index, player in pairs(game.connected_players) do
@@ -160,12 +165,10 @@ local function teleport_players()
 		if not player.walking_state.walking then goto continue end
 
 		local is_airborne = is_airborne(jetpacks, player)
-
 		if not check_position_and_enter_factory(player, is_airborne) then
 			check_position_and_leave_factory(player, is_airborne)
 		end
 
 		::continue::
 	end
-end
-script.on_nth_tick(6, teleport_players)
+end)

@@ -82,7 +82,7 @@ local function make_tile(tinfo)
 	}}
 
 	if tinfo.growable then
-		for _, overgrowth_tile in pairs{"overgrowth-yumako-soil", "overgrowth-jellynut-soil"} do
+		for _, overgrowth_tile in pairs {"overgrowth-yumako-soil", "overgrowth-jellynut-soil"} do
 			local tile_item = data.raw.item[overgrowth_tile]
 			if not tile_item then goto continue end
 			if not tile_item.place_as_tile or not tile_item.place_as_tile.tile_condition then goto continue end

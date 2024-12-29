@@ -1,5 +1,3 @@
-Compat = Compat or {}
-
 local function spawn_radiative_tower(surface, x, y)
     local e = surface.create_entity {
         name = "cerys-fulgoran-radiative-tower-contracted-container",
@@ -41,7 +39,7 @@ local DEFAULT_CERYS_TOWER_POSITIONS = {
     {-10, -10},
 }
 
-Compat.spawn_cerys_entities = function(factory)
+factorissimo.spawn_cerys_entities = function(factory)
     if not script.active_mods["Cerys-Moon-of-Fulgora"] then return end
 
     local surface = factory.inside_surface

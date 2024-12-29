@@ -1,5 +1,3 @@
-Layout = {}
-
 local north = defines.direction.north
 local east = defines.direction.east
 local south = defines.direction.south
@@ -226,8 +224,8 @@ local layout_generators = {
 		},
 		cerys_radiative_towers = {
 			{-13, 13},
-			{13, 13},
-			{13, -13},
+			{13,  13},
+			{13,  -13},
 			{-13, -13},
 		},
 	},
@@ -348,14 +346,13 @@ local layout_generators = {
 	}
 }
 
-local function init()
+factorissimo.on_event(factorissimo.events.on_init(), function()
 	storage.layout_generators = layout_generators
-end
-Layout.init = init
+end)
 
 remote_api.add_layout = function(layout)
 	init()
-	storage.layout_generators[layout.name] = layout
+	storage.layout_generators[factorissimo.name] = layout
 end
 
 function has_layout(name)
@@ -364,7 +361,7 @@ function has_layout(name)
 end
 
 remote_api.has_layout = has_layout
-Layout.has_layout = has_layout
+factorissimo.has_layout = has_layout
 
 local function create_layout(name, quality)
 	local layout = storage.layout_generators[name]
@@ -382,4 +379,4 @@ local function create_layout(name, quality)
 	return layout
 end
 remote_api.create_layout = create_layout
-Layout.create_layout = create_layout
+factorissimo.create_layout = create_layout

@@ -1,5 +1,3 @@
-Compat = Compat or {}
-
 local function spawn_maraxsis_water_shader(surface, chunk_position)
     local x = chunk_position.x * 32 + 16
     local y = chunk_position.y * 32 + 16
@@ -14,7 +12,7 @@ local function spawn_maraxsis_water_shader(surface, chunk_position)
     fancy_water.minable_flag = false
 end
 
-function Compat.spawn_maraxsis_water_shaders(surface, chunk_position)
+function factorissimo.spawn_maraxsis_water_shaders(surface, chunk_position)
     if not script.active_mods["maraxsis"] then return end
     if surface.name ~= "maraxsis-factory-floor" and surface.name ~= "maraxsis-trench-factory-floor" then return end
 
@@ -27,4 +25,3 @@ function Compat.spawn_maraxsis_water_shaders(surface, chunk_position)
         end
     end
 end
-

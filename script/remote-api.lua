@@ -39,23 +39,6 @@ factory = {
 }
 ]] --
 
-remote_api.get_global = function(path)
-	if not path then return global end
-	local g = global
-	for _, point in ipairs(path) do
-		g = g[point]
-	end
-	return g
-end
-
-remote_api.set_global = function(path, v)
-	local g = global
-	for i = 1, #path - 1 do
-		g = g[path[i]]
-	end
-	g[path[#path]] = v
-end
-
 remote_api.get_factory_by_entity = function(entity)
 	if entity == nil then return nil end
 	return storage.factories_by_entity[entity.unit_number]
@@ -75,7 +58,7 @@ remote_api.find_factory_by_area = function(params)
 	local area = params.area
 
 	for _, entity in pairs(surface.find_entities_filtered {position = position, area = area, type = BUILDING_TYPE}) do
-		if Layout.has_layout(entity.name) then return remote_api.get_factory_by_building(entity) end
+		if factorissimo.has_layout(entity.name) then return remote_api.get_factory_by_building(entity) end
 	end
 	return nil
 end
@@ -86,7 +69,7 @@ remote_api.find_factories_by_area = function(params)
 
 	local factories = {}
 	for _, entity in pairs(surface.find_entities_filtered {area = area, type = BUILDING_TYPE}) do
-		if Layout.has_layout(entity.name) then
+		if factorissimo.has_layout(entity.name) then
 			local factory = remote_api.get_factory_by_building(entity)
 			if factory then factories[#factories + 1] = factory end
 		end
@@ -111,5 +94,7 @@ remote_api.find_surrounding_factory_by_surface_index = function(surface_index, p
 	if (x > 7 or x < 0) then return nil end
 	return factories[8 * y + x + 1]
 end
+
+remote.add_interface("factorissimo", remote_api)
 
 return remote_api

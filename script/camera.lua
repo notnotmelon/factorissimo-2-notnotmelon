@@ -1,5 +1,3 @@
-Camera = {}
-
 local mod_gui = require "mod-gui"
 local get_factory_by_entity = remote_api.get_factory_by_entity
 local find_surrounding_factory = remote_api.find_surrounding_factory
@@ -10,7 +8,14 @@ local function get_camera_toggle_button(player)
 	button.visible = player.force.technologies["factory-preview"].researched
 	return button
 end
-Camera.get_camera_toggle_button = get_camera_toggle_button
+
+factorissimo.on_event({defines.events.on_research_finished, defines.events.on_research_reversed}, function(event)
+	local name = event.research.name
+	if name ~= "factory-preview" then return end
+	for _, player in pairs(game.players) do
+		get_camera_toggle_button(player)
+	end
+end)
 
 local function get_camera_frame(player)
 	local frameflow = mod_gui.get_frame_flow(player)
@@ -28,12 +33,18 @@ local function prepare_gui(player)
 	get_camera_frame(player)
 end
 
-local function init()
+factorissimo.on_event(factorissimo.events.on_init(), function()
+	-- Map: Player index -> Whether preview is activated
+	storage.player_preview_active = storage.player_preview_active or {}
+
 	for _, player in pairs(game.players) do
 		prepare_gui(player)
 	end
-end
-Camera.init = init
+end)
+
+factorissimo.on_event(defines.events.on_player_created, function(event)
+	prepare_gui(game.get_player(event.player_index))
+end)
 
 local function set_camera(player, factory, inside)
 	if not player.force.technologies["factory-preview"].researched or factory.inactive then return end
@@ -97,7 +108,7 @@ local function update_camera(player)
 	local selected = player.selected
 	if selected then
 		local factory
-		if selected.type == "item-entity" and selected.stack.type == "item-with-tags" and Layout.has_layout(selected.stack.name) then
+		if selected.type == "item-entity" and selected.stack.type == "item-with-tags" and factorissimo.has_layout(selected.stack.name) then
 			factory = storage.saved_factories[selected.stack.tags.id]
 		else
 			factory = get_factory_by_entity(player.selected)
@@ -108,7 +119,7 @@ local function update_camera(player)
 		elseif selected.name == "factory-power-pole" then
 			local factory = find_surrounding_factory(selected.surface, selected.position)
 			if factory then
-				Overlay.update_overlay(factory)
+				factorissimo.update_overlay(factory)
 				set_camera(player, factory, false)
 				return
 			end
@@ -116,14 +127,10 @@ local function update_camera(player)
 	end
 	unset_camera(player)
 end
-Camera.update_camera = update_camera
+factorissimo.update_camera = update_camera
 
-script.on_event(defines.events.on_player_created, function(event)
-	prepare_gui(game.players[event.player_index])
-end)
-
-script.on_event(defines.events.on_gui_click, function(event)
-	local player = game.players[event.player_index]
+factorissimo.on_event(defines.events.on_gui_click, function(event)
+	local player = game.get_player(event.player_index)
 	if event.element.valid and event.element.name == "factory_camera_toggle_button" then
 		if storage.player_preview_active[player.index] then
 			get_camera_toggle_button(player).sprite = "factorissimo-gui-icon-no-lens"
@@ -149,7 +156,7 @@ local function camera_teleport(player, surface, position)
 		player.teleport(position, surface, true, false)
 		return
 	end
-	
+
 	player.set_controller {
 		type = defines.controllers.remote,
 		position = position,
@@ -161,24 +168,24 @@ end
 
 local function open_outside_in_remote_view(player, pole)
 	for _, factory in pairs(storage.factories) do
-		if factory.built and factory.outside_surface.valid and Electricity.get_or_create_inside_power_pole(factory) == pole then
+		if factory.built and factory.outside_surface.valid and factorissimo.get_or_create_inside_power_pole(factory) == pole then
 			local teleport_position = {x = factory.outside_x, y = factory.outside_y}
 
 			local recursive_parent = remote_api.find_surrounding_factory(factory.outside_surface, teleport_position)
 			if recursive_parent then teleport_position = {recursive_parent.inside_x, recursive_parent.inside_y} end
 
-			Overlay.update_overlay(factory)
+			factorissimo.update_overlay(factory)
 			camera_teleport(player, factory.outside_surface, teleport_position)
 			return
 		end
 	end
 end
 
-script.on_event("factory-open-outside-surface-to-remote-view", function(event)
+factorissimo.on_event("factory-open-outside-surface-to-remote-view", function(event)
 	local player = game.get_player(event.player_index)
 	local entity = player.selected
 	if not entity or not entity.valid then return end
-	
+
 	if entity.name == "factory-power-pole" then -- teleport the camera to the outside of the factory
 		open_outside_in_remote_view(player, entity)
 		return

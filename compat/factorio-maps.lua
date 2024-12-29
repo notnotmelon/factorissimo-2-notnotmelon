@@ -1,5 +1,3 @@
-Compat = Compat or {}
-
 local function cleanup_entities_for_factoriomaps()
 	print("Starting factoriomaps-factorissimo integration script")
 
@@ -34,8 +32,8 @@ local function cleanup_entities_for_factoriomaps()
 	end
 end
 
-function Compat.handle_factoriomaps()
-	if remote.interfaces.factoriomaps then
-		script.on_event(remote.call("factoriomaps", "get_start_capture_event_id"), cleanup_entities_for_factoriomaps)
-	end
-end
+script.on_load(function()
+	if not remote.interfaces.factoriomaps then return end
+	local event_id = remote.call("factoriomaps", "get_start_capture_event_id")
+	factorissimo.on_event(event_id, cleanup_entities_for_factoriomaps)
+end)

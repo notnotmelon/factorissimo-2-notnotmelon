@@ -15,7 +15,7 @@ for _, factory in pairs(storage.factories) do
     factory.middleman_id = nil
     factory.direct_connection = nil
 
-    Electricity.update_power_connection(factory)
+    factorissimo.update_power_connection(factory)
 end
 
 local new_surface_factories = {}

@@ -1,5 +1,3 @@
-Overlay = {}
-
 local function build_display_upgrade(factory)
 	if not factory.force.technologies["factory-interior-upgrade-display"].researched then return end
 	if factory.inside_overlay_controller and factory.inside_overlay_controller.valid then return end
@@ -20,7 +18,7 @@ local function build_display_upgrade(factory)
 	controller.rotatable = false
 	factory.inside_overlay_controller = controller
 end
-Overlay.build_display_upgrade = build_display_upgrade
+factorissimo.build_display_upgrade = build_display_upgrade
 
 local sprite_path_translation = {
 	virtual = "virtual-signal",
@@ -139,7 +137,7 @@ local function update_overlay(factory, draw_onto)
 		)
 	end
 end
-Overlay.update_overlay = update_overlay
+factorissimo.update_overlay = update_overlay
 
 local function copy_overlay_between_factory_buildings(source, destination)
 	local source_controller = source.inside_overlay_controller
@@ -166,12 +164,12 @@ local function copy_overlay_between_factory_buildings(source, destination)
 		new_section.filters = section.filters
 	end
 
-	Overlay.update_overlay(destination)
+	factorissimo.update_overlay(destination)
 end
-Overlay.copy_overlay_between_factory_buildings = copy_overlay_between_factory_buildings
+factorissimo.copy_overlay_between_factory_buildings = copy_overlay_between_factory_buildings
 
-script.on_event(defines.events.on_player_changed_surface, function(event)
+factorissimo.on_event(defines.events.on_player_changed_surface, function(event)
 	for _, factory in pairs(storage.factories) do
-		Overlay.update_overlay(factory)
+		factorissimo.update_overlay(factory)
 	end
 end)

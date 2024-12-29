@@ -3,7 +3,7 @@ if not mods["space-age"] then return end
 local F = "__factorissimo-2-notnotmelon__"
 local pf = "p-q-"
 
-data:extend{{
+data:extend {{
     name = "factory-upgrade-greenhouse",
     type = "technology",
     icon = F .. "/graphics/technology/factory-upgrade-greenhouse.png",
@@ -26,7 +26,7 @@ for _, tower in pairs(data.raw["agricultural-tower"]) do
     })
 end
 
-for _, plant in pairs{"jellystem", "yumako-tree"} do
+for _, plant in pairs {"jellystem", "yumako-tree"} do
     plant = data.raw.plant[plant]
     plant.surface_conditions = plant.surface_conditions or {}
     table.insert(plant.surface_conditions, {

@@ -38,7 +38,7 @@ local function update_pollution(factory)
 		local pollutant_type = outside_surface.pollutant_type
 		if not pollutant_type then return end
 		pollutant_type = pollutant_type.name
-		
+
 		local multiplier = pollution_multipliers[pollutant_type] or 1
 
 		local pollution_to_release = (pollution + factory.stored_pollution) * multiplier
@@ -49,7 +49,7 @@ local function update_pollution(factory)
 	end
 end
 
-script.on_nth_tick(15, function(event)
+factorissimo.on_nth_tick(15, function(event)
 	local factories = storage.factories
 	for i = (event.tick % 4 + 1), #factories, 4 do
 		local factory = factories[i]

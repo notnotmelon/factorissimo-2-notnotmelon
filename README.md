@@ -46,7 +46,7 @@ DAMN what's he cookin in there? Research the Factory upgrade: Greenhouse to crea
 
 ![](https://files.catbox.moe/0rurd2.mp4)
 
-**WARNING:** Growing indoors creates 50% more spores! Don't blame me if you get some extra visitors to your greenhouse.
+**WARNING:** Growing indoors creates 50% more spores! Don't blame me if you get some extra visitors to your factorissimo.
 
 ![](https://files.catbox.moe/5o3st0.png)
 
@@ -114,7 +114,7 @@ Check out the awesome [space exploration compatibility mod](https://mods.factori
 If you are familiar with Factorissimo 1 or Factorissimo 2, you may also be used to major performance issues while using the mod.  
 Good news! Various powerful new modding API features have been added over the years and modern versions of Factorissimo are essentially free for UPS.
 
-- **Linked power poles**: Old versions of the factorio modding API had a bug which allowed power poles to be connected cross-surface. This bug has since been promoted to a feature and is used by Factorissimo 3 to efficiently update the electric network. This technology is also used for factory circuit connections.
+- **Linked power poles**: Old versions of the factorio modding API had a bug which allowed power poles to be connected cross-surface. This bug has since been promoted to a feature and is used by Factorissimo 3 to efficiently update the electric network. This technology is also used for factory circuit factorissimo.
 - **Linked belts**: Factorio 1.1 added the `linked-belt` prototype. This means belt connections across surfaces no longer are processed `on_tick`.
 - **Linked pipes**: Factorio 2.0 added support for linked fluidboxes. This means that factory fluid connections are not updated by script and instead fluid is transferred automatically at the engine level.
 - **Item with tags**: Factorio now allows storage of arbitrary metadata on the item stack. This means you are no longer limited to only 99 saved factory buildings.

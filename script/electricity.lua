@@ -1,6 +1,3 @@
-Electricity = {}
-
-local remote_api = require "script.lib"
 local find_surrounding_factory = remote_api.find_surrounding_factory
 local get_factory_by_building = remote_api.get_factory_by_building
 
@@ -50,7 +47,7 @@ local function get_or_create_inside_power_pole(factory)
 
 	return factory._inside_power_pole
 end
-Electricity.get_or_create_inside_power_pole = get_or_create_inside_power_pole
+factorissimo.get_or_create_inside_power_pole = get_or_create_inside_power_pole
 
 local function connect_power(factory, outside_power_pole)
 	local inside_power_pole = get_or_create_inside_power_pole(factory)
@@ -93,7 +90,7 @@ local function update_power_connection(factory, pole) -- pole parameter is optio
 	if #candidates == 0 then return end
 	connect_power(factory, surface.get_closest({x, y}, candidates))
 end
-Electricity.update_power_connection = update_power_connection
+factorissimo.update_power_connection = update_power_connection
 
 local function get_factories_near_pole(pole)
 	local surface = pole.surface
@@ -114,7 +111,10 @@ local function get_factories_near_pole(pole)
 	return result
 end
 
-function Electricity.power_pole_placed(pole)
+factorissimo.on_event(factorissimo.events.on_built(), function(event)
+	local pole = event.entity
+	if not pole.valid or pole.type ~= "electric-pole" then return end
+
 	for _, factory in pairs(get_factories_near_pole(pole)) do
 		if not factory.outside_energy_receiver.valid then goto continue end
 		local electric_network = factory.outside_energy_receiver.electric_network_id
@@ -123,13 +123,16 @@ function Electricity.power_pole_placed(pole)
 
 		::continue::
 	end
-end
+end)
 
-function Electricity.power_pole_destroyed(pole)
+factorissimo.on_event(factorissimo.events.on_destroyed(), function(event)
+	local pole = event.entity
+	if not pole.valid or pole.type ~= "electric-pole" then return end
+
 	local wire_connector = pole.get_wire_connector(defines.wire_connector_id.pole_copper)
 
 	local old_connections = wire_connector.connections
-	Electricity.disconnect_all_copper_connections(pole)
+	factorissimo.disconnect_all_copper_connections(pole)
 
 	for _, factory in pairs(get_factories_near_pole(pole)) do
 		update_power_connection(factory, pole)
@@ -138,9 +141,9 @@ function Electricity.power_pole_destroyed(pole)
 	for _, connection in pairs(old_connections) do
 		wire_connector.connect_to(connection.target)
 	end
-end
+end)
 
-script.on_event(defines.events.on_player_selected_area, function(event)
+factorissimo.on_event(defines.events.on_player_selected_area, function(event)
 	if event.item == "power-grid-comb" then
 		for _, building in pairs(event.entities) do
 			if has_layout(building.name) then
@@ -152,7 +155,7 @@ script.on_event(defines.events.on_player_selected_area, function(event)
 end)
 
 -- prevent SHIFT+CLICK on factory power poles
-script.on_event({defines.events.on_selected_entity_changed, defines.events.on_player_cursor_stack_changed}, function(event)
+factorissimo.on_event({defines.events.on_selected_entity_changed, defines.events.on_player_cursor_stack_changed}, function(event)
 	local player = game.get_player(event.player_index)
 	local pole = player.selected
 	if pole and pole.type == "electric-pole" then
@@ -170,17 +173,17 @@ script.on_event({defines.events.on_selected_entity_changed, defines.events.on_pl
 				break
 			end
 		end
-		
+
 		permission.set_allows_action(defines.input_action.remove_cables, not has_cross_surface_connections)
 	end
 
-	Camera.update_camera(player) -- also update camera here
+	factorissimo.update_camera(player) -- also update camera here
 end)
 
-function Electricity.cleanup_factory_exterior(factory)
+function factorissimo.cleanup_factory_exterior(factory)
 	factory.outside_energy_receiver.destroy()
-	local pole = Electricity.get_or_create_inside_power_pole(factory)
-	Electricity.disconnect_all_copper_connections(pole)
+	local pole = factorissimo.get_or_create_inside_power_pole(factory)
+	factorissimo.disconnect_all_copper_connections(pole)
 
 	if not factory.inside_surface.valid then return end
 
@@ -194,12 +197,12 @@ function Electricity.cleanup_factory_exterior(factory)
 
 	for _, child in pairs(recursive_children) do
 		if child ~= factory then
-			Electricity.update_power_connection(child)
+			factorissimo.update_power_connection(child)
 		end
 	end
 end
 
-function Electricity.disconnect_all_copper_connections(pole)
+function factorissimo.disconnect_all_copper_connections(pole)
 	local wire_connector = pole.get_wire_connector(defines.wire_connector_id.pole_copper)
 	wire_connector.disconnect_all(defines.wire_origin.player)
 	wire_connector.disconnect_all(defines.wire_origin.script)

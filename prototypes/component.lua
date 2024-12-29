@@ -56,24 +56,24 @@ data:extend {{
 
 local function create_indicator(ctype, suffix, image)
 	data:extend {{
-		type                           = "storage-tank",
-		name                           = "factory-connection-indicator-" .. ctype .. "-" .. suffix,
-		localised_name                 = {"entity-name.factory-connection-indicator-" .. ctype},
-		flags                          = {"not-on-map", "player-creation", "not-deconstructable"},
-		placeable_by                   = {item = "factory-connection-indicator-settings", count = 1},
-		max_health                     = 500,
-		selection_box                  = {{-0.4, -0.4}, {0.4, 0.4}},
-		collision_box                  = {{-0.4, -0.4}, {0.4, 0.4}},
-		collision_mask                 = {not_colliding_with_itself = true, layers = {}},
-		fluid_box                      = {
+		type                      = "storage-tank",
+		name                      = "factory-connection-indicator-" .. ctype .. "-" .. suffix,
+		localised_name            = {"entity-name.factory-connection-indicator-" .. ctype},
+		flags                     = {"not-on-map", "player-creation", "not-deconstructable"},
+		placeable_by              = {item = "factory-connection-indicator-settings", count = 1},
+		max_health                = 500,
+		selection_box             = {{-0.4, -0.4}, {0.4, 0.4}},
+		collision_box             = {{-0.4, -0.4}, {0.4, 0.4}},
+		collision_mask            = {not_colliding_with_itself = true, layers = {}},
+		fluid_box                 = {
 			volume = 1,
 			pipe_connections = {},
 		},
-		hidden                         = true,
-		two_direction_only             = false,
-		window_bounding_box            = {{0, 0}, {0, 0}},
-		selection_priority             = 52,
-		pictures                       = {
+		hidden                    = true,
+		two_direction_only        = false,
+		window_bounding_box       = {{0, 0}, {0, 0}},
+		selection_priority        = 52,
+		pictures                  = {
 			picture = {
 				sheet = {
 					filename = F .. "/graphics/indicator/" .. image .. ".png",
@@ -85,8 +85,8 @@ local function create_indicator(ctype, suffix, image)
 				},
 			},
 		},
-		flow_length_in_ticks           = 100,
-		circuit_wire_max_distance      = 0
+		flow_length_in_ticks      = 100,
+		circuit_wire_max_distance = 0
 	}}
 end
 

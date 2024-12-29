@@ -96,7 +96,7 @@ Fluid.rotate = function(conn)
 	end
 end
 
-Fluid.adjust = Connections.beep
+Fluid.adjust = factorissimo.beep
 
 Fluid.destroy = function(conn)
 	if conn.outside_connector.valid then conn.outside_connector.destroy() end
