@@ -13,6 +13,7 @@ Factorissimo is a mod about putting your factory inside buildings, and then putt
 Help translate this mod on [GitHub](https://github.com/notnotmelon/factorissimo-2-notnotmelon/pulls)  
 Also check out the [Space Exploration](https://mods.factorio.com/mod/space-factorissimo-updated) extension for this mod.  
 This mod supports [Factorio Maps](https://youtu.be/zDkEtZGG0IQ)  
+Want to help translate this mod? Visit our [Crowdin](https://crowdin.com/project/factorio-mods-localization) page.  
 
 ---
 
@@ -46,7 +47,7 @@ DAMN what's he cookin in there? Research the Factory upgrade: Greenhouse to crea
 
 ![](https://files.catbox.moe/0rurd2.mp4)
 
-**WARNING:** Growing indoors creates 50% more spores! Don't blame me if you get some extra visitors to your factorissimo.
+**WARNING:** Growing indoors creates 50% more spores! Don't blame me if you get some extra visitors to your greenhouse.
 
 ![](https://files.catbox.moe/5o3st0.png)
 
@@ -114,7 +115,7 @@ Check out the awesome [space exploration compatibility mod](https://mods.factori
 If you are familiar with Factorissimo 1 or Factorissimo 2, you may also be used to major performance issues while using the mod.  
 Good news! Various powerful new modding API features have been added over the years and modern versions of Factorissimo are essentially free for UPS.
 
-- **Linked power poles**: Old versions of the factorio modding API had a bug which allowed power poles to be connected cross-surface. This bug has since been promoted to a feature and is used by Factorissimo 3 to efficiently update the electric network. This technology is also used for factory circuit factorissimo.
+- **Linked power poles**: Old versions of the factorio modding API had a bug which allowed power poles to be connected cross-surface. This bug has since been promoted to a feature and is used by Factorissimo 3 to efficiently update the electric network. This technology is also used for factory circuit connections.
 - **Linked belts**: Factorio 1.1 added the `linked-belt` prototype. This means belt connections across surfaces no longer are processed `on_tick`.
 - **Linked pipes**: Factorio 2.0 added support for linked fluidboxes. This means that factory fluid connections are not updated by script and instead fluid is transferred automatically at the engine level.
 - **Item with tags**: Factorio now allows storage of arbitrary metadata on the item stack. This means you are no longer limited to only 99 saved factory buildings.
@@ -138,3 +139,4 @@ For more information see the [FAQ](https://mods.factorio.com/mod/factorissimo-2-
 - **PlexPt**: Chinese locale.
 - **AlexandrPavlovski**: Russian locale.
 - **Quezler**: Supplied open-source code for the factory construction upgrade build animations (MIT). https://mods.factorio.com/mod/platform-construction-only-no-construction-robots
+- **Snouz**: Artist.
