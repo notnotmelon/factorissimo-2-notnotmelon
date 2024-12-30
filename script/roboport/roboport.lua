@@ -507,7 +507,7 @@ create_new_item_request_proxies = function(factory, requests_by_itemname, alread
             }
 
             local proxies = roboport_upgrade.item_request_proxies
-            proxies[#proxies + 1] = factory.outside_surface.create_entity {
+            proxies[#proxies + 1] = requester.surface.create_entity {
                 name = "item-request-proxy",
                 position = requester.position,
                 target = requester,
