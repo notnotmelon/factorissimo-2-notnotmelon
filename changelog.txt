@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.7.10
+Date: 2024-12-30
+  Bugfixes:
+    - Fixed crash related to incorrect roboport request surfaces. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/154
+---------------------------------------------------------------------------------------------------
 Version: 3.7.9
 Date: 2024-12-29
   Bugfixes:
