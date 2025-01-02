@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.5
+Date: 2025-01-02
+  Compatibility:
+    - Added compat with the blueprint sandboxes mod. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/90
+---------------------------------------------------------------------------------------------------
 Version: 3.8.4
 Date: 2025-01-02
   Bugfixes:
