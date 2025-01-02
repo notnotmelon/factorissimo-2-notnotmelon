@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.1
+Date: 2025-01-02
+  Compatibility:
+    - Added additional safety checks to ensure grass tiles never generate.
+  Bugfixes:
+    - Fixed factory building roboport upgrade exterior chests not getting properly cleane up when destructing a factory building.
+---------------------------------------------------------------------------------------------------
 Version: 3.8.0
 Date: 2025-01-02
   Features:
