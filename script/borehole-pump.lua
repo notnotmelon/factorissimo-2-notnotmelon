@@ -1,3 +1,5 @@
+local NO_FLUID_ON_THIS_SURFACE = -1
+
 local BOREHOLE_PUMP_FIXED_RECIPES = {
     ["nauvis"] = "borehole-pump-water",
     ["gleba"] = "borehole-pump-water",
@@ -8,6 +10,8 @@ local BOREHOLE_PUMP_FIXED_RECIPES = {
     ["maraxsis"] = "borehole-pump-maraxsis-saline-water",
     ["maraxsis-trench"] = "borehole-pump-lava",
     ["tenebris"] = "borehole-pump-sulfuric-acid",
+    ["muluna"] = NO_FLUID_ON_THIS_SURFACE,
+    ["luna"] = NO_FLUID_ON_THIS_SURFACE,
 }
 local BOREHOLE_PUMP_SMOKE_OFFSETS = {
     [defines.direction.north] = {-1.2, -2.1},
@@ -50,6 +54,11 @@ factorissimo.on_event(factorissimo.events.on_built(), function(event)
     if not parent_planet then return end
     local fixed_recipe = BOREHOLE_PUMP_FIXED_RECIPES[parent_planet_name]
     if not fixed_recipe then return end
+
+    if fixed_recipe == NO_FLUID_ON_THIS_SURFACE then
+        factorissimo.cancel_creation(borehole, event.player_index, {"factory-connection-text.borehole-pump-no-fluid"})
+        return
+    end
 
     borehole.set_recipe(fixed_recipe)
     borehole.recipe_locked = true
