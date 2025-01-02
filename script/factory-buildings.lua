@@ -160,7 +160,13 @@ local function create_factory_position(layout, building)
     local surface_name = get_surface_name(layout, parent_surface)
     local surface = game.get_surface(surface_name)
 
-    if not surface then
+    if surface then
+        -- A bit of extra safety to ensure grass does not generate.
+        local mgs = surface.map_gen_settings
+        mgs.width = 2
+        mgs.height = 2
+        surface.map_gen_settings = mgs
+    else
         if remote.interfaces["RSO"] then -- RSO compatibility
             pcall(remote.call, "RSO", "ignoreSurface", surface_name)
         end
