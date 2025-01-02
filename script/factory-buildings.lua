@@ -377,22 +377,27 @@ factorissimo.on_event({
     defines.events.on_space_platform_mined_entity
 }, function(event)
     local entity = event.entity
-    if has_layout(entity.name) then
-        local factory = get_factory_by_building(entity)
-        if not factory then return end
-        cleanup_factory_exterior(factory, entity)
-        storage.saved_factories[factory.id] = factory
-        local buffer = event.buffer
-        buffer.clear()
-        buffer.insert {
-            name = factory.layout.name .. "-instantiated",
-            count = 1,
-            tags = {id = factory.id},
-            custom_description = generate_factory_item_description(factory),
-            quality = entity.quality,
-            health = entity.health / entity.max_health
-        }
-    end
+    if not has_layout(entity.name) then return end
+
+    local factory = get_factory_by_building(entity)
+    if not factory then return end
+    cleanup_factory_exterior(factory, entity)
+    storage.saved_factories[factory.id] = factory
+    local buffer = event.buffer
+    buffer.clear()
+    buffer.insert {
+        name = factory.layout.name .. "-instantiated",
+        count = 1,
+        tags = {id = factory.id},
+        custom_description = generate_factory_item_description(factory),
+        quality = entity.quality,
+        health = entity.health / entity.max_health
+    }
+    local item_stack = buffer[1]
+    assert(item_stack.valid_for_read and item_stack.is_item_with_tags)
+    local item = item_stack.item
+    assert(item and item.valid)
+    factory.item = item
 end)
 
 local function prevent_factory_mining(entity)
@@ -432,28 +437,32 @@ end)
 -- Too bad they don't have hands
 factorissimo.on_event(defines.events.on_entity_died, function(event)
     local entity = event.entity
-    if has_layout(entity.name) then
-        local factory = get_factory_by_building(entity)
-        if not factory then return end
-        storage.saved_factories[factory.id] = factory
-        cleanup_factory_exterior(factory, entity)
+    if not has_layout(entity.name) then return end
+    local factory = get_factory_by_building(entity)
+    if not factory then return end
 
-        entity.surface.spill_item_stack {
-            position = entity.position,
-            stack = {
-                name = factory.layout.name .. "-instantiated",
-                tags = {id = factory.id},
-                quality = entity.quality.name,
-                count = 1,
-                custom_description = generate_factory_item_description(factory)
-            },
-            enable_looted = true,
-            force = entity.force_index,
-            allow_belts = false,
-            max_radius = 0,
-            use_start_position_on_failure = true
-        }
-    end
+    storage.saved_factories[factory.id] = factory
+    cleanup_factory_exterior(factory, entity)
+
+    local items = entity.surface.spill_item_stack {
+        position = entity.position,
+        stack = {
+            name = factory.layout.name .. "-instantiated",
+            tags = {id = factory.id},
+            quality = entity.quality.name,
+            count = 1,
+            custom_description = generate_factory_item_description(factory)
+        },
+        enable_looted = true,
+        force = entity.force_index,
+        allow_belts = false,
+        max_radius = 0,
+        use_start_position_on_failure = true
+    }
+    assert(table_size(items) == 1)
+    local item = items[1].stack.item
+    assert(item and item.valid)
+    factory.item = item
 end)
 
 factorissimo.on_event(defines.events.on_post_entity_died, function(event)
@@ -482,6 +491,28 @@ local function create_fresh_factory(entity)
     return factory
 end
 
+-- It's possible that the item used to build this factory is not the same as the one that was saved.
+-- In this case, clear tags and description of the saved item such that there is only 1 copy of the factory item.
+-- https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/155
+local function handle_factory_control_xed(factory)
+    local item = factory.item
+    if not item or not item.valid then return end
+    factory.item.tags = {}
+    factory.item.custom_description = factory.item.prototype.localised_description
+
+    -- We should also attempt to swapped the packed factory item with an unpacked.
+    -- If this fails, whatever. It's just to avoid confusion. A packed factory with no tags is equal to an unpacked factory.
+    local item_stack = item.item_stack
+    if not item_stack or not item_stack.valid_for_read then return end
+
+    item_stack.set_stack {
+        name = item.name:gsub("%-instantiated$", ""),
+        count = item_stack.count,
+        quality = item_stack.quality,
+        health = item_stack.health,
+    }
+end
+
 local function handle_factory_placed(entity, tags)
     if not tags or not tags.id then
         create_fresh_factory(entity)
@@ -495,6 +526,7 @@ local function handle_factory_placed(entity, tags)
         factory.quality = entity.quality
         create_factory_exterior(factory, entity)
         factory.inactive = not can_place_factory_here(factory.layout.tier, entity.surface, entity.position, factory.original_planet)
+        handle_factory_control_xed(factory)
         return
     end
 
