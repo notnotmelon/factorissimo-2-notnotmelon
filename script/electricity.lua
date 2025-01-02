@@ -180,7 +180,7 @@ factorissimo.on_event({defines.events.on_selected_entity_changed, defines.events
     factorissimo.update_camera(player) -- also update camera here
 end)
 
-function factorissimo.cleanup_factory_exterior(factory)
+function factorissimo.cleanup_outside_energy_receiver(factory)
     factory.outside_energy_receiver.destroy()
     local pole = factorissimo.get_or_create_inside_power_pole(factory)
     factorissimo.disconnect_all_copper_connections(pole)

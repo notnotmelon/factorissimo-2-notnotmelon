@@ -329,8 +329,8 @@ local function create_factory_exterior(factory, building)
 end
 
 local function cleanup_factory_exterior(factory, building)
-    factorissimo.cleanup_factory_exterior(factory)
-    factorissimo.cleanup_factory_exterior(factory)
+    factorissimo.cleanup_outside_energy_receiver(factory)
+    factorissimo.cleanup_factory_roboport_exterior_chest(factory)
 
     factorissimo.disconnect_factory(factory)
     for _, render_id in pairs(factory.outside_overlay_displays) do

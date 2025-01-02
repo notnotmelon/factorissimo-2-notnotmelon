@@ -290,7 +290,7 @@ factorissimo.build_roboport_upgrade = function(factory)
     }
 end
 
-factorissimo.cleanup_factory_exterior = function(factory)
+factorissimo.cleanup_factory_roboport_exterior_chest = function(factory)
     local requester = factory.roboport_upgrade and factory.roboport_upgrade.requester and factory.roboport_upgrade.requester.valid and factory.roboport_upgrade.requester
     if not requester then return end
     local surface = requester.surface
