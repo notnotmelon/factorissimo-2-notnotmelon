@@ -139,7 +139,7 @@ remote_api.has_layout = function(name)
 end
 _G.has_layout = remote_api.has_layout
 
-remote_api.is_factorissimo_surface(surface)
+remote_api.is_factorissimo_surface = function(surface)
     local surface_index
     local surface_type = type(surface)
 
