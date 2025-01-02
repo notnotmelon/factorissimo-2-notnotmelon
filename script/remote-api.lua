@@ -139,4 +139,19 @@ remote_api.has_layout = function(name)
 end
 _G.has_layout = remote_api.has_layout
 
+remote_api.is_factorissimo_surface(surface)
+    local surface_index
+    local surface_type = type(surface)
+
+    if surface_type == "number" then
+        surface_index = surface
+    elseif surface_type == "string" then
+        surface_index = game.get_surface(surface).index
+    else
+        surface_index = surface.index
+    end
+
+    return not not storage.surface_factories[surface_index]
+end
+
 remote.add_interface("factorissimo", remote_api)
