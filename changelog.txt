@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.0
+Date: 2025-01-02
+  Features:
+    - Packed factory buildings can now be built from remote view via construction bots. Now supports control+X to move factory buildings from remote view. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/155
+---------------------------------------------------------------------------------------------------
 Version: 3.7.11
 Date: 2025-01-02
   Compatibility:
