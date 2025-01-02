@@ -178,6 +178,7 @@ local function create_factory_position(layout, building)
 
         if not surface then
             surface = game.create_surface(surface_name, {width = 2, height = 2})
+            surface.localised_name = {"factory-floor", storage.next_factory_surface}
         end
 
         surface.daytime = 0.5
@@ -484,6 +485,39 @@ factorissimo.on_event(defines.events.script_raised_destroy, function(event)
     if has_layout(entity.name) then
         prevent_factory_mining(entity)
     end
+end)
+
+local function on_delete_surface(surface)
+    storage.surface_factories[surface.index] = nil
+
+    local childen_surfaces_to_delete = {}
+    for _, factory in pairs(storage.factories) do
+        local inside_surface = factory.inside_surface
+        local outside_surface = factory.outside_surface
+        if inside_surface.valid and outside_surface.valid and factory.outside_surface == surface then
+            game.print("q")
+            childen_surfaces_to_delete[inside_surface.index] = inside_surface
+        end
+    end
+
+    for _, factory_list in pairs{storage.factories, storage.saved_factories, storage.factories_by_entity} do
+        for k, factory in pairs(factory_list) do
+            local inside_surface = factory.inside_surface
+            if not inside_surface.valid or childen_surfaces_to_delete[inside_surface.index] then
+                factory_list[k] = nil
+            end
+        end
+    end
+
+    for _, child_surface in pairs(childen_surfaces_to_delete) do
+        on_delete_surface(child_surface)
+        game.delete_surface(child_surface)
+    end
+end
+
+-- Delete all children surfaces in this case.
+factorissimo.on_event(defines.events.on_pre_surface_cleared, function(event)
+    on_delete_surface(game.get_surface(event.surface_index))
 end)
 
 -- FACTORY PLACEMENT AND INITALIZATION --
