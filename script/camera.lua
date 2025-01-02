@@ -108,7 +108,7 @@ local function update_camera(player)
     local selected = player.selected
     if selected then
         local factory
-        if selected.type == "item-entity" and selected.stack.type == "item-with-tags" and factorissimo.has_layout(selected.stack.name) then
+        if selected.type == "item-entity" and selected.stack.type == "item-with-tags" and has_layout(selected.stack.name) then
             factory = storage.saved_factories[selected.stack.tags.id]
         else
             factory = get_factory_by_entity(player.selected)

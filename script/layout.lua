@@ -20,14 +20,12 @@ local make_connection = function(id, outside_x, outside_y, inside_x, inside_y, d
         direction_out = direction_out,
     }
 end
-remote_api.make_connection = make_connection
 
 local make_quality_connection = function(id, outside_x, outside_y, inside_x, inside_y, direction_out, quality)
     local connection = make_connection(id, outside_x, outside_y, inside_x, inside_y, direction_out)
     connection.quality = quality
     return connection
 end
-remote_api.make_quality_connection = make_quality_connection
 
 local layout_generators = {
     ["factory-1"] = {
@@ -347,36 +345,8 @@ local layout_generators = {
 }
 
 factorissimo.on_event(factorissimo.events.on_init(), function()
-    storage.layout_generators = layout_generators
-end)
-
-remote_api.add_layout = function(layout)
-    init()
-    storage.layout_generators[factorissimo.name] = layout
-end
-
-function has_layout(name)
-    name = name:gsub("%-instantiated", "")
-    return storage.layout_generators[name] ~= nil
-end
-
-remote_api.has_layout = has_layout
-factorissimo.has_layout = has_layout
-
-local function create_layout(name, quality)
-    local layout = storage.layout_generators[name]
-    if not layout then return nil end
-    layout = table.deepcopy(layout)
-
-    local connections = {}
-    for id, connection in pairs(layout.connections) do
-        if (connection.quality or 0) <= quality.level then
-            connections[id] = connection
-        end
+    storage.layout_generators = storage.layout_generators or {}
+    for name, layout in pairs(layout_generators) do
+        storage.layout_generators[name] = layout
     end
-    layout.connections = connections
-
-    return layout
-end
-remote_api.create_layout = create_layout
-factorissimo.create_layout = create_layout
+end)

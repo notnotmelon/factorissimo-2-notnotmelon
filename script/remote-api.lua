@@ -39,6 +39,23 @@ factory = {
 }
 ]] --
 
+remote_api.get_global = function(path)
+    if not path then return global end
+    local g = global
+    for _, point in ipairs(path) do
+        g = g[point]
+    end
+    return g
+end
+
+remote_api.set_global = function(path, v)
+    local g = global
+    for i = 1, #path - 1 do
+        g = g[path[i]]
+    end
+    g[path[#path]] = v
+end
+
 remote_api.get_factory_by_entity = function(entity)
     if entity == nil then return nil end
     return storage.factories_by_entity[entity.unit_number]
@@ -58,7 +75,7 @@ remote_api.find_factory_by_area = function(params)
     local area = params.area
 
     for _, entity in pairs(surface.find_entities_filtered {position = position, area = area, type = BUILDING_TYPE}) do
-        if factorissimo.has_layout(entity.name) then return remote_api.get_factory_by_building(entity) end
+        if has_layout(entity.name) then return remote_api.get_factory_by_building(entity) end
     end
     return nil
 end
@@ -69,7 +86,7 @@ remote_api.find_factories_by_area = function(params)
 
     local factories = {}
     for _, entity in pairs(surface.find_entities_filtered {area = area, type = BUILDING_TYPE}) do
-        if factorissimo.has_layout(entity.name) then
+        if has_layout(entity.name) then
             local factory = remote_api.get_factory_by_building(entity)
             if factory then factories[#factories + 1] = factory end
         end
@@ -95,6 +112,31 @@ remote_api.find_surrounding_factory_by_surface_index = function(surface_index, p
     return factories[8 * y + x + 1]
 end
 
-remote.add_interface("factorissimo", remote_api)
+remote_api.create_layout = function(name, quality)
+    local layout = storage.layout_generators[name]
+    if not layout then return nil end
+    layout = table.deepcopy(layout)
 
-return remote_api
+    local connections = {}
+    for id, connection in pairs(layout.connections) do
+        if (connection.quality or 0) <= quality.level then
+            connections[id] = connection
+        end
+    end
+    layout.connections = connections
+
+    return layout
+end
+
+remote_api.add_layout = function(layout)
+    factorissimo.init_layout()
+    storage.layout_generators[layout.name] = layout
+end
+
+remote_api.has_layout = function(name)
+    name = name:gsub("%-instantiated", "")
+    return storage.layout_generators[name] ~= nil
+end
+_G.has_layout = remote_api.has_layout
+
+remote.add_interface("factorissimo", remote_api)

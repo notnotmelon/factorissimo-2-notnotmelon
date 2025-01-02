@@ -1,7 +1,7 @@
 local get_factory_by_building = remote_api.get_factory_by_building
 local find_surrounding_factory = remote_api.find_surrounding_factory
 
-local has_layout = factorissimo.has_layout
+local has_layout = has_layout
 
 -- INITIALIZATION --
 
@@ -489,7 +489,7 @@ end)
 -- FACTORY PLACEMENT AND INITALIZATION --
 
 local function create_fresh_factory(entity)
-    local layout = factorissimo.create_layout(entity.name, entity.quality)
+    local layout = remote_api.create_layout(entity.name, entity.quality)
     local factory = create_factory_interior(layout, entity)
     create_factory_exterior(factory, entity)
     factory.original_planet = entity.surface.planet

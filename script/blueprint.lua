@@ -1,4 +1,4 @@
-local has_layout = factorissimo.has_layout
+local has_layout = has_layout
 
 local function setup_blueprint_tags(blueprint, mapping)
     for i, entity in pairs(mapping) do
