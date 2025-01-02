@@ -198,12 +198,11 @@ local function recheck_factory_delayed(factory, outside_area, inside_area)
     }
 end
 
-local function disconnect_factory(factory)
+function factorissimo.disconnect_factory_connections(factory)
     for cid, conn in pairs(factory.connections) do
         destroy_connection(conn)
     end
 end
-factorissimo.disconnect_factory = disconnect_factory
 
 -- When a connection piece is placed or destroyed, check if can be connected to a factory building
 local function recheck_nearby_connections(entity, delayed)
