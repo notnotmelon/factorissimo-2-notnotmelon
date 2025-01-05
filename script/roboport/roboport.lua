@@ -1,10 +1,6 @@
 local blacklisted_names = require "script.roboport.blacklist"
 local utility_constants = require "script.roboport.utility-constants"
 
-factorissimo.on_event(factorissimo.events.on_init(), function()
-    storage.construction_robots = storage.construction_robots or {}
-end)
-
 local function add_task(tick, task)
     local tasks_at_tick = storage.tasks_at_tick[tick]
     if tasks_at_tick then
@@ -165,26 +161,10 @@ local function request_platform_animation_for(entity)
     end
 end
 
-factorissimo.on_event(defines.events.on_script_trigger_effect, function(event)
-    if event.effect_id ~= "factory-hidden-construction-robot-created" then return end
-
-    local construction_robot = event.target_entity
-    assert(construction_robot and construction_robot.name == "factory-hidden-construction-robot")
-
-    -- ensure we are actually in a factory floor. prevent contraband construction robots from being created
-    if not storage.surface_factories[construction_robot.surface_index] then
-        factorissimo.execute_later("destroy_entity", 1, construction_robot)
-        return
-    end
-
-    storage.construction_robots[construction_robot.unit_number] = construction_robot
-end)
-
 factorissimo.on_event(defines.events.on_robot_built_entity, function(event)
     local robot = event.robot
+    if robot.name ~= "factory-hidden-construction-robot" then return end
     local unit_number = robot.unit_number
-    if not storage.construction_robots[unit_number] then return end
-    storage.construction_robots[unit_number] = nil
     local entity = event.entity
     if not entity.valid then return end
     request_platform_animation_for(event.entity)
