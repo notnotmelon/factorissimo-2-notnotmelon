@@ -3,17 +3,6 @@ local utility_constants = require "script.roboport.utility-constants"
 
 factorissimo.on_event(factorissimo.events.on_init(), function()
     storage.construction_robots = storage.construction_robots or {}
-    storage.lock = storage.lock or {}
-    storage.deathrattles = storage.deathrattles or {}
-    storage.tasks_at_tick = storage.tasks_at_tick or {}
-end)
-
-factorissimo.on_event(defines.events.on_object_destroyed, function(event)
-    local deathrattle = storage.deathrattles[event.registration_number]
-    if not deathrattle then return end
-    storage.deathrattles[event.registration_number] = nil
-    if not deathrattle.network_id then return end
-    storage.networkdata[deathrattle.network_id] = nil
 end)
 
 local function add_task(tick, task)
@@ -77,15 +66,46 @@ local function get_build_sound_path(selection_box)
     return "utility/build_animated_huge"
 end
 
+local function start_construction_animation(top_animation, bottom_animation)
+    if not top_animation.valid or not bottom_animation.valid then return end
+    local offset = -(game.tick * 0.5) % 32
+    top_animation.visible = true
+    bottom_animation.visible = true
+    top_animation.animation_speed = 1
+    bottom_animation.animation_speed = 1
+    top_animation.animation_offset = offset
+    bottom_animation.animation_offset = offset
+end
+
+local function pause_construction_animation(top_animation, bottom_animation)
+    if not top_animation.valid or not bottom_animation.valid then return end
+    top_animation.animation_speed = 0
+    bottom_animation.animation_speed = 0
+    top_animation.animation_offset = 15
+    bottom_animation.animation_offset = 15
+end
+
+local function unpause_construction_animation(top_animation, bottom_animation)
+    if not top_animation.valid or not bottom_animation.valid then return end
+    local offset = -(game.tick * 0.5) % 32 + 16
+    top_animation.animation_speed = 1
+    bottom_animation.animation_speed = 1
+    top_animation.animation_offset = offset
+    bottom_animation.animation_offset = offset
+end
+
+factorissimo.register_delayed_function("start_construction_animation", start_construction_animation)
+factorissimo.register_delayed_function("pause_construction_animation", pause_construction_animation)
+factorissimo.register_delayed_function("unpause_construction_animation", unpause_construction_animation)
+factorissimo.register_delayed_function("destroy_entity", function(entity) entity.destroy() end)
+
 local TICKS_PER_FRAME = 2
 local FRAMES_BEFORE_BUILT = 16
 local FRAMES_BETWEEN_BUILDING = 8 * 2
 local FRAMES_BETWEEN_REMOVING = 4
 
 local function request_platform_animation_for(entity)
-    if entity.name ~= "entity-ghost" then return end
-    if blacklisted_names[entity.ghost_name] then return end
-    if storage.lock[entity.unit_number] then return end
+    if blacklisted_names[entity.name] then return end
 
     local tick = game.tick
     local surface = entity.surface
@@ -107,91 +127,41 @@ local function request_platform_animation_for(entity)
     end
 
     local remove_scaffold_delay = (largest_manhattan_distance + 4) * FRAMES_BETWEEN_BUILDING
-    local all_scaffolding_down_at = tick + 1 + largest_manhattan_distance * FRAMES_BETWEEN_REMOVING + remove_scaffold_delay + 16 * TICKS_PER_FRAME
-
-    -- by putting a colliding entity in the center of the building site we'll force the construction robot to wait (between that tick and a second)
-    local all_scaffolding_up_at = tick + 1 + largest_manhattan_distance * FRAMES_BETWEEN_BUILDING + 15 * TICKS_PER_FRAME
-    add_task(all_scaffolding_up_at, {
-        name = "destroy",
-        entity = surface.create_entity {
-            name = "ghost-being-constructed",
-            force = "neutral",
-            position = entity.position,
-            create_build_effect_smoke = false,
-            preserve_ghosts_and_corpses = true,
-        }
-    })
+    local all_scaffolding_down_at = 1 + largest_manhattan_distance * FRAMES_BETWEEN_REMOVING + remove_scaffold_delay + 16 * TICKS_PER_FRAME
 
     for _, position in ipairs(tilebox) do
         local piece = get_piece(position.center, entity.position)
-        local animations = {} -- local animations = {} -- top & body
 
-        local up_base = tick + 1 + position.manhattan_distance * FRAMES_BETWEEN_BUILDING
-        add_task(up_base + 00 * TICKS_PER_FRAME, {name = "start", animations = animations})
-        add_task(up_base + 15 * TICKS_PER_FRAME, {name = "pause", offset = 15, animations = animations})
+        local up_base = 1 + position.manhattan_distance * FRAMES_BETWEEN_BUILDING
+        local down_base = 1 + position.manhattan_distance * FRAMES_BETWEEN_REMOVING + remove_scaffold_delay
 
-        local down_base = tick + 1 + position.manhattan_distance * FRAMES_BETWEEN_REMOVING + remove_scaffold_delay
-        add_task(down_base + 00 * TICKS_PER_FRAME, {name = "unpause", offset = 16, animations = animations})
+        local time_to_live = down_base + 16 * TICKS_PER_FRAME
 
-        local ttl = down_base - tick + 16 * TICKS_PER_FRAME
-
-        animations[1] = rendering.draw_animation {
+        local top_animation = rendering.draw_animation {
             target = position.center,
             surface = surface,
             animation = "platform_entity_build_animations-" .. piece .. "-top",
-            time_to_live = ttl,
+            time_to_live = time_to_live,
             animation_offset = 0,
             animation_speed = 0,
-            render_layer = entity.ghost_type == "cargo-landing-pad" and "above-inserters" or "higher-object-above",
+            render_layer = entity.type == "cargo-landing-pad" and "above-inserters" or "higher-object-above",
             visible = false,
         }
 
-        animations[2] = rendering.draw_animation {
+        local bottom_animation = rendering.draw_animation {
             target = position.center,
             surface = surface,
             animation = "platform_entity_build_animations-" .. piece .. "-body",
-            time_to_live = ttl,
+            time_to_live = time_to_live,
             animation_offset = 0,
             animation_speed = 0,
             render_layer = is_back_piece(piece) and "lower-object-above-shadow" or "object",
             visible = false,
         }
-    end
 
-    storage.lock[entity.unit_number] = true
-    add_task(all_scaffolding_down_at, {name = "unlock", unit_number = entity.unit_number})
-end
-
-local function do_tasks_at_tick(tick)
-    local tasks_at_tick = storage.tasks_at_tick[tick]
-    if tasks_at_tick then
-        storage.tasks_at_tick[tick] = nil
-        for _, task in ipairs(tasks_at_tick) do
-            if task.name == "start" then
-                local offset = -(tick * 0.5) % 32
-                task.animations[1].visible = true
-                task.animations[2].visible = true
-                task.animations[1].animation_speed = 1
-                task.animations[2].animation_speed = 1
-                task.animations[1].animation_offset = offset
-                task.animations[2].animation_offset = offset
-            elseif task.name == "pause" then
-                task.animations[1].animation_speed = 0
-                task.animations[2].animation_speed = 0
-                task.animations[1].animation_offset = task.offset
-                task.animations[2].animation_offset = task.offset
-            elseif task.name == "unpause" then
-                local offset = -(tick * 0.5) % 32
-                task.animations[1].animation_speed = 1
-                task.animations[2].animation_speed = 1
-                task.animations[1].animation_offset = offset + task.offset
-                task.animations[2].animation_offset = offset + task.offset
-            elseif task.name == "destroy" then
-                task.entity.destroy()
-            elseif task.name == "unlock" then
-                storage.lock[task.unit_number] = nil
-            end
-        end
+        factorissimo.execute_later("start_construction_animation", up_base, top_animation, bottom_animation)
+        factorissimo.execute_later("pause_construction_animation", up_base + 15 * TICKS_PER_FRAME, top_animation, bottom_animation)
+        factorissimo.execute_later("unpause_construction_animation", down_base, top_animation, bottom_animation)
     end
 end
 
@@ -202,33 +172,23 @@ factorissimo.on_event(defines.events.on_script_trigger_effect, function(event)
     assert(construction_robot and construction_robot.name == "factory-hidden-construction-robot")
 
     -- ensure we are actually in a factory floor. prevent contraband construction robots from being created
-    local surface_name = construction_robot.surface.name
-    if not surface_name:find("%-factory%-floor$") and not surface_name:find("^factory%-floor%-%d+$") then
-        add_task(game.tick + 1, {name = "destroy", entity = construction_robot}) -- delay this by a tick to avoid a crash
+    if not storage.surface_factories[construction_robot.surface_index] then
+        factorissimo.execute_later("destroy_entity", 1, construction_robot)
         return
     end
 
     storage.construction_robots[construction_robot.unit_number] = construction_robot
 end)
 
-factorissimo.on_event(defines.events.on_tick, function(event)
-    for unit_number, entity in pairs(storage.construction_robots) do
-        if entity.valid then
-            local robot_order_queue = entity.robot_order_queue
-            local this_order = robot_order_queue[1]
-
-            if this_order and this_order.target then -- target can sometimes be optional
-                if this_order.type == defines.robot_order_type.construct then
-                    request_platform_animation_for(this_order.target)
-                    --entity.destroy()
-                end
-            end
-        else
-            storage.construction_robots[unit_number] = nil
-        end
-    end
-
-    do_tasks_at_tick(event.tick)
+factorissimo.on_event(defines.events.on_robot_built_entity, function(event)
+    local robot = event.robot
+    local unit_number = robot.unit_number
+    if not storage.construction_robots[unit_number] then return end
+    storage.construction_robots[unit_number] = nil
+    local entity = event.entity
+    if not entity.valid then return end
+    request_platform_animation_for(event.entity)
+    robot.destroy()
 end)
 
 factorissimo.build_roboport_upgrade = function(factory)
