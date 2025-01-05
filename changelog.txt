@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.6
+Date: 2025-01-05
+  Optimizations:
+    - Greatly simplified and optimized the code related to the factory construction upgrade.
+---------------------------------------------------------------------------------------------------
 Version: 3.8.5
 Date: 2025-01-02
   Compatibility:
