@@ -161,6 +161,16 @@ local function request_platform_animation_for(entity)
     end
 end
 
+-- ensure we are actually in a factory floor. prevent contraband construction robots from being created
+factorissimo.on_event(defines.events.on_script_trigger_effect, function(event)
+    if event.effect_id ~= "factory-hidden-construction-robot-created" then return end
+    local construction_robot = event.target_entity
+    assert(construction_robot and construction_robot.name == "factory-hidden-construction-robot")
+    if not storage.surface_factories[construction_robot.surface_index] then
+        factorissimo.execute_later("destroy_entity", 1, construction_robot)
+    end
+end)
+
 factorissimo.on_event(defines.events.on_robot_built_entity, function(event)
     local robot = event.robot
     if robot.name ~= "factory-hidden-construction-robot" then return end

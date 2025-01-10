@@ -37,7 +37,7 @@ data:extend {{
     name                                    = "factory-hidden-construction-roboport",
     icon                                    = data.raw.item["roboport"].icon,
     icon_size                               = data.raw.item["roboport"].icon_size,
-    flags                                   = {"not-on-map"},
+    flags                                   = {"not-on-map", "no-automated-item-removal"},
     health                                  = 10000,
     hidden                                  = true,
     radar_range                             = 0,
@@ -71,6 +71,18 @@ local hidden_construction_robot = table.deepcopy(data.raw["construction-robot"][
 hidden_construction_robot.name = "factory-hidden-construction-robot"
 hidden_construction_robot.minable = nil
 hidden_construction_robot.placeable_by = nil
+hidden_construction_robot.created_effect = {
+    type = "direct",
+    action_delivery = {
+        type = "instant",
+        source_effects = {
+            {
+                type = "script",
+                effect_id = "factory-hidden-construction-robot-created",
+            },
+        }
+    }
+}
 hidden_construction_robot.speed = 0.5
 hidden_construction_robot.energy_per_move = nil
 hidden_construction_robot.energy_per_tick = nil
