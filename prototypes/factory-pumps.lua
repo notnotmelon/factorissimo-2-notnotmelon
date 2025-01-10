@@ -43,6 +43,7 @@ data:extend {{
     pumping_speed = pumping_speed,
     energy_usage = "1W",
     collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
+    collision_mask = {layers = {}},
     quality_indicator_scale = 0,
     squeak_behaviour = false
 }}
@@ -73,6 +74,7 @@ data:extend {{
     pumping_speed = pumping_speed,
     energy_usage = "1W",
     collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
+    collision_mask = {layers = {}},
     quality_indicator_scale = 0,
     squeak_behaviour = false
 }}
