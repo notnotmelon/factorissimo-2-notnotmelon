@@ -10,7 +10,6 @@ data.raw.technology["factory-architecture-t2"].unit = {
         {"automation-science-pack", 1},
         {"logistic-science-pack",   1},
         {"chemical-science-pack",   1},
-        {"space-science-pack",      1},
     },
     time = 45
 }
