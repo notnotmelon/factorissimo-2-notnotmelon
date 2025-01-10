@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.8
+Date: 2025-01-10
+  Bugfixes:
+    - Fixed 32p icon size definition for connection indicaticators in blueprints when the real icon size was 64p.
+    - Fixed item loss with the upgrade planner. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/160
+    - Prevented contraband hidden construction robots from being created. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/159 Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/158
+---------------------------------------------------------------------------------------------------
 Version: 3.8.7
 Date: 2025-01-05
   Optimizations:
