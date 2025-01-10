@@ -76,12 +76,10 @@ local function update_power_connection(factory, pole) -- pole parameter is optio
     -- find the nearest connected power pole
     local D = prototypes.max_electric_pole_supply_area_distance + factory.layout.outside_size / 2
     local area = {{x - D, y - D}, {x + D, y + D}}
-    local has_global_electric_network = surface.has_global_electric_network
-    if has_global_electric_network then area = nil end
 
     local candidates = {}
     for _, entity in pairs(surface.find_entities_filtered {type = "electric-pole", area = area, limit = 100}) do
-        local same_network = has_global_electric_network or entity.electric_network_id == electric_network
+        local same_network = entity.electric_network_id == electric_network
         if same_network and entity ~= pole and not entity.prototype.hidden then
             candidates[#candidates + 1] = entity
         end
@@ -102,7 +100,6 @@ local function get_factories_near_pole(pole)
     local x = position.x
     local y = position.y
     local area = {{x - D, y - D}, {x + D, y + D}}
-    if surface.has_global_electric_network then area = nil end
 
     local result = {}
     for _, candidate in pairs(surface.find_entities_filtered {type = BUILDING_TYPE, area = area}) do
