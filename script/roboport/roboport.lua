@@ -171,6 +171,14 @@ factorissimo.on_event(defines.events.on_script_trigger_effect, function(event)
     end
 end)
 
+local function destroy_robot_if_empty_inventory(robot)
+    if not robot.valid then return end
+    if robot.get_inventory(defines.inventory.robot_cargo).is_empty() and robot.get_inventory(defines.inventory.robot_repair).is_empty() then
+        robot.destroy()
+    end
+end
+factorissimo.register_delayed_function("destroy_robot_if_empty_inventory", destroy_robot_if_empty_inventory)
+
 factorissimo.on_event(defines.events.on_robot_built_entity, function(event)
     local robot = event.robot
     if robot.name ~= "factory-hidden-construction-robot" then return end
@@ -178,7 +186,7 @@ factorissimo.on_event(defines.events.on_robot_built_entity, function(event)
     local entity = event.entity
     if not entity.valid then return end
     request_platform_animation_for(event.entity)
-    robot.destroy()
+    factorissimo.execute_later("destroy_robot_if_empty_inventory", 1, robot)
 end)
 
 factorissimo.build_roboport_upgrade = function(factory)
