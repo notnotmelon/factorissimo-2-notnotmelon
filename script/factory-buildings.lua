@@ -327,7 +327,7 @@ local function create_factory_exterior(factory, building)
     factory.building = building
     factory.built = true
 
-    factorissimo.recheck_factory(factory, nil, nil)
+    factorissimo.recheck_factory_connections(factory)
     factorissimo.update_power_connection(factory)
     factorissimo.update_overlay(factory)
     update_destructible(factory)
