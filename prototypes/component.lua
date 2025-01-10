@@ -46,7 +46,6 @@ create_energy_interfaces(16, F .. "/graphics/icon/factory-3.png")
 data:extend {{
     type = "item",
     name = "factory-connection-indicator-settings",
-    icon_size = 32,
     icon = F .. "/graphics/indicator/blueprint-settings.png",
     stack_size = 1,
     hidden = true,
