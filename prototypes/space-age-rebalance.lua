@@ -85,7 +85,6 @@ data.raw.technology["factory-connection-type-chest"].unit = {
         {"automation-science-pack", 1},
         {"logistic-science-pack",   1},
         {"chemical-science-pack",   1},
-        {"space-science-pack",      1},
     },
     time = 45
 }
@@ -139,7 +138,6 @@ data.raw.technology["factory-interior-upgrade-roboport"].unit = {
         {"automation-science-pack", 1},
         {"logistic-science-pack",   1},
         {"chemical-science-pack",   1},
-        {"space-science-pack",      1},
     },
     time = 45
 }
