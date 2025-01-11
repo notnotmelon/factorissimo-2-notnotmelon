@@ -43,6 +43,7 @@ data:extend {{
     radar_range                             = 0,
     collision_box                           = {{-0.9, -0.9}, {0.9, 0.9}},
     selection_box                           = {{-1, -1}, {1, 1}},
+    collision_mask                          = {layers = {}},
     logistics_radius                        = 2,
     construction_radius                     = 0,
     energy_source                           = {type = "void"},

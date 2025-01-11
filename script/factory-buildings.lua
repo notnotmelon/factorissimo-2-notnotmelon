@@ -155,6 +155,24 @@ factorissimo.on_event(defines.events.on_surface_created, function(event)
     surface.map_gen_settings = mgs
 end)
 
+--- searches a factory floor for "holes" where a new factory could be created
+--- else returns the next position
+local function find_first_unused_position(surface)
+    local used_indexes = {}
+    for k in pairs(storage.surface_factories[surface.index] or {}) do
+        table.insert(used_indexes, k)
+    end
+    table.sort(used_indexes)
+
+    for i, index in pairs(used_indexes) do
+        if i ~= index then -- found a gap
+            return (used_indexes[i - 1] or 0) + 1
+        end
+    end
+
+    return #used_indexes + 1
+end
+
 local function create_factory_position(layout, building)
     local parent_surface = building.surface
     local surface_name = get_surface_name(layout, parent_surface)
@@ -185,11 +203,7 @@ local function create_factory_position(layout, building)
         surface.freeze_daytime = true
     end
 
-    local n = 0
-    for _, factory in pairs(storage.factories) do
-        if factory.inside_surface.valid and factory.inside_surface == surface then n = n + 1 end
-    end
-
+    local n = find_first_unused_position(surface) - 1
     local FACTORISSIMO_CHUNK_SPACING = 16
     local cx = FACTORISSIMO_CHUNK_SPACING * (n % 8)
     local cy = FACTORISSIMO_CHUNK_SPACING * math.floor(n / 8)
@@ -216,9 +230,14 @@ local function create_factory_position(layout, building)
     storage.surface_factories[surface.index] = storage.surface_factories[surface.index] or {}
     storage.surface_factories[surface.index][n + 1] = factory
 
-    local fn = table_size(storage.factories) + 1
-    storage.factories[fn] = factory
-    factory.id = fn
+    local highest_currently_used_id = 0
+    for id in pairs(storage.factories) do
+        if id > highest_currently_used_id then
+            highest_currently_used_id = id
+        end
+    end
+    factory.id = highest_currently_used_id + 1
+    storage.factories[factory.id] = factory
 
     return factory
 end
@@ -335,6 +354,8 @@ local function create_factory_exterior(factory, building)
     return factory
 end
 
+-- FACTORY MINING AND DECONSTRUCTION --
+
 local function cleanup_factory_exterior(factory, building)
     factorissimo.cleanup_outside_energy_receiver(factory)
     factorissimo.cleanup_factory_roboport_exterior_chest(factory)
@@ -353,8 +374,6 @@ local function cleanup_factory_exterior(factory, building)
     factory.building = nil
     factory.built = false
 end
-
--- FACTORY MINING AND DECONSTRUCTION --
 
 local sprite_path_translation = {
     virtual = "virtual-signal",
@@ -376,6 +395,69 @@ local function generate_factory_item_description(factory)
     if params ~= "" then return "[font=heading-2]" .. params .. "[/font]" end
 end
 
+local function is_completely_empty(factory)
+    local roboport_upgrade = factory.roboport_upgrade
+    if roboport_upgrade then
+        for _, entity in pairs{roboport_upgrade.storage, roboport_upgrade.roboport} do
+            if entity and entity.valid then
+                for i = 1, entity.get_max_inventory_index() do
+                    local inventory = entity.get_inventory(i)
+                    if not inventory.is_empty() then return false end
+                end
+            end
+        end
+    end
+
+    local x, y = factory.inside_x, factory.inside_y
+    local D = (factory.layout.inside_size + 8) / 2
+    local area = {{x - D, y - D}, {x + D, y + D}}
+
+    local interior_entities = factory.inside_surface.find_entities_filtered {area = area}
+    for _, entity in pairs(interior_entities) do
+        local collision_mask = entity.prototype.collision_mask.layers
+        local is_hidden_entity = table_size(collision_mask) == 0
+        if not is_hidden_entity then return false end
+    end
+    return true
+end
+
+local function cleanup_factory_interior(factory, hidden_entities)
+    local x, y = factory.inside_x, factory.inside_y
+    local D = (factory.layout.inside_size + 8) / 2
+    local area = {{x - D, y - D}, {x + D, y + D}}
+
+    for _, e in pairs(factory.inside_surface.find_entities_filtered {area = area}) do
+        e.destroy()
+    end
+
+    local out_of_map_tiles = {}
+    for xx = math.floor(x - D), math.ceil(x + D) do
+        for yy = math.floor(y - D), math.ceil(y + D) do
+            out_of_map_tiles[#out_of_map_tiles + 1] = {position = {xx, yy}, name = "out-of-map"}
+        end
+    end
+    factory.inside_surface.set_tiles(out_of_map_tiles)
+
+    local factory_lists = {storage.factories, storage.saved_factories, storage.factories_by_entity}
+    for surface_index, factory_list in pairs(storage.surface_factories) do
+        factory_lists[#factory_lists + 1] = factory_list
+    end
+
+    for _, factory_list in pairs(factory_lists) do
+        for k, f in pairs(factory_list) do
+            if f == factory then
+                factory_list[k] = nil
+            end
+        end
+    end
+
+    for _, force in pairs(game.forces) do
+        force.rechart(factory.inside_surface)
+    end
+
+    for k in pairs(factory) do factory[k] = nil end
+end
+
 -- How players pick up factories
 -- Working factory buildings don't return items, so we have to manually give the player an item
 factorissimo.on_event({
@@ -389,6 +471,20 @@ factorissimo.on_event({
     local factory = get_factory_by_building(entity)
     if not factory then return end
     cleanup_factory_exterior(factory, entity)
+
+    if is_completely_empty(factory) then
+        local buffer = event.buffer
+        buffer.clear()
+        buffer.insert {
+            name = factory.layout.name,
+            count = 1,
+            quality = entity.quality,
+            health = entity.health / entity.max_health
+        }
+        cleanup_factory_interior(factory, hidden_entities)
+        return
+    end
+
     storage.saved_factories[factory.id] = factory
     local buffer = event.buffer
     buffer.clear()
@@ -495,12 +591,11 @@ local function on_delete_surface(surface)
         local inside_surface = factory.inside_surface
         local outside_surface = factory.outside_surface
         if inside_surface.valid and outside_surface.valid and factory.outside_surface == surface then
-            game.print("q")
             childen_surfaces_to_delete[inside_surface.index] = inside_surface
         end
     end
 
-    for _, factory_list in pairs{storage.factories, storage.saved_factories, storage.factories_by_entity} do
+    for _, factory_list in pairs {storage.factories, storage.saved_factories, storage.factories_by_entity} do
         for k, factory in pairs(factory_list) do
             local inside_surface = factory.inside_surface
             if not inside_surface.valid or childen_surfaces_to_delete[inside_surface.index] then
