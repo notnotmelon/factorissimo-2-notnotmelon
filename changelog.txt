@@ -1,4 +1,19 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.9
+Date: 2025-01-11
+  Balancing:
+    - Factory mk2 is now unlocked with chemical science instead of space science.
+    - Factory upgrade: chest connection is now unlocked with chemical science instead of space science.
+  Optimizations:
+    - Fixed performance issues when deconstructing belts or pipes. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/161
+  Bugfixes:
+    - Fixed fluid connection pumps having a collision mask.
+  Locale:
+    - Fixed unknown key open outside surface to remote view.
+  Changes:
+    - Mining a completely empty factory building now returns a blank factory item and also cleans up the factory surface instead of making a packed factory.
+    - Removed broken compatibility with global power network.
+---------------------------------------------------------------------------------------------------
 Version: 3.8.8
 Date: 2025-01-10
   Bugfixes:
