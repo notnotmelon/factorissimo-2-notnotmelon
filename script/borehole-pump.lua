@@ -12,6 +12,7 @@ local BOREHOLE_PUMP_FIXED_RECIPES = {
     ["tenebris"] = "borehole-pump-sulfuric-acid",
     ["muluna"] = NO_FLUID_ON_THIS_SURFACE,
     ["luna"] = NO_FLUID_ON_THIS_SURFACE,
+    ["corrundum"] = "borehole-pump-petroleum-gas",
 }
 local BOREHOLE_PUMP_SMOKE_OFFSETS = {
     [defines.direction.north] = {-1.2, -2.1},
