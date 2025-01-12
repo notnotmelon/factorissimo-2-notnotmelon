@@ -48,7 +48,24 @@ local function draw_overlay_sprite(signal, target_entity, offset, scale, id_tabl
         -- Proper sprite
         sprite_data.tint = nil
         sprite_data.target.offset = offset
+        game.print(signal.quality)
         table.insert(id_table, rendering.draw_sprite(sprite_data).id)
+
+        local quality = signal.quality and prototypes.quality[signal.quality]
+        if quality and not quality.hidden and quality.level > 0 then
+            table.insert(id_table, rendering.draw_sprite {
+                sprite = "quality/" .. quality.name,
+                target = {
+                    entity = target_entity,
+                    offset = {offset[1] - 0.25 * scale, offset[2] + 0.25 * scale},
+                },
+                surface = target_entity.surface,
+                only_in_alt_mode = true,
+                render_layer = "entity-info-icon",
+                x_scale = scale * 0.4,
+                y_scale = scale * 0.4,
+            }.id)
+        end
     end
 end
 
