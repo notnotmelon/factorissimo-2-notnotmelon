@@ -48,7 +48,6 @@ local function draw_overlay_sprite(signal, target_entity, offset, scale, id_tabl
         -- Proper sprite
         sprite_data.tint = nil
         sprite_data.target.offset = offset
-        game.print(signal.quality)
         table.insert(id_table, rendering.draw_sprite(sprite_data).id)
 
         local quality = signal.quality and prototypes.quality[signal.quality]
