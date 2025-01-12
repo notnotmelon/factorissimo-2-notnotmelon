@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.10
+Date: 2025-01-12
+  Compatibility:
+    - Added incompatibility with "
+  Bugfixes:
+    - Fixed a crash with packing tape mod. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/163
+    - Fixed quality pips not rendering in the factory alt-mode overlay. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/162
+---------------------------------------------------------------------------------------------------
 Version: 3.8.9
 Date: 2025-01-11
   Balancing:
