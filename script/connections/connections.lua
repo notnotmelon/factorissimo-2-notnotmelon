@@ -305,12 +305,17 @@ factorissimo.on_nth_tick(CONNECTION_UPDATE_RATE, function()
     local current_slot = connections[current_pos]
     connections[current_pos] = {}
     for _, conn in pairs(current_slot) do
-        -- Reinsert connection after delay
-        -- Not checking for inappropriate delays, so keep your delays civil
-        local delay = (conn._valid and c_tick[conn._type](conn))
-        local queue_pos = (current_pos + delay) % CYCLIC_BUFFER_SIZE
-        local new_slot = connections[queue_pos]
-        new_slot[1 + #new_slot] = conn
+        local delay = conn._valid and c_tick[conn._type](conn)
+        if delay then
+            -- Reinsert connection after delay
+            -- Not checking for inappropriate delays, so keep your delays civil
+            local queue_pos = (current_pos + delay) % CYCLIC_BUFFER_SIZE
+            local new_slot = connections[queue_pos]
+            new_slot[1 + #new_slot] = conn
+        elseif conn._valid then
+            destroy_connection(conn)
+            init_connection(conn._factory, conn._id, conn._factory.layout.connections[conn._id])
+        end
     end
 end)
 
