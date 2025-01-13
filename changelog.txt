@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.13
+Date: 2025-01-13
+  Bugfixes:
+    - Fixed a crash. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/165
+---------------------------------------------------------------------------------------------------
 Version: 3.8.12
 Date: 2025-01-12
   Compatibility:
