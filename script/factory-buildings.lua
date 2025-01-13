@@ -415,7 +415,7 @@ local function is_completely_empty(factory)
     local interior_entities = factory.inside_surface.find_entities_filtered {area = area}
     for _, entity in pairs(interior_entities) do
         local collision_mask = entity.prototype.collision_mask.layers
-        local is_hidden_entity = table_size(collision_mask) == 0
+        local is_hidden_entity = (not collision_mask) or table_size(collision_mask) == 0
         if not is_hidden_entity then return false end
     end
     return true
