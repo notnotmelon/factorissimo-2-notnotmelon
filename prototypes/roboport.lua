@@ -112,7 +112,7 @@ data:extend {{
     hidden = true,
     flags = {"only-in-cursor"},
     place_result = "factory-hidden-construction-robot",
-    stack_size = 10000,
+    stack_size = 1000,
 }}
 
 local roboport = table.deepcopy(data.raw["roboport"]["roboport"])

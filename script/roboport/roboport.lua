@@ -224,7 +224,7 @@ factorissimo.build_roboport_upgrade = function(factory)
         force = factory.force,
     }
     hidden_roboport.backer_name = ""
-    hidden_roboport.get_inventory(defines.inventory.roboport_robot).insert {name = "factory-hidden-construction-robot", count = 500}
+    hidden_roboport.get_inventory(defines.inventory.roboport_robot).insert {name = "factory-hidden-construction-robot", count = prototypes.item["factory-hidden-construction-robot"].stack_size / 2}
 
     storage = storage or factory.inside_surface.create_entity {
         name = "factory-construction-chest",
@@ -512,7 +512,7 @@ factorissimo.on_nth_tick(367, function()
         local robot_inventory = hidden_roboport.get_inventory(defines.inventory.roboport_robot)
 
         robot_inventory.clear()
-        robot_inventory.insert {name = "factory-hidden-construction-robot", count = 500}
+        robot_inventory.insert {name = "factory-hidden-construction-robot", count = prototypes.item["factory-hidden-construction-robot"].stack_size / 2}
 
         ::continue::
     end
