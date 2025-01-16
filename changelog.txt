@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.15
+Date: 2025-01-16
+  Bugfixes:
+    - Fixed a remote API error in add_layout. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/166
+    - Fixed a remote API error in get_surface_name. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/167
+---------------------------------------------------------------------------------------------------
 Version: 3.8.14
 Date: 2025-01-15
   Bugfixes:
