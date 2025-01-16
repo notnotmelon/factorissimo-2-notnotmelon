@@ -55,11 +55,23 @@ local function can_place_factory_here(tier, surface, position, original_planet)
     return false
 end
 
+local DEFAULT_FACTORY_UPGRADES = {
+    {"factorissimo", "build_lights_upgrade"},
+    {"factorissimo", "build_greenhouse_upgrade"},
+    {"factorissimo", "build_display_upgrade"},
+    {"factorissimo", "build_roboport_upgrade"}
+}
+
 local function build_factory_upgrades(factory)
-    factorissimo.build_lights_upgrade(factory)
-    factorissimo.build_greenhouse_upgrade(factory)
-    factorissimo.build_display_upgrade(factory)
-    factorissimo.build_roboport_upgrade(factory)
+    for _, upgrade in pairs(factory.layout.upgrades or DEFAULT_FACTORY_UPGRADES) do
+        assert(#upgrade == 2)
+        local mod, upgrade_function = upgrade[1], upgrade[2]
+        if mod == "factorissimo" then
+            factorissimo[upgrade_function](factory)
+        else
+            remote.call(mod, upgrade_function, factory)
+        end
+    end
 end
 
 --- If a factory factory is built without proper recursion technology, it will be inactive.
@@ -81,16 +93,10 @@ factorissimo.on_event(factorissimo.events.on_init(), activate_factories)
 factorissimo.on_event({defines.events.on_research_finished, defines.events.on_research_reversed}, function(event)
     if not storage.factories then return end -- In case any mod or scenario script calls LuaForce.research_all_technologies() during its on_init
     local name = event.research.name
-    if name == "factory-interior-upgrade-lights" then
-        for _, factory in pairs(storage.factories) do factorissimo.build_lights_upgrade(factory) end
-    elseif name == "factory-interior-upgrade-display" then
-        for _, factory in pairs(storage.factories) do factorissimo.build_display_upgrade(factory) end
-    elseif name == "factory-interior-upgrade-roboport" then
-        for _, factory in pairs(storage.factories) do factorissimo.build_roboport_upgrade(factory) end
-    elseif name == "factory-upgrade-greenhouse" then
-        for _, factory in pairs(storage.factories) do factorissimo.build_greenhouse_upgrade(factory) end
-    elseif name == "factory-recursion-t1" or name == "factory-recursion-t2" then
+    if name == "factory-recursion-t1" or name == "factory-recursion-t2" then
         activate_factories()
+    else
+        for _, factory in pairs(storage.factories) do build_factory_upgrades(factory) end
     end
 end)
 
