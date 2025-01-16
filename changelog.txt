@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.16
+Date: 2025-01-16
+  Compatibility:
+    - Added a remote API for custom factory upgrades such as roboport or greenhouse. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/168
+---------------------------------------------------------------------------------------------------
 Version: 3.8.15
 Date: 2025-01-16
   Bugfixes:
