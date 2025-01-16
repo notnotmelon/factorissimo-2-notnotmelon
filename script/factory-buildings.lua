@@ -135,7 +135,7 @@ local function update_destructible(factory)
 end
 
 local function get_surface_name(layout, parent_surface)
-    if factorissimo.surface_override then return factorissimo.surface_override end
+    if layout.surface_override then return layout.surface_override end
 
     if parent_surface.planet then
         return (parent_surface.name .. "-factory-floor"):gsub("%-factory%-floor%-factory%-floor", "-factory-floor")
