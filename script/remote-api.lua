@@ -129,7 +129,7 @@ remote_api.create_layout = function(name, quality)
 end
 
 remote_api.add_layout = function(layout)
-    factorissimo.init_layout()
+    storage.layout_generators = storage.layout_generators or {}
     storage.layout_generators[layout.name] = layout
 end
 
