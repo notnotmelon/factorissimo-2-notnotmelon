@@ -526,7 +526,7 @@ local function prevent_factory_mining(entity)
     factorissimo.update_overlay(factory)
     if #factory.outside_port_markers ~= 0 then
         factory.outside_port_markers = {}
-        toggle_port_markers(factory)
+        factorissimo.toggle_port_markers(factory)
     end
     factorissimo.create_flying_text {position = entity.position, text = {"factory-cant-be-mined"}}
 end
