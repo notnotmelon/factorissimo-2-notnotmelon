@@ -4,6 +4,7 @@ local pf = "p-q-"
 local starting_planet = "nauvis"
 if mods["any-planet-start"] then
     starting_planet = settings.startup["aps-planet"].value
+    if starting_planet == "none" then starting_planet = "nauvis" end
 end
 
 data:extend {
