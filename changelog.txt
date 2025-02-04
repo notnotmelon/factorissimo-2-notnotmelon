@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.18
+Date: 2025-02-04
+  Compatibility:
+    - Fixed a crash when tried to delete internal factory in BP Sandboxes. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/170
+---------------------------------------------------------------------------------------------------
 Version: 3.8.17
 Date: 2025-02-04
   Compatibility:
