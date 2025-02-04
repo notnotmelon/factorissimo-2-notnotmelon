@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.17
+Date: 2025-02-04
+  Compatibility:
+    - Fixed crash with the any planet start mod.
+    - Removed incompatibility flag with the "upgradable quality" mod. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/174
+---------------------------------------------------------------------------------------------------
 Version: 3.8.16
 Date: 2025-01-16
   Compatibility:
