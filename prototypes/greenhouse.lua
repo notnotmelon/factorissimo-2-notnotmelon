@@ -22,7 +22,7 @@ for _, tower in pairs(data.raw["agricultural-tower"]) do
     tower.surface_conditions = tower.surface_conditions or {}
     table.insert(tower.surface_conditions, {
         property = "solar-power",
-        min = 25
+        min = 1
     })
 end
 
