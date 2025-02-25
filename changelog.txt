@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.19
+Date: 2025-02-25
+  Bugfixes:
+    - Fixed crash when deconstructing a factory building in specific scenarios. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/171
+---------------------------------------------------------------------------------------------------
 Version: 3.8.18
 Date: 2025-02-04
   Compatibility:
