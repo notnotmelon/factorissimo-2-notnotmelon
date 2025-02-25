@@ -24,7 +24,7 @@ end
 
 local function paste_blueprint(inventory, destination)
     if not inventory.valid then return end
-    if destination.inside_surface.valid and destination.force.valid then
+    if destination.inside_surface and destination.inside_surface.valid and destination.force.valid then
         local stack = inventory[1]
         stack.build_blueprint {
             surface = destination.inside_surface,
