@@ -57,30 +57,41 @@ if data.raw["assembling-machine"]["borehole-pump"] then
         order = "x-a"
     }}
 
+
     local borehole_fluids = {}
+    local function add_borehole_fluid(fluid_name)
+        if borehole_fluids[fluid_name] then return end
+
+        borehole_fluids[fluid_name] = true
+        local fluid = data.raw.fluid[fluid_name]
+        local recipe_name = "borehole-pump-" .. fluid_name
+        data:extend {{
+            type = "recipe",
+            name = recipe_name,
+            localised_name = fluid.localised_name or {"fluid-name." .. fluid.name},
+            enabled = false,
+            ingredients = {},
+            energy_required = 4,
+            allow_productivity = true,
+            hide_from_player_crafting = true,
+            category = "borehole-pump",
+            subgroup = "borehole-pump",
+            results = {
+                {type = "fluid", name = fluid_name, amount = 600}
+            },
+            surface_conditions = table.deepcopy(data.raw["assembling-machine"]["borehole-pump"].surface_conditions)
+        }}
+        table.insert(data.raw.technology["factory-upgrade-borehole-pump"].effects, {type = "unlock-recipe", recipe = recipe_name})
+    end
+
     for _, tile in pairs(data.raw.tile) do
-        if tile.autoplace and tile.fluid and not tile.hidden and not borehole_fluids[tile.fluid] then
-            borehole_fluids[tile.fluid] = true
-            local fluid = data.raw.fluid[tile.fluid]
-            local recipe_name = "borehole-pump-" .. tile.fluid
-            data:extend {{
-                type = "recipe",
-                name = recipe_name,
-                localised_name = fluid.localised_name or {"fluid-name." .. fluid.name},
-                enabled = false,
-                ingredients = {},
-                energy_required = 4,
-                allow_productivity = true,
-                hide_from_player_crafting = true,
-                category = "borehole-pump",
-                subgroup = "borehole-pump",
-                results = {
-                    {type = "fluid", name = tile.fluid, amount = 600}
-                },
-                surface_conditions = table.deepcopy(data.raw["assembling-machine"]["borehole-pump"].surface_conditions)
-            }}
-            table.insert(data.raw.technology["factory-upgrade-borehole-pump"].effects, {type = "unlock-recipe", recipe = recipe_name})
+        if tile.autoplace and tile.fluid and not tile.hidden then
+            add_borehole_fluid(tile.fluid)
         end
+    end
+
+    if mods["metal-and-stars"] then
+        add_borehole_fluid("dark-matter-fluid")
     end
 
     local function add_surface_conditions_to_borehole_recipe(recipe_name, conditions_source_to_copy)
