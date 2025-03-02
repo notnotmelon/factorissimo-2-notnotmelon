@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.21
+Date: 2025-03-02
+  Compatibility:
+    - Added char, terra palus, janus, castra, cubium, nix, dea-dia, prosephina, lemures, frozeta, circa, and neumann V compatibility.
+---------------------------------------------------------------------------------------------------
 Version: 3.8.20
 Date: 2025-03-02
   Compatibility:
