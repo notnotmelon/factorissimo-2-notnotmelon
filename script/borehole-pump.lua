@@ -13,6 +13,7 @@ local BOREHOLE_PUMP_FIXED_RECIPES = {
     ["muluna"] = NO_FLUID_ON_THIS_SURFACE,
     ["luna"] = NO_FLUID_ON_THIS_SURFACE,
     ["corrundum"] = "borehole-pump-petroleum-gas",
+    ["lignumis"] = "borehole-pump-water",
 }
 local BOREHOLE_PUMP_SMOKE_OFFSETS = {
     [defines.direction.north] = {-1.2, -2.1},
