@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.24
+Date: 2025-05-03
+  Bugfixes:
+    - Fixed Can't get inside new placed factories. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/195
+---------------------------------------------------------------------------------------------------
 Version: 3.8.23
 Date: 2025-05-03
   Compatibility:
