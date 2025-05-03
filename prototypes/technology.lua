@@ -7,6 +7,21 @@ if mods["any-planet-start"] then
     if starting_planet == "none" then starting_planet = "nauvis" end
 end
 
+local effects = {
+    {
+        type = "unlock-recipe",
+        recipe = "factory-1"
+    }
+}
+
+if not mods["solarsystemplusplus"] then
+    effects[#effects + 1] = {
+        type = "unlock-space-location",
+        space_location = starting_planet .. "-factory-floor",
+        use_icon_overlay_constant = false,
+    }
+end
+
 data:extend {
     -- Factory buildings
     {
@@ -15,17 +30,7 @@ data:extend {
         icon = F .. "/graphics/technology/factory-architecture-1.png",
         icon_size = 256,
         prerequisites = {"stone-wall", "logistics"},
-        effects = {
-            {
-                type = "unlock-recipe",
-                recipe = "factory-1"
-            },
-            {
-                type = "unlock-space-location",
-                space_location = starting_planet .. "-factory-floor",
-                use_icon_overlay_constant = false,
-            }
-        },
+        effects = effects,
         unit = {
             count = 200,
             ingredients = {{"automation-science-pack", 1}},
