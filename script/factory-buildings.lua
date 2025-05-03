@@ -20,17 +20,13 @@ end)
 
 -- RECURSION TECHNOLOGY --
 
-local function does_original_planet_match_surface(original_planet, surface)
-    if not original_planet then return true end
-    if not original_planet.valid then return false end
-    local original_planet_name = original_planet.surface.name:gsub("%-factory%-floor$", "")
-    local surface_name = surface.name:gsub("%-factory%-floor$", "")
-    return original_planet_name == surface_name
-end
-
 local function can_place_factory_here(tier, surface, position, original_planet)
-    if not does_original_planet_match_surface(original_planet, surface) then
-        local original_planet_name = original_planet.name:gsub("%-factory%-floor$", "")
+    if not original_planet or not surface then return false end
+    if not original_planet.valid or not surface.valid then return false end
+    
+    local original_planet_name = original_planet.name:gsub("%-factory%-floor$", "")
+    local surface_name = surface.name:gsub("%-factory%-floor$", "")
+    if original_planet_name ~= surface_name then
         local original_planet_prototype = (game.planets[original_planet_name] or original_planet).prototype
         local flying_text = {"factory-connection-text.invalid-placement-planet", original_planet_name, original_planet_prototype.localised_name}
         factorissimo.create_flying_text {position = position, text = flying_text}
