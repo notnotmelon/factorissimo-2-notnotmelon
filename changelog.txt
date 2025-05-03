@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.23
+Date: 2025-05-03
+  Compatibility:
+    - Fixed crash on load with Solar System++. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/186
+---------------------------------------------------------------------------------------------------
 Version: 3.8.22
 Date: 2025-05-03
   Bugfixes:
