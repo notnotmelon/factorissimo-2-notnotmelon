@@ -21,16 +21,18 @@ end)
 -- RECURSION TECHNOLOGY --
 
 local function can_place_factory_here(tier, surface, position, original_planet)
-    if not original_planet or not surface then return false end
-    if not original_planet.valid or not surface.valid then return false end
-    
-    local original_planet_name = original_planet.name:gsub("%-factory%-floor$", "")
-    local surface_name = surface.name:gsub("%-factory%-floor$", "")
-    if original_planet_name ~= surface_name then
-        local original_planet_prototype = (game.planets[original_planet_name] or original_planet).prototype
-        local flying_text = {"factory-connection-text.invalid-placement-planet", original_planet_name, original_planet_prototype.localised_name}
-        factorissimo.create_flying_text {position = position, text = flying_text}
-        return false
+    if not surface or not surface.valid then error("Attempted to place factory on nonexisting surface.") end
+
+    -- Check if a player is trying to cheat by moving factories to diffrent planets.
+    if original_planet and original_planet.valid then
+        local original_planet_name = original_planet.name:gsub("%-factory%-floor$", "")
+        local surface_name = surface.name:gsub("%-factory%-floor$", "")
+        if original_planet_name ~= surface_name then
+            local original_planet_prototype = (game.planets[original_planet_name] or original_planet).prototype
+            local flying_text = {"factory-connection-text.invalid-placement-planet", original_planet_name, original_planet_prototype.localised_name}
+            factorissimo.create_flying_text {position = position, text = flying_text}
+            return false
+        end
     end
 
     local factory = find_surrounding_factory(surface, position)
