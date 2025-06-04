@@ -14,22 +14,6 @@ local function spawn_radiative_tower(surface, x, y)
     if inv and inv.valid then
         inv.insert {name = "iron-stick", count = 1}
     end
-
-    -- radiative_towers.register_heating_tower_contracted(e)
-end
-
-local function spawn_cryogenic_plant(surface, x, y)
-    local e = surface.create_entity {
-        name = "cerys-fulgoran-cryogenic-plant-wreck-frozen",
-        position = {x, y},
-        force = "player",
-    }
-
-    if e and e.valid then
-        e.minable_flag = false
-        e.destructible = false
-        -- repair.register_ancient_cryogenic_plant(e, true)
-    end
 end
 
 local DEFAULT_CERYS_TOWER_POSITIONS = {
@@ -49,5 +33,4 @@ factorissimo.spawn_cerys_entities = function(factory)
     for _, tower_position in pairs(factory.layout.cerys_radiative_towers or DEFAULT_CERYS_TOWER_POSITIONS) do
         spawn_radiative_tower(surface, x + tower_position[1], y + tower_position[2])
     end
-    spawn_cryogenic_plant(surface, x, y)
 end
