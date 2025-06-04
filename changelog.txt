@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.25
+Date: 2025-06-04
+  Compatibility:
+    - Added support for the "elevated pipes" mod. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/199
+---------------------------------------------------------------------------------------------------
 Version: 3.8.24
 Date: 2025-05-03
   Bugfixes:
