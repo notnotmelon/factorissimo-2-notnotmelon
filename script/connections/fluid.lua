@@ -1,7 +1,7 @@
 local Fluid = {}
 
 Fluid.color = {r = 167 / 255, g = 229 / 255, b = 255 / 255}
-Fluid.entity_types = {"pipe", "pipe-to-ground", "pump", "storage-tank", "infinity-pipe", "offshore-pump"}
+Fluid.entity_types = {"pipe", "pipe-to-ground", "pump", "storage-tank", "infinity-pipe", "offshore-pump", "elevated-pipe"}
 Fluid.unlocked = function(force) return force.technologies["factory-connection-type-fluid"].researched end
 
 local function is_connected(dummy_connector, entity)
