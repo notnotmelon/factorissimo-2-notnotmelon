@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.26
+Date: 2025-06-04
+  Compatibility:
+    - No longer spawn a cryogenic plant on cerys factory buildings. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/194
+---------------------------------------------------------------------------------------------------
 Version: 3.8.25
 Date: 2025-06-04
   Compatibility:
