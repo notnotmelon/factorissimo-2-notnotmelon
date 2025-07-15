@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.28
+Date: 2025-07-15
+  Compatibility:
+    - Added warning message when using the quantum fabricator mod. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/203
+---------------------------------------------------------------------------------------------------
 Version: 3.8.27
 Date: 2025-07-15
   Locale:
