@@ -566,7 +566,7 @@ factorissimo.on_event(defines.events.on_entity_died, function(event)
         max_radius = 0,
         use_start_position_on_failure = true
     }
-    assert(table_size(items) == 1)
+    assert(table_size(items) == 1, "Failed to generate factory item. Are you using the quantum-fabricator mod? See https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/203")
     local item = items[1].stack.item
     assert(item and item.valid)
     factory.item = item
