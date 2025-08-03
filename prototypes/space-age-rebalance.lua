@@ -15,7 +15,7 @@ data.raw.technology["factory-architecture-t2"].unit = {
 }
 data.raw.technology["factory-architecture-t2"].prerequisites = {
     "factory-architecture-t1",
-    "space-science-pack",
+    "chemical-science-pack",
     "electric-energy-distribution-1",
 }
 
