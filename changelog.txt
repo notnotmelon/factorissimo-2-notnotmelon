@@ -1,4 +1,18 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.30
+Date: 2025-08-04
+  Balancing:
+    - Removed "space-science-pack" from the factory-architecture-t2 technology while space age is installed.
+    - The factory construction roboport no longer needs energy.
+  Compatibility:
+    - Added incompatibility flag with "global-power-network". Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/94
+    - Fixed crash with "modular life". Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/207
+  Bugfixes:
+    - Fixed "invalid factory data" when ctrl+x on an empty factory building. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/211
+    - Improved the speed of the factory roboport upgrade. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/182
+  Locale:
+    - Updated the factory building locale to explain how to move a factory building from remote view.
+---------------------------------------------------------------------------------------------------
 Version: 3.8.29
 Date: 2025-07-17
   Locale:
