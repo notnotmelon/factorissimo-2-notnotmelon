@@ -183,7 +183,7 @@ data:extend {
         hidden = true,
         collision_mask = {layers = {}},
         energy_per_nearby_scan = "250J",
-        energy_per_sector = "1W",
+        energy_per_sector = "1kW",
         energy_source = {type = "void"},
         energy_usage = "250W",
         max_distance_of_sector_revealed = 0,
