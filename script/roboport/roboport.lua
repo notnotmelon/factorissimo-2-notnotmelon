@@ -163,6 +163,51 @@ local function request_platform_animation_for(entity)
     end
 end
 
+local function eject_unneeded_items(factory, requests_by_itemname)
+    local roboport_upgrade = factory.roboport_upgrade
+    if not roboport_upgrade then return end
+
+    local storage = roboport_upgrade.storage
+    if not storage or not storage.valid then return end
+    local storage_inventory = storage.get_inventory(defines.inventory.chest)
+    if storage_inventory.is_empty() then return end
+
+    local ejector = roboport_upgrade.ejector
+    if not ejector or not ejector.valid then return end
+    local ejector_inventory = ejector.get_inventory(defines.inventory.chest)
+    if not ejector_inventory.is_empty() then return end
+    
+    for i = 1, #storage_inventory do
+        local itemstack = storage_inventory[i]
+        if itemstack.valid_for_read then
+            local item_name, quality = itemstack.name, itemstack.quality.name
+            if requests_by_itemname[item_name] and requests_by_itemname[item_name][quality] then
+                -- pass
+            else
+                local ejected_count = ejector_inventory.insert(itemstack)
+                itemstack.count = itemstack.count - ejected_count
+                ejector.surface.create_entity {
+                    name = "item-request-proxy",
+                    position = ejector.position,
+                    target = ejector,
+                    force = ejector.force_index,
+                    modules = {},
+                    removal_plan = {{
+                        id = {
+                            name = item_name,
+                            quality = quality,
+                        },
+                        items = {
+                            in_inventory = {{inventory = defines.inventory.chest, stack = 0, count = ejected_count}}
+                        }
+                    }}
+                }
+                return
+            end
+        end
+    end
+end
+
 -- ensure we are actually in a factory floor. prevent contraband construction robots from being created
 factorissimo.on_event(defines.events.on_script_trigger_effect, function(event)
     if event.effect_id ~= "factory-hidden-construction-robot-created" then return end
@@ -200,11 +245,19 @@ factorissimo.build_roboport_upgrade = function(factory)
     local requester = factory.roboport_upgrade and factory.roboport_upgrade.requester and factory.roboport_upgrade.requester.valid and factory.roboport_upgrade.requester
     local roboport = factory.roboport_upgrade and factory.roboport_upgrade.roboport and factory.roboport_upgrade.roboport.valid and factory.roboport_upgrade.roboport
     local storage = factory.roboport_upgrade and factory.roboport_upgrade.storage and factory.roboport_upgrade.storage.valid and factory.roboport_upgrade.storage
+    local ejector = factory.roboport_upgrade and factory.roboport_upgrade.ejector and factory.roboport_upgrade.ejector.valid and factory.roboport_upgrade.ejector
     local hidden_roboport = factory.roboport_upgrade and factory.roboport_upgrade.hidden_roboport and factory.roboport_upgrade.hidden_roboport.valid and factory.roboport_upgrade.hidden_roboport
 
     if factory.building and factory.building.valid then
         requester = requester or factory.outside_surface.create_entity {
-            name = factory.layout.outside_requester_chest_type or "factory-requester-chest-factory-3",
+            name = "factory-requester-chest-" .. factory.building.name,
+            position = factory.building.position,
+            force = factory.force,
+            quality = factory.quality,
+        }
+
+        ejector = ejector or factory.outside_surface.create_entity {
+            name = "factory-eject-chest-" .. factory.building.name,
             position = factory.building.position,
             force = factory.force,
             quality = factory.quality,
@@ -235,7 +288,7 @@ factorissimo.build_roboport_upgrade = function(factory)
         quality = factory.quality,
     }
 
-    for _, entity in pairs {roboport, storage, requester, hidden_roboport} do
+    for _, entity in pairs {roboport, storage, requester, ejector, hidden_roboport} do
         entity.destructible = false
         entity.minable = false
         entity.rotatable = false
@@ -245,32 +298,40 @@ factorissimo.build_roboport_upgrade = function(factory)
         roboport = roboport,
         storage = storage,
         requester = requester,
+        ejector = ejector,
         hidden_roboport = hidden_roboport,
         item_request_proxies = (factory.roboport_upgrade and factory.roboport_upgrade.item_request_proxies) or {}
     }
 end
 
 factorissimo.cleanup_factory_roboport_exterior_chest = function(factory)
-    local requester = factory.roboport_upgrade and factory.roboport_upgrade.requester and factory.roboport_upgrade.requester.valid and factory.roboport_upgrade.requester
-    if not requester then return end
-    local surface = requester.surface
-
-    local inventory = requester.get_inventory(defines.inventory.chest)
-    for i = 1, #inventory do
-        local stack = inventory[i]
-        if stack.valid_for_read then
-            surface.spill_item_stack {
-                position = requester.position,
-                stack = stack,
-                enable_looted = true,
-                force = requester.force_index,
-                allow_belts = false,
-                use_start_position_on_failure = true,
-            }
-        end
-    end
-    requester.destroy()
     factory.roboport_upgrade.item_request_proxies = {}
+
+    local requester = factory.roboport_upgrade and factory.roboport_upgrade.requester and factory.roboport_upgrade.requester.valid and factory.roboport_upgrade.requester
+    local ejector = factory.roboport_upgrade and factory.roboport_upgrade.ejector and factory.roboport_upgrade.ejector.valid and factory.roboport_upgrade.ejector
+
+    local chests_to_cleanup = {}
+    if requester then chests_to_cleanup[#chests_to_cleanup + 1] = requester end
+    if ejector then chests_to_cleanup[#chests_to_cleanup + 1] = ejector end
+
+    for _, chest in pairs(chests_to_cleanup) do
+        local surface = chest.surface
+        local inventory = chest.get_inventory(defines.inventory.chest)
+        for i = 1, #inventory do
+            local stack = inventory[i]
+            if stack.valid_for_read then
+                surface.spill_item_stack {
+                    position = chest.position,
+                    stack = stack,
+                    enable_looted = true,
+                    force = chest.force_index,
+                    allow_belts = false,
+                    use_start_position_on_failure = true,
+                }
+            end
+        end
+        chest.destroy()
+    end
 end
 
 local GHOST_PROTOTYPE_NAME = "entity-ghost"
@@ -372,6 +433,7 @@ factorissimo.on_nth_tick(257, function()
     for _, factory in pairs(storage.factories) do
         if not factory.inactive and factory.built then
             local requests_by_itemname = construction_requests_by_factory[factory]
+            eject_unneeded_items(factory, requests_by_itemname or {})
             if requests_by_itemname then
                 create_or_remove_item_request_proxies(factory, requests_by_itemname)
             elseif factory.roboport_upgrade and next(factory.roboport_upgrade.item_request_proxies) then
@@ -469,7 +531,7 @@ create_or_remove_item_request_proxies = function(factory, requests_by_itemname)
                     position = requester.position,
                     target = requester,
                     modules = insert_plan,
-                    force = requester.force
+                    force = requester.force_index
                 }
             end
         end

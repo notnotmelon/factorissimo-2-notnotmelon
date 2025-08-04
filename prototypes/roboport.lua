@@ -172,6 +172,19 @@ for _, factory_name in pairs {"factory-1", "factory-2", "factory-3"} do
     requester_chest.quality_indicator_scale = 0
     requester_chest.flags = {"not-on-map", "hide-alt-info", "no-automated-item-removal", "no-automated-item-insertion", "not-in-kill-statistics", "not-rotatable"}
     entities_to_extend[#entities_to_extend + 1] = requester_chest
+
+    local eject_chest = table.deepcopy(data.raw.container["steel-chest"])
+    eject_chest.name = "factory-eject-chest-" .. factory_name
+    eject_chest.inventory_size = 1
+    eject_chest.localised_name = {"entity-name.factory-eject-chest"}
+    eject_chest.collision_box = table.deepcopy(data.raw["storage-tank"][factory_name].collision_box)
+    eject_chest.selection_box = nil
+    eject_chest.picture = nil
+    eject_chest.hidden = true
+    eject_chest.factoriopedia_alternative = factory_name
+    eject_chest.quality_indicator_scale = 0
+    eject_chest.flags = {"not-on-map", "hide-alt-info", "no-automated-item-removal", "no-automated-item-insertion", "not-in-kill-statistics", "not-rotatable"}
+    entities_to_extend[#entities_to_extend + 1] = eject_chest
 end
 
 for _, prototype in pairs(entities_to_extend) do
