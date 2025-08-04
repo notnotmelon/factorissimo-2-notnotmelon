@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.9.2
+Date: 2025-08-04
+  Changes:
+    - Factories can now request repair packs if you have the "factory construction roboport" technology researched. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/201
+---------------------------------------------------------------------------------------------------
 Version: 3.9.1
 Date: 2025-08-04
   Bugfixes:
