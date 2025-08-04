@@ -459,6 +459,10 @@ local function cleanup_factory_interior(factory, hidden_entities)
         force.rechart(factory.inside_surface)
     end
 
+    -- https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/211
+    storage.was_deleted = storage.was_deleted or {}
+    storage.was_deleted[factory.id] = true
+
     for k in pairs(factory) do factory[k] = nil end
 end
 
@@ -674,6 +678,12 @@ local function handle_factory_placed(entity, tags)
         local factory = create_fresh_factory(entity)
         factorissimo.copy_entity_ghosts(storage.factories[tags.id], factory)
         factorissimo.update_overlay(factory)
+        return
+    end
+
+    -- https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/211
+    if storage.was_deleted and storage.was_deleted[tags.id] then
+        create_fresh_factory(entity)
         return
     end
 
