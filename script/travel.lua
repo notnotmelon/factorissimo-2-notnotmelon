@@ -44,7 +44,7 @@ local function teleport_safely(e, surface, position, player, leaving)
         storage.last_player_teleport[player.index] = game.tick
     end
 
-    if player then factorissimo.update_camera(player) end
+    if player then factorissimo.update_factory_preview(player) end
 end
 
 local function enter_factory(e, factory, player)
@@ -118,7 +118,7 @@ local function check_position_and_leave_factory(player, is_airborne)
     if math.abs(position.x - factory.inside_door_x) >= 4 then return end
 
     leave_factory(player, factory, player)
-    factorissimo.update_camera(player)
+    factorissimo.update_factory_preview(player)
     factorissimo.update_overlay(factory)
     return true
 end

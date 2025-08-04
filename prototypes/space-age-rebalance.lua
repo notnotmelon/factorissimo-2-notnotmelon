@@ -129,7 +129,8 @@ data.raw.technology["factory-interior-upgrade-display"].unit = {
     time = 30
 }
 data.raw.technology["factory-interior-upgrade-display"].prerequisites = {
-    "factory-preview",
+    "factory-interior-upgrade-lights",
+    "logistic-science-pack"
 }
 
 data.raw.technology["factory-interior-upgrade-roboport"].unit = {

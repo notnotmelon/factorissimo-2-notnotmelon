@@ -60,25 +60,4 @@ data:extend {
         default_value = false,
         order = "a-e",
     },
-
-    -- Per user
-
-    {
-        type = "int-setting",
-        name = "Factorissimo2-preview-size",
-        setting_type = "runtime-per-user",
-        minimum_value = 50,
-        default_value = 300,
-        maximum_value = 1000,
-        order = "a-b",
-    },
-    {
-        type = "double-setting",
-        name = "Factorissimo2-preview-zoom",
-        setting_type = "runtime-per-user",
-        minimum_value = 0.2,
-        default_value = 1,
-        maximum_value = 2,
-        order = "a-c",
-    },
 }

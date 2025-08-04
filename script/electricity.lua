@@ -174,7 +174,7 @@ factorissimo.on_event({defines.events.on_selected_entity_changed, defines.events
         permission.set_allows_action(defines.input_action.remove_cables, not has_cross_surface_connections)
     end
 
-    factorissimo.update_camera(player) -- also update camera here
+    factorissimo.update_factory_preview(player) -- also update camera here
 end)
 
 function factorissimo.cleanup_outside_energy_receiver(factory)

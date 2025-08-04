@@ -167,20 +167,6 @@ data:extend {
     },
     {
         type = "technology",
-        name = "factory-preview",
-        icon = F .. "/graphics/technology/factory-preview.png",
-        icon_size = 256,
-        prerequisites = {"factory-interior-upgrade-lights", "logistic-science-pack"},
-        effects = {},
-        unit = {
-            count = 200,
-            ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}},
-            time = 30
-        },
-        order = pf .. "d-c",
-    },
-    {
-        type = "technology",
         name = "factory-interior-upgrade-roboport",
         icon = F .. "/graphics/technology/factory-interior-upgrade-roboport.png",
         icon_size = 256,
