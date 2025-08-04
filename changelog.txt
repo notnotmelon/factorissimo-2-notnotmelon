@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 3.8.31
 Date: 2025-08-04
+  Features:
+    - Reworked the camera preview system. Camera now renders onto the minimap instead of the top left corner. Deleted "factory preview" technology. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/213
   Compatibility:
     - Added forced dependancy on factorio version 2.0.60 or higher. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/214
   Changes:
