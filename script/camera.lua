@@ -186,6 +186,14 @@ local function update_factory_preview(player)
             inside = false
         elseif selected.type == "item-entity" and selected.stack.type == "item-with-tags" and has_layout(selected.stack.name) then
             factory = storage.saved_factories[selected.stack.tags.id]
+        elseif selected.type == "construction-robot" or selected.type == "logistic-robot" then
+            local inventory = selected.get_inventory(defines.inventory.robot_cargo)
+            if inventory and #inventory >= 1 then
+                local itemstack = inventory[1]
+                if itemstack.valid_for_read and itemstack.type == "item-with-tags" and has_layout(itemstack.name) then
+                    factory = storage.saved_factories[itemstack.tags.id]
+                end
+            end
         else
             factory = get_factory_by_entity(player.selected)
             if factory and not factory.inactive then
