@@ -129,6 +129,7 @@ roboport.robot_slots_count = 0
 roboport.material_slots_count = 1
 roboport.icon = "__factorissimo-2-notnotmelon__/graphics/icon/construction-chest.png"
 roboport.icon_size = 64
+roboport.energy_source = {type = "void"}
 roboport.hidden = true
 roboport.radar_range = 0
 roboport.flags = {"player-creation", "placeable-player", "not-on-map"}
