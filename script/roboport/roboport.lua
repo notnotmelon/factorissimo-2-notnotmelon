@@ -1,6 +1,8 @@
 local blacklisted_names = require "script.roboport.blacklist"
 local utility_constants = require "script.roboport.utility-constants"
 
+local STACK_SIZE_MULTIPLIER = 50
+
 local function add_task(tick, task)
     local tasks_at_tick = storage.tasks_at_tick[tick]
     if tasks_at_tick then
@@ -362,7 +364,6 @@ local function get_construction_requests_by_factory()
 end
 
 local create_or_remove_item_request_proxies -- function stub
-local create_new_item_request_proxies       -- function stub
 
 factorissimo.on_nth_tick(257, function()
     local construction_requests_by_factory = get_construction_requests_by_factory()
@@ -374,8 +375,10 @@ factorissimo.on_nth_tick(257, function()
             if requests_by_itemname then
                 create_or_remove_item_request_proxies(factory, requests_by_itemname)
             elseif factory.roboport_upgrade and next(factory.roboport_upgrade.item_request_proxies) then
-                for _, proxy in pairs(factory.roboport_upgrade.item_request_proxies) do
-                    proxy.destroy()
+                for _, by_quality in pairs(factory.roboport_upgrade.item_request_proxies) do
+                    for _, proxy in pairs(by_quality) do
+                        proxy.destroy()
+                    end
                 end
                 factory.roboport_upgrade.item_request_proxies = {}
             end
@@ -385,24 +388,31 @@ end)
 
 create_or_remove_item_request_proxies = function(factory, requests_by_itemname)
     local roboport_upgrade = factory.roboport_upgrade
+    local item_request_proxies = roboport_upgrade.item_request_proxies
 
     local requester = roboport_upgrade.requester
     if not requester.valid then return end
+    local requester_inventory = requester.get_inventory(defines.inventory.chest)
     local storage = roboport_upgrade.storage
     if not storage.valid then return end
 
+    -- subtract off all the items we already have in storage
     for _, chest in pairs {requester, storage} do
         for _, already_has in pairs(chest.get_inventory(defines.inventory.chest).get_contents()) do
-            local name, quality = already_has.name, already_has.quality -- subtract off all the items we already have in storage
-            if requests_by_itemname[name] then
-                requests_by_itemname[name][quality] = nil
+            local name, quality, count = already_has.name, already_has.quality, already_has.count
+            if requests_by_itemname[name] and requests_by_itemname[name][quality] then
+                local new_count = requests_by_itemname[name][quality] - count
+                if new_count > 0 then
+                    requests_by_itemname[name][quality] = new_count
+                else
+                    requests_by_itemname[name][quality] = nil
+                end
             end
         end
     end
 
     local already_occupied_inventory_indexes = {}
-    local proxies = {}
-    for _, proxy in pairs(roboport_upgrade.item_request_proxies) do
+    for _, proxy in pairs(item_request_proxies) do
         if not proxy.valid then goto we_are_no_longer_requesting_this_item end
 
         local item_requests = proxy.item_requests
@@ -415,9 +425,6 @@ create_or_remove_item_request_proxies = function(factory, requests_by_itemname)
         end
 
         for _, request in pairs(item_requests) do
-            local name, quality = request.name, request.quality -- same logic as above. subtract off all the items we are already requesting
-            requests_by_itemname[name][quality] = nil
-
             for _, insert_plan in pairs(proxy.insert_plan) do
                 for _, inventory_locator in pairs(insert_plan.items.in_inventory) do
                     -- inventory_locator.stack is 0-indexed for some reason. adjust.
@@ -426,21 +433,11 @@ create_or_remove_item_request_proxies = function(factory, requests_by_itemname)
             end
         end
 
-        proxies[#proxies + 1] = proxy
         ::we_are_no_longer_requesting_this_item::
     end
 
-    roboport_upgrade.item_request_proxies = proxies
-
-    create_new_item_request_proxies(factory, requests_by_itemname, already_occupied_inventory_indexes)
-end
-
-create_new_item_request_proxies = function(factory, requests_by_itemname, already_occupied_inventory_indexes)
-    local roboport_upgrade = factory.roboport_upgrade
-    local requester = roboport_upgrade.requester
-    local requester_inventory = requester.get_inventory(defines.inventory.chest)
-
     for item_name, requests_by_quality in pairs(requests_by_itemname) do
+        item_request_proxies[item_name] = item_request_proxies[item_name] or {}
         for quality, count in pairs(requests_by_quality) do
             local next_available_inventory_slot
             for i = 1, #requester_inventory do
@@ -452,9 +449,8 @@ create_new_item_request_proxies = function(factory, requests_by_itemname, alread
             end
             if not next_available_inventory_slot then return end
 
-            count = math.min(count, prototypes.item[item_name].stack_size)
-
-            local module = {
+            count = math.min(count, prototypes.item[item_name].stack_size * STACK_SIZE_MULTIPLIER)
+            local insert_plan = {{
                 id = {
                     name = item_name,
                     quality = quality,
@@ -462,16 +458,20 @@ create_new_item_request_proxies = function(factory, requests_by_itemname, alread
                 items = {
                     in_inventory = {{inventory = defines.inventory.chest, stack = next_available_inventory_slot - 1, count = count}}
                 }
-            }
+            }}
 
-            local proxies = roboport_upgrade.item_request_proxies
-            proxies[#proxies + 1] = requester.surface.create_entity {
-                name = "item-request-proxy",
-                position = requester.position,
-                target = requester,
-                modules = {module},
-                force = requester.force
-            }
+            local proxy = item_request_proxies[item_name][quality]
+            if proxy and proxy.valid then
+                proxy.insert_plan = insert_plan
+            else
+                item_request_proxies[item_name][quality] = requester.surface.create_entity {
+                    name = "item-request-proxy",
+                    position = requester.position,
+                    target = requester,
+                    modules = insert_plan,
+                    force = requester.force
+                }
+            end
         end
     end
 end

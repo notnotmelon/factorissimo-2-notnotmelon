@@ -159,8 +159,11 @@ for _, factory_name in pairs {"factory-1", "factory-2", "factory-3"} do
     -- all materials are delivered via the construction network. there is no need for this to be a requester.
     local requester_chest = table.deepcopy(data.raw.container["steel-chest"])
     requester_chest.name = "factory-requester-chest-" .. factory_name
+    requester_chest.localised_name = {"entity-name.factory-requester-chest"}
     requester_chest.collision_box = table.deepcopy(data.raw["storage-tank"][factory_name].collision_box)
     requester_chest.selection_box = nil
+    requester_chest.inventory_type = "with_custom_stack_size"
+    requester_chest.inventory_properties = {stack_size_multiplier = 50}
     requester_chest.inventory_size = 100
     requester_chest.picture = nil
     requester_chest.hidden = true
