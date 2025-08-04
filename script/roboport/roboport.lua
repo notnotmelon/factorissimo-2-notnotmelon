@@ -183,6 +183,8 @@ local function eject_unneeded_items(factory, requests_by_itemname)
             local item_name, quality = itemstack.name, itemstack.quality.name
             if requests_by_itemname[item_name] and requests_by_itemname[item_name][quality] then
                 -- pass
+            elseif prototypes.item[item_name].type == "repair-tool" then
+                -- pass
             else
                 local ejected_count = ejector_inventory.insert(itemstack)
                 itemstack.count = itemstack.count - ejected_count
@@ -340,6 +342,7 @@ local TILE_GHOST_PROTOTYPE_NAME = "tile-ghost"
 
 local function get_construction_requests_by_factory()
     local missing_ghosts_per_factory = {}
+    local factories_that_need_repair_packs = {}
 
     for surface_index, factories in pairs(storage.surface_factories) do
         if not game.get_surface(surface_index) then goto invalid_surface end
@@ -358,11 +361,13 @@ local function get_construction_requests_by_factory()
         end
 
         for _, player in pairs(forces_to_check) do
-            local missing = (player.get_alerts {
+            local alerts = player.get_alerts {
                 type = defines.alert_type.no_material_for_construction,
                 surface = surface_index,
-            }[surface_index] or {})[defines.alert_type.no_material_for_construction] or {}
-            for _, ghost in pairs(missing) do
+            }[surface_index] or {}
+
+            local no_material_for_construction = alerts[defines.alert_type.no_material_for_construction] or {}
+            for _, ghost in pairs(no_material_for_construction) do
                 ghost = ghost.target
                 if not ghost then goto continue end -- this can happen if the alerts are not updated yet but the entity is invalid
                 --if ghost.is_registered_for_construction() then goto continue end -- we only care about ghosts that are not already being constructed
@@ -378,6 +383,21 @@ local function get_construction_requests_by_factory()
                     missing_ghosts_per_factory[factory] = {ghost}
                 end
 
+                ::continue::
+            end
+
+            local alerts = player.get_alerts {
+                type = defines.alert_type.not_enough_repair_packs,
+                surface = surface_index,
+            }[surface_index] or {}
+
+            local not_enough_repair_packs = alerts[defines.alert_type.not_enough_repair_packs] or {}
+            for _, alert in pairs(not_enough_repair_packs) do
+                local factory = remote_api.find_surrounding_factory_by_surface_index(surface_index, alert.position)
+                if not factory or not factory.roboport_upgrade then goto continue end
+                if factory.inactive or not factory.built or not factory.building.valid then goto continue end
+                if not factory.inside_surface.valid or not factory.outside_surface.valid then goto continue end
+                factories_that_need_repair_packs[factory] = true
                 ::continue::
             end
         end
@@ -420,6 +440,16 @@ local function get_construction_requests_by_factory()
         requests_by_itemname["factory-3-instantiated"] = nil
 
         construction_requests_by_factory[factory] = requests_by_itemname
+    end
+
+    local quality = "normal"
+    local item_name = "repair-pack"
+
+    for factory in pairs(factories_that_need_repair_packs) do
+        construction_requests_by_factory[factory] = construction_requests_by_factory[factory] or {}
+        local requests_by_itemname = construction_requests_by_factory[factory]
+        requests_by_itemname[item_name] = requests_by_itemname[item_name] or {}
+        requests_by_itemname[item_name][quality] = requests_by_itemname[item_name][quality] or 5
     end
 
     return construction_requests_by_factory
