@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.8.31
+Date: 2025-08-04
+  Compatibility:
+    - Added forced dependancy on factorio version 2.0.60 or higher. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/214
+  Changes:
+    - Hovering over a logistic or construction robot while that robot contains a packed factory building will now show the preview for that factory building.
+---------------------------------------------------------------------------------------------------
 Version: 3.8.30
 Date: 2025-08-04
   Balancing:
