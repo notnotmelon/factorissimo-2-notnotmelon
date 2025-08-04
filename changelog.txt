@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.9.0
+Date: 2025-08-04
+  Features:
+    - The construction roboport upgrade will now automatically eject unused items to the outside surface.
+---------------------------------------------------------------------------------------------------
 Version: 3.8.31
 Date: 2025-08-04
   Features:
