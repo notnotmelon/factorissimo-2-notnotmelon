@@ -305,6 +305,7 @@ factorissimo.build_roboport_upgrade = function(factory)
 end
 
 factorissimo.cleanup_factory_roboport_exterior_chest = function(factory)
+    if not factory.roboport_upgrade then return end
     factory.roboport_upgrade.item_request_proxies = {}
 
     local requester = factory.roboport_upgrade and factory.roboport_upgrade.requester and factory.roboport_upgrade.requester.valid and factory.roboport_upgrade.requester
