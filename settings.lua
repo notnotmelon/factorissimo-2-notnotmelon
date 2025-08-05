@@ -60,4 +60,12 @@ data:extend {
         default_value = false,
         order = "a-e",
     },
+    {
+        type = "string-setting",
+        name = "Factorissimo2-factory-preview-mode",
+        setting_type = "runtime-per-user",
+        default_value = "fancy",
+        allowed_values = {"fancy", "subtle", "off"},
+        order = "a-c",
+    },
 }

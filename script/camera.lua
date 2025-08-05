@@ -166,6 +166,13 @@ local function unset_camera(player)
 end
 
 local function update_factory_preview(player)
+    local preview_mode = settings.get_player_settings(player)["Factorissimo2-factory-preview-mode"].value
+    
+    if preview_mode == "off" then
+        unset_camera(player)
+        return
+    end
+
     local cursor_stack = player.cursor_stack
     if cursor_stack and
         cursor_stack.valid_for_read and
@@ -196,7 +203,7 @@ local function update_factory_preview(player)
             end
         else
             factory = get_factory_by_entity(player.selected)
-            if factory and not factory.inactive then
+            if preview_mode == "fancy" and factory and not factory.inactive then
                 factorissimo.update_overlay(factory)
                 set_camera(player, factory)
                 return
