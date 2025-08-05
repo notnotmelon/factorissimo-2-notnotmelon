@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.9.3
+Date: 2025-08-05
+  Compatibility:
+    - Added compat with "gregtorio". Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/218
+---------------------------------------------------------------------------------------------------
 Version: 3.9.2
 Date: 2025-08-04
   Changes:
