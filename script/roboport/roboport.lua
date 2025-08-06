@@ -266,6 +266,7 @@ factorissimo.build_roboport_upgrade = function(factory)
         }
     else
         requester = nil
+        ejector = nil
     end
     roboport = roboport or factory.inside_surface.create_entity {
         name = "factory-construction-roboport",
