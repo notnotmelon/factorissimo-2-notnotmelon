@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.9.5
+Date: 2025-08-06
+  Bugfixes:
+    - Fixed crash when researching a new technology. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/219
+---------------------------------------------------------------------------------------------------
 Version: 3.9.4
 Date: 2025-08-05
   Changes:
