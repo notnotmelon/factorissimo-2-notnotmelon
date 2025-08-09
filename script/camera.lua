@@ -78,7 +78,7 @@ local function update_camera(player)
     if not camera then return end
     camera.style.width = preview_size_screen / display_scale
     camera.style.height = preview_size_screen / display_scale
-    camera.zoom = preview_size_world / (factory.layout.inside_size + 2) * zoom / 32
+    camera.zoom = preview_size_world / (factory.layout.inside_size + 2) * zoom / 32 / player.display_density_scale
 end
 
 local function set_camera(player, factory)
@@ -132,11 +132,11 @@ local function set_minimap(player, factory, inside)
     if inside then
         position = {x = factory.inside_x, y = factory.inside_y}
         surface_index = inside_surface.index
-        zoom = (minimap_dimensions.size / 32) / (factory.layout.inside_size + 8) * player.display_scale
+        zoom = (minimap_dimensions.size / 32) / (factory.layout.inside_size + 8) * player.display_scale / player.display_density_scale
     else
         position = {x = factory.outside_x, y = factory.outside_y}
         surface_index = outside_surface.index
-        zoom = (minimap_dimensions.size / 32) / (factory.layout.outside_size + 8) * player.display_scale
+        zoom = (minimap_dimensions.size / 32) / (factory.layout.outside_size + 8) * player.display_scale / player.display_density_scale
     end
     local minimap_frame = get_minimap_frame(player)
     minimap_frame.location = {minimap_dimensions.x, minimap_dimensions.y}
