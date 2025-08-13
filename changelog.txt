@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.9.7
+Date: 2025-08-13
+  Bugfixes:
+    - Fixed map overlay floating up and down with mech suit. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/215
+---------------------------------------------------------------------------------------------------
 Version: 3.9.6
 Date: 2025-08-09
   Bugfixes:
