@@ -64,8 +64,8 @@ local function update_camera(player)
     local display_resolution = player.display_resolution
     local display_scale = player.display_scale
 
-    local left_margin = (selected.position.x - player.position.x) * zoom * 32
-    local top_margin = (selected.position.y - player.position.y) * zoom * 32
+    local left_margin = (selected.position.x - player.render_position.x) * zoom * 32
+    local top_margin = (selected.position.y - player.render_position.y) * zoom * 32
     local preview_size_world = (factory.layout.outside_size * 32 - 32)
     local preview_size_screen = preview_size_world * zoom
 
