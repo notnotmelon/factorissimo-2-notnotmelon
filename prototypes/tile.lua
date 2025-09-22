@@ -9,7 +9,6 @@ local concrete_driving_sound = table.deepcopy(data.raw["tile"]["concrete"].drivi
 local concrete_tile_build_sounds = table.deepcopy(data.raw["tile"]["concrete"].build_sound)
 
 local F = "__factorissimo-2-notnotmelon__"
-local alt_graphics = settings.startup["Factorissimo2-alt-graphics"].value
 local no_tile_transitions = settings.startup["Factorissimo2-disable-new-tile-effects"].value
 
 data:extend {{
@@ -129,21 +128,21 @@ local function floor_mask()
     }
 end
 
-local function pictures_ff(i)
+local function pictures_factory_floor_tile()
     return {
         {
-            picture = F .. "/graphics/tile/ff_1.png",
+            picture = F .. "/graphics/tile/factory-floor-1.png",
             count = 16,
             size = 1
         },
         {
-            picture = F .. "/graphics/tile/ff_2.png",
+            picture = F .. "/graphics/tile/factory-floor-2.png",
             count = 4,
             size = 2,
             probability = 0.39
         },
         {
-            picture = F .. "/graphics/tile/ff_4.png",
+            picture = F .. "/graphics/tile/factory-floor-4.png",
             count = 4,
             size = 4,
             probability = 1
@@ -151,47 +150,35 @@ local function pictures_ff(i)
     }
 end
 
-local function pictures_fp(i)
+local function pictures_factory_wall_tile(i)
     return {
         {
-            picture = F .. "/graphics/tile/fw" .. i .. "_1.png",
+            picture = F .. "/graphics/tile/factory-wall-" .. i .. ".png",
             count = 16,
             size = 1
         },
     }
 end
 
-local function pictures_fw(i)
-    return {
-        {
-            picture = F .. "/graphics/tile/fw" .. i .. "_1.png",
-            count = 16,
-            size = 1
-        },
-    }
-end
-
-local function f1fc() return {r = 130, g = 110, b = 100} end
-local function f1wc() return {r = 190, g = 125, b = 80} end
-local function f2fc() return {r = 100, g = 120, b = 140} end
-local function f2wc() return {r = 80, g = 140, b = 200} end
-local function f3fc() return {r = 120, g = 120, b = 100} end
-local function f3wc() return {r = 190, g = 190, b = 80} end
+local function floor_color() return {r = 130, g = 110, b = 100} end
+local function factory_1_wall_color() return {r = 190, g = 125, b = 80} end
+local function factory_2_wall_color() return {r = 80, g = 140, b = 200} end
+local function factory_3_wall_color() return {r = 190, g = 190, b = 80} end
 
 make_tile {
     name = "factory-entrance",
     collision_mask = edge_mask(),
     layer = 30,
-    pictures = pictures_ff(1),
-    map_color = f1fc(),
+    pictures = pictures_factory_floor_tile(),
+    map_color = floor_color(),
 }
 
 make_tile {
     name = "factory-floor",
     collision_mask = floor_mask(),
     layer = 30,
-    pictures = pictures_ff(1),
-    map_color = f1fc(),
+    pictures = pictures_factory_floor_tile(),
+    map_color = floor_color(),
     growable = true,
 }
 
@@ -201,8 +188,8 @@ make_tile {
     name = "factory-wall-1",
     collision_mask = edge_mask(),
     layer = 70,
-    pictures = pictures_fw(1),
-    map_color = f1wc(),
+    pictures = pictures_factory_wall_tile(1),
+    map_color = factory_1_wall_color(),
     frozen_tint = {1, 0.85, 0.85},
 }
 
@@ -210,8 +197,8 @@ make_tile {
     name = "factory-pattern-1",
     collision_mask = floor_mask(),
     layer = 70,
-    pictures = alt_graphics and pictures_ff(1) or pictures_fw(1),
-    map_color = f1wc(),
+    pictures = pictures_factory_wall_tile(1),
+    map_color = factory_1_wall_color(),
     frozen_tint = {1, 0.85, 0.85},
     growable = true,
 }
@@ -222,8 +209,8 @@ make_tile {
     name = "factory-wall-2",
     collision_mask = edge_mask(),
     layer = 70,
-    pictures = pictures_fw(2),
-    map_color = f2wc(),
+    pictures = pictures_factory_wall_tile(2),
+    map_color = factory_2_wall_color(),
     frozen_tint = {0.85, 0.85, 1},
 }
 
@@ -231,8 +218,8 @@ make_tile {
     name = "factory-pattern-2",
     collision_mask = floor_mask(),
     layer = 70,
-    pictures = alt_graphics and pictures_ff(1) or pictures_fw(2),
-    map_color = f2wc(),
+    pictures = pictures_factory_wall_tile(3),
+    map_color = factory_2_wall_color(),
     frozen_tint = {0.85, 0.85, 1},
     growable = true,
 }
@@ -243,8 +230,8 @@ make_tile {
     name = "factory-wall-3",
     collision_mask = edge_mask(),
     layer = 70,
-    pictures = pictures_fw(3),
-    map_color = f3wc(),
+    pictures = pictures_factory_wall_tile(3),
+    map_color = factory_3_wall_color(),
     frozen_tint = {1, 1, 0.7},
 }
 
@@ -252,8 +239,8 @@ make_tile {
     name = "factory-pattern-3",
     collision_mask = floor_mask(),
     layer = 70,
-    pictures = alt_graphics and pictures_ff(1) or pictures_fw(3),
-    map_color = f3wc(),
+    pictures = pictures_factory_wall_tile(3),
+    map_color = factory_3_wall_color(),
     frozen_tint = {1, 1, 0.7},
     growable = true,
 }
