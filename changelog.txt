@@ -1,4 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.10.0
+Date: 2025-09-22
+  Features:
+    - Added space factories. Works with both space age and space exploration.
+  Graphics:
+    - Removed startup setting "alt graphics".
+    - Removed unused "factory-subicon-big" from graphic files.
+    - Removed unused graphic files for "factory pattern" tiles.
+  Changes:
+    - Removed mod setting "indestructable factory buildings".
+---------------------------------------------------------------------------------------------------
 Version: 3.9.7
 Date: 2025-08-13
   Bugfixes:

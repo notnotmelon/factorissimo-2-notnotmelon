@@ -1,6 +1,6 @@
 {
   "name": "factorissimo-2-notnotmelon",
-  "version": "3.9.7",
+  "version": "3.10.0",
   "title": "Factorissimo 3",
   "author": "MagmaMcFry, notnotmelon",
   "homepage": "https://github.com/notnotmelon/factorissimo-2-notnotmelon",
@@ -9,6 +9,7 @@
   "dependencies": [
     "base >= 2.0.64",
     "? space-age",
+    "? space-exploration",
     "! Factorissimo2",
     "! Factorissimo2-Space-Age-Port",
     "! global-power-network",

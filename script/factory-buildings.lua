@@ -132,12 +132,6 @@ end)
 
 -- FACTORY GENERATION --
 
-local function update_destructible(factory)
-    if factory.built and factory.building.valid then
-        factory.building.destructible = not settings.global["Factorissimo2-indestructible-buildings"].value
-    end
-end
-
 local function get_surface_name(layout, parent_surface)
     if layout.surface_override then return layout.surface_override end
 
@@ -200,7 +194,14 @@ local function create_factory_position(layout, building)
 
         if not surface then
             surface = game.create_surface(surface_name, {width = 2, height = 2})
-            surface.localised_name = {"factory-floor", storage.next_factory_surface}
+            surface.localised_name = {"space-location-name.factory-floor", storage.next_factory_surface}
+        end
+
+        if surface_name == "space-factory-floor" then
+            surface.localised_name = {"space-location-name.space-factory-floor"}
+            surface.set_property("gravity", 0) 
+            surface.set_property("pressure", 0) 
+            surface.set_property("magnetic-field", 0) 
         end
 
         surface.daytime = 0.5
@@ -353,7 +354,6 @@ local function create_factory_exterior(factory, building)
     factorissimo.recheck_factory_connections(factory)
     factorissimo.update_power_connection(factory)
     factorissimo.update_overlay(factory)
-    update_destructible(factory)
     build_factory_upgrades(factory)
     return factory
 end
@@ -764,15 +764,6 @@ commands.add_command("give-lost-factory-buildings", {"command-help-message.give-
         end
         player.insert {name = factory.layout.name .. "-instantiated", count = 1, tags = {id = id}}
         ::found::
-    end
-end)
-
-factorissimo.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
-    local setting = event.setting
-    if setting == "Factorissimo2-indestructible-buildings" then
-        for _, factory in pairs(storage.factories) do
-            update_destructible(factory)
-        end
     end
 end)
 

@@ -98,3 +98,71 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-3"], {
     end},
     {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
 })
+
+if not settings.startup["Factorissimo2-space-architecture"].value then return end
+
+add_quality_factoriopedia_info(data.raw["storage-tank"]["space-factory-1"], {
+    {"interior-space", function(entity, quality_level) return "30×30" end},
+    {"connections", function(entity, quality_level)
+        local connection_count
+        if quality_level <= 0 then
+            connection_count = 16
+        elseif quality_level == 1 then
+            connection_count = 18
+        elseif quality_level == 2 then
+            connection_count = 20
+        elseif quality_level == 3 then
+            connection_count = 22
+        elseif quality_level == 4 then
+            connection_count = 24
+        else
+            connection_count = 26
+        end
+        return connection_count
+    end},
+    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
+})
+
+add_quality_factoriopedia_info(data.raw["storage-tank"]["space-factory-2"], {
+    {"interior-space", function(entity, quality_level) return "46×46" end},
+    {"connections", function(entity, quality_level)
+        local connection_count
+        if quality_level <= 0 then
+            connection_count = 24
+        elseif quality_level == 1 then
+            connection_count = 26
+        elseif quality_level == 2 then
+            connection_count = 28
+        elseif quality_level == 3 then
+            connection_count = 30
+        elseif quality_level == 4 then
+            connection_count = 32
+        else
+            connection_count = 34
+        end
+        return connection_count
+    end},
+    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
+})
+
+add_quality_factoriopedia_info(data.raw["storage-tank"]["space-factory-3"], {
+    {"interior-space", function(entity, quality_level) return "60×60" end},
+    {"connections", function(entity, quality_level)
+        local connection_count
+        if quality_level <= 0 then
+            connection_count = 32
+        elseif quality_level == 1 then
+            connection_count = 34
+        elseif quality_level == 2 then
+            connection_count = 38
+        elseif quality_level == 3 then
+            connection_count = 42
+        elseif quality_level == 4 then
+            connection_count = 44
+        else
+            connection_count = 46
+        end
+        return connection_count
+    end},
+    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
+})

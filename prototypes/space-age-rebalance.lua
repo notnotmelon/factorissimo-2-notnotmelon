@@ -180,3 +180,30 @@ data.raw["electric-pole"]["factory-circuit-connector"].surface_conditions = {{
     property = "gravity",
     min = 0.1
 }}
+
+if not settings.startup["Factorissimo2-space-architecture"].value then return end
+
+data.raw["storage-tank"]["space-factory-1"].surface_conditions = {{
+    property = "gravity",
+    max = 0.1
+}}
+data.raw["storage-tank"]["space-factory-2"].surface_conditions = {{
+    property = "gravity",
+    max = 0.1
+}}
+data.raw["storage-tank"]["space-factory-3"].surface_conditions = {{
+    property = "gravity",
+    max = 0.1
+}}
+data.raw["recipe"]["space-factory-1"].surface_conditions = {{
+    property = "gravity",
+    max = 0.1
+}}
+data.raw["recipe"]["space-factory-2"].surface_conditions = {{
+    property = "gravity",
+    max = 0.1
+}}
+data.raw["recipe"]["space-factory-3"].surface_conditions = {{
+    property = "gravity",
+    max = 0.1
+}}

@@ -12,9 +12,10 @@ data:extend {
     -- Startup
     {
         type = "bool-setting",
-        name = "Factorissimo2-alt-graphics",
+        name = "Factorissimo2-space-architecture",
         setting_type = "startup",
-        default_value = false,
+        default_value = true,
+        hidden = not (mods["space-exploration"] or mods["space-age"]),
         order = "a-a",
     },
     {
@@ -52,13 +53,6 @@ data:extend {
         setting_type = "runtime-global",
         default_value = true,
         order = "a-c",
-    },
-    {
-        type = "bool-setting",
-        name = "Factorissimo2-indestructible-buildings",
-        setting_type = "runtime-global",
-        default_value = false,
-        order = "a-e",
     },
     {
         type = "string-setting",

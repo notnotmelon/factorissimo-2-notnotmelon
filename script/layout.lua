@@ -38,6 +38,8 @@ local layout_generators = {
         outside_door_x = 0,
         outside_door_y = 4,
         outside_energy_receiver_type = "factory-power-input-8",
+        outside_requester_chest = "factory-requester-chest-factory-1",
+        outside_ejector_chest = "factory-eject-chest-factory-1",
         inside_energy_x = -4,
         inside_energy_y = 17,
         overlay_x = 0,
@@ -133,6 +135,8 @@ local layout_generators = {
         outside_door_x = 0,
         outside_door_y = 6,
         outside_energy_receiver_type = "factory-power-input-12",
+        outside_requester_chest = "factory-requester-chest-factory-2",
+        outside_ejector_chest = "factory-eject-chest-factory-2",
         inside_energy_x = -4,
         inside_energy_y = 25,
         overlay_x = 0,
@@ -235,6 +239,8 @@ local layout_generators = {
         outside_door_x = 0,
         outside_door_y = 8,
         outside_energy_receiver_type = "factory-power-input-16",
+        outside_requester_chest = "factory-requester-chest-factory-3",
+        outside_ejector_chest = "factory-eject-chest-factory-3",
         inside_energy_x = -4,
         inside_energy_y = 32,
         overlay_x = 0,
@@ -341,9 +347,48 @@ local layout_generators = {
     }
 }
 
-factorissimo.on_event(factorissimo.events.on_init(), function()
+local function add_space_factories()
+    if not settings.startup["Factorissimo2-space-architecture"].value then return end
+
+    local tile_name_mapping = {
+        ["factory-wall-1"] = "space-factory-wall-1",
+        ["factory-wall-2"] = "space-factory-wall-2",
+        ["factory-wall-3"] = "space-factory-wall-3",
+        ["factory-pattern-1"] = "space-factory-pattern-1",
+        ["factory-pattern-2"] = "space-factory-pattern-2",
+        ["factory-pattern-3"] = "space-factory-pattern-3",
+        ["factory-floor"] = "space-factory-floor",
+        ["factory-entrance"] = "space-factory-entrance",
+    }
+
+    local function make_space_layout(original_layout_name)
+        local layout = table.deepcopy(layout_generators[original_layout_name])
+        layout.name = "space-" .. original_layout_name
+        for _, mosaic in pairs(layout.mosaics) do
+            mosaic.tile = tile_name_mapping[mosaic.tile] or mosaic.tile
+        end
+        for _, rect in pairs(layout.rectangles) do
+            rect.tile = tile_name_mapping[rect.tile] or rect.tile
+        end
+        layout.connection_tile = tile_name_mapping[layout.connection_tile] or layout.connection_tile
+        layout.surface_override = "space-factory-floor"
+        storage.layout_generators[layout.name] = layout
+    end
+    make_space_layout("factory-1")
+    make_space_layout("factory-2")
+    make_space_layout("factory-3")
+end
+
+--[[
+/c __factorissimo-2-notnotmelon__ reload_layouts()
+--]]
+
+_G.reload_layouts = function()
     storage.layout_generators = storage.layout_generators or {}
     for name, layout in pairs(layout_generators) do
         storage.layout_generators[name] = layout
     end
-end)
+    add_space_factories()
+end
+
+factorissimo.on_event(factorissimo.events.on_init(), reload_layouts)
