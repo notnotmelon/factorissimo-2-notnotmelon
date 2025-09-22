@@ -12,13 +12,6 @@ data:extend {
     -- Startup
     {
         type = "bool-setting",
-        name = "Factorissimo2-alt-graphics",
-        setting_type = "startup",
-        default_value = false,
-        order = "a-a",
-    },
-    {
-        type = "bool-setting",
         name = "Factorissimo2-disable-new-tile-effects",
         setting_type = "startup",
         default_value = false,

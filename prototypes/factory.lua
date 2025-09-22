@@ -1,5 +1,4 @@
 local F = "__factorissimo-2-notnotmelon__";
-local alt_graphics = settings.startup["Factorissimo2-alt-graphics"].value and "-alt" or ""
 require("circuit-connector-sprites")
 
 local function cwc0()
@@ -33,7 +32,7 @@ data:extend {
                         draw_as_shadow = true
                     },
                     {
-                        filename = F .. "/graphics/factory/factory-1" .. alt_graphics .. ".png",
+                        filename = F .. "/graphics/factory/factory-1.png",
                         width = 416 * 2,
                         height = 320 * 2,
                         scale = 0.5,
@@ -113,7 +112,7 @@ data:extend {
                         draw_as_shadow = true
                     },
                     {
-                        filename = F .. "/graphics/factory/factory-2" .. alt_graphics .. ".png",
+                        filename = F .. "/graphics/factory/factory-2.png",
                         width = 544 * 2,
                         height = 448 * 2,
                         scale = 0.5,
@@ -193,7 +192,7 @@ data:extend {
                         draw_as_shadow = true
                     },
                     {
-                        filename = F .. "/graphics/factory/factory-3" .. alt_graphics .. ".png",
+                        filename = F .. "/graphics/factory/factory-3.png",
                         width = 704 * 2,
                         height = 608 * 2,
                         scale = 0.5,
