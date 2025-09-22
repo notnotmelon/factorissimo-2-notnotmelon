@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.10.1
+Date: 2025-09-22
+  Locale:
+    - Update Korean Locale to Latest Version ([#231](https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/231))
+---------------------------------------------------------------------------------------------------
 Version: 3.10.0
 Date: 2025-09-22
   Features:
