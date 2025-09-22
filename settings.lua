@@ -55,13 +55,6 @@ data:extend {
         order = "a-c",
     },
     {
-        type = "bool-setting",
-        name = "Factorissimo2-indestructible-buildings",
-        setting_type = "runtime-global",
-        default_value = false,
-        order = "a-e",
-    },
-    {
         type = "string-setting",
         name = "Factorissimo2-factory-preview-mode",
         setting_type = "runtime-per-user",
