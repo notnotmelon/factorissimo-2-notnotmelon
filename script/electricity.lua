@@ -1,6 +1,45 @@
 local find_surrounding_factory = remote_api.find_surrounding_factory
 local get_factory_by_building = remote_api.get_factory_by_building
 
+local function draw_planet_icon_on_inside_power_pole(factory)
+    local sprite_path
+    local scale = 1
+
+    if factory.inside_surface.name == "space-factory-floor" then
+        sprite_path = "factory-floor-space"
+        scale = 0.5
+    elseif factory.inside_surface.planet then
+        local planet_name = factory.inside_surface.planet.name
+        local parent_planet = game.planets[planet_name:gsub("%-factory%-floor", "")]
+        if parent_planet then
+            sprite_path = "space-location/" .. parent_planet.name
+        end
+    end
+
+    local sprite_data = {
+        sprite = sprite_path,
+        surface = factory.inside_surface,
+        target = {
+            entity = factory._inside_power_pole
+        },
+        only_in_alt_mode = true,
+        render_layer = "entity-info-icon",
+        x_scale = scale,
+        y_scale = scale,
+    }
+    -- Fake shadows
+    local shadow_radius = 0.12 * scale
+    for _, shadow_offset in pairs {{0, shadow_radius}, {0, -shadow_radius}, {shadow_radius, 0}, {-shadow_radius, 0}} do
+        sprite_data.tint = {0, 0, 0, 0.5} -- Transparent black
+        sprite_data.target.offset = shadow_offset
+        rendering.draw_sprite(sprite_data)
+    end
+    -- Proper sprite
+    sprite_data.tint = nil
+    sprite_data.target.offset = nil
+    rendering.draw_sprite(sprite_data)
+end
+
 local function get_or_create_inside_power_pole(factory)
     if factory._inside_power_pole and factory._inside_power_pole.valid then
         return factory._inside_power_pole
@@ -16,35 +55,7 @@ local function get_or_create_inside_power_pole(factory)
     power_pole.destructible = false
     factory._inside_power_pole = power_pole
 
-    if factory.inside_surface.planet then
-        local planet_name = factory.inside_surface.planet.name
-        local parent_planet = game.planets[planet_name:gsub("%-factory%-floor", "")]
-        if parent_planet then
-            local scale = 1
-
-            local sprite_data = {
-                sprite = "space-location/" .. parent_planet.name,
-                surface = factory.inside_surface,
-                target = {
-                    entity = power_pole
-                },
-                only_in_alt_mode = true,
-                render_layer = "entity-info-icon",
-            }
-            -- Fake shadows
-            local shadow_radius = 0.12 * scale
-            for _, shadow_offset in pairs {{0, shadow_radius}, {0, -shadow_radius}, {shadow_radius, 0}, {-shadow_radius, 0}} do
-                sprite_data.tint = {0, 0, 0, 0.5} -- Transparent black
-                sprite_data.target.offset = shadow_offset
-                rendering.draw_sprite(sprite_data)
-            end
-            -- Proper sprite
-            sprite_data.tint = nil
-            sprite_data.target.offset = nil
-            rendering.draw_sprite(sprite_data)
-        end
-    end
-
+    draw_planet_icon_on_inside_power_pole(factory)
     return factory._inside_power_pole
 end
 factorissimo.get_or_create_inside_power_pole = get_or_create_inside_power_pole

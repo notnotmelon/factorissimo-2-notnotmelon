@@ -26,6 +26,16 @@ data:extend {{
     }
 }}
 
+data:extend{{
+    type = "sprite",
+    name = "factory-floor-space",
+    filename = "__factorissimo-2-notnotmelon__/graphics/icon/factory-floor-space.png",
+    width = 64,
+    height = 64,
+    scale = 1,
+    flags = {"gui-icon"},
+}}
+
 local function generate_factory_floor_planet_icons(planet)
     if not planet.icons and not planet.icon then
         error("Planet " .. planet.name .. " has no icon or icons")

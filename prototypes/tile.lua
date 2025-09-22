@@ -62,9 +62,10 @@ local function make_tile(tinfo)
         type = "tile",
         subgroup = "factorissimo-tiles",
         name = tinfo.name,
+        localised_name = tinfo.localised_name,
         needs_correction = false,
         collision_mask = tinfo.collision_mask,
-        variants = tile_transitions {
+        variants = tinfo.variants or tile_transitions {
             main = tinfo.pictures
         },
         layer = tinfo.layer or 50,
@@ -150,10 +151,11 @@ local function pictures_factory_floor_tile()
     }
 end
 
-local function pictures_factory_wall_tile(i)
+local function pictures_factory_wall_tile(i, space)
+    local space = space and "space-" or ""
     return {
         {
-            picture = F .. "/graphics/tile/factory-wall-" .. i .. ".png",
+            picture = F .. "/graphics/tile/" .. space .. "factory-wall-" .. i .. ".png",
             count = 16,
             size = 1
         },
@@ -191,6 +193,7 @@ make_tile {
     pictures = pictures_factory_wall_tile(1),
     map_color = factory_1_wall_color(),
     frozen_tint = {1, 0.85, 0.85},
+    localised_name = {"tile-name.factory-wall"},
 }
 
 make_tile {
@@ -201,6 +204,7 @@ make_tile {
     map_color = factory_1_wall_color(),
     frozen_tint = {1, 0.85, 0.85},
     growable = true,
+    localised_name = {"tile-name.factory-floor"},
 }
 
 -- Factory 2
@@ -212,16 +216,18 @@ make_tile {
     pictures = pictures_factory_wall_tile(2),
     map_color = factory_2_wall_color(),
     frozen_tint = {0.85, 0.85, 1},
+    localised_name = {"tile-name.factory-wall"},
 }
 
 make_tile {
     name = "factory-pattern-2",
     collision_mask = floor_mask(),
     layer = 70,
-    pictures = pictures_factory_wall_tile(3),
+    pictures = pictures_factory_wall_tile(2),
     map_color = factory_2_wall_color(),
     frozen_tint = {0.85, 0.85, 1},
     growable = true,
+    localised_name = {"tile-name.factory-floor"},
 }
 
 -- Factory 3
@@ -233,6 +239,7 @@ make_tile {
     pictures = pictures_factory_wall_tile(3),
     map_color = factory_3_wall_color(),
     frozen_tint = {1, 1, 0.7},
+    localised_name = {"tile-name.factory-wall"},
 }
 
 make_tile {
@@ -243,6 +250,7 @@ make_tile {
     map_color = factory_3_wall_color(),
     frozen_tint = {1, 1, 0.7},
     growable = true,
+    localised_name = {"tile-name.factory-floor"},
 }
 
 if feature_flags.expansion_shaders then
@@ -260,3 +268,104 @@ if feature_flags.expansion_shaders then
     data.raw.tile["out-of-map"].effect_color = {0.5, 0.507, 0}
     data.raw.tile["out-of-map"].effect_color_secondary = {0, 68, 25}
 end
+
+if not settings.startup["Factorissimo2-space-architecture"].value then return end
+
+local function space_floor_mask()
+    if mods["space-exploration"] then
+        return {
+            layers = {
+                space_tile = true
+            }
+        }
+    end
+
+    return floor_mask()
+end
+
+make_tile {
+    name = "space-factory-floor",
+    collision_mask = space_floor_mask(),
+    layer = 30,
+    variants = table.deepcopy(data.raw.tile[mods["space-exploration"] and "se-space-platform-plating" or "refined-concrete"].variants),
+    map_color = floor_color(),
+    growable = true,
+    localised_name = {"tile-name.factory-floor"},
+}
+make_tile {
+    name = "space-factory-entrance",
+    collision_mask = edge_mask(),
+    layer = 30,
+    variants = table.deepcopy(data.raw.tile[mods["space-exploration"] and "se-space-platform-plating" or "refined-concrete"].variants),
+    map_color = floor_color(),
+    localised_name = {"tile-name.factory-entrance"},
+}
+
+-- Space Factory 1
+
+make_tile {
+    name = "space-factory-wall-1",
+    collision_mask = edge_mask(),
+    layer = 70,
+    pictures = pictures_factory_wall_tile(1, true),
+    map_color = {88,92,68},
+    frozen_tint = {1, 0.85, 0.85},
+    localised_name = {"tile-name.factory-wall"},
+}
+
+make_tile {
+    name = "space-factory-pattern-1",
+    collision_mask = space_floor_mask(),
+    layer = 70,
+    pictures = pictures_factory_wall_tile(2, true),
+    map_color = {88,92,68},
+    frozen_tint = {1, 0.85, 0.85},
+    growable = true,
+    localised_name = {"tile-name.factory-floor"},
+}
+
+-- Space Factory 2
+
+make_tile {
+    name = "space-factory-wall-2",
+    collision_mask = edge_mask(),
+    layer = 70,
+    pictures = pictures_factory_wall_tile(2, true),
+    map_color = {66,84,73},
+    frozen_tint = {0.85, 0.85, 1},
+    localised_name = {"tile-name.factory-wall"},
+}
+
+make_tile {
+    name = "space-factory-pattern-2",
+    collision_mask = space_floor_mask(),
+    layer = 70,
+    pictures = pictures_factory_wall_tile(3, true),
+    map_color = {66,84,73},
+    frozen_tint = {0.85, 0.85, 1},
+    growable = true,
+    localised_name = {"tile-name.factory-floor"},
+}
+
+-- Space Factory 3
+
+make_tile {
+    name = "space-factory-wall-3",
+    collision_mask = edge_mask(),
+    layer = 70,
+    pictures = pictures_factory_wall_tile(3, true),
+    map_color = {65,69,89},
+    frozen_tint = {1, 1, 0.7},
+    localised_name = {"tile-name.factory-wall"},
+}
+
+make_tile {
+    name = "space-factory-pattern-3",
+    collision_mask = space_floor_mask(),
+    layer = 70,
+    pictures = pictures_factory_wall_tile(1, true),
+    map_color = {65,69,89},
+    frozen_tint = {1, 1, 0.7},
+    growable = true,
+    localised_name = {"tile-name.factory-floor"},
+}

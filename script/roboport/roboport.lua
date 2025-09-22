@@ -252,14 +252,14 @@ factorissimo.build_roboport_upgrade = function(factory)
 
     if factory.building and factory.building.valid then
         requester = requester or factory.outside_surface.create_entity {
-            name = "factory-requester-chest-" .. factory.building.name,
+            name = factory.layout.outside_requester_chest,
             position = factory.building.position,
             force = factory.force,
             quality = factory.quality,
         }
 
         ejector = ejector or factory.outside_surface.create_entity {
-            name = "factory-eject-chest-" .. factory.building.name,
+            name = factory.layout.outside_ejector_chest,
             position = factory.building.position,
             force = factory.force,
             quality = factory.quality,

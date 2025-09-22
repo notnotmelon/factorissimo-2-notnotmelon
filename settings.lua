@@ -12,6 +12,14 @@ data:extend {
     -- Startup
     {
         type = "bool-setting",
+        name = "Factorissimo2-space-architecture",
+        setting_type = "startup",
+        default_value = true,
+        hidden = not (mods["space-exploration"] or mods["space-age"]),
+        order = "a-a",
+    },
+    {
+        type = "bool-setting",
         name = "Factorissimo2-disable-new-tile-effects",
         setting_type = "startup",
         default_value = false,

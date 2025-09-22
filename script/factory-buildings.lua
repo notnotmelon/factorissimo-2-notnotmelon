@@ -200,7 +200,14 @@ local function create_factory_position(layout, building)
 
         if not surface then
             surface = game.create_surface(surface_name, {width = 2, height = 2})
-            surface.localised_name = {"factory-floor", storage.next_factory_surface}
+            surface.localised_name = {"space-location-name.factory-floor", storage.next_factory_surface}
+        end
+
+        if surface_name == "space-factory-floor" then
+            surface.localised_name = {"space-location-name.space-factory-floor"}
+            surface.set_property("gravity", 0) 
+            surface.set_property("pressure", 0) 
+            surface.set_property("magnetic-field", 0) 
         end
 
         surface.daytime = 0.5
