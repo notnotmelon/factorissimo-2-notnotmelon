@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.10.2
+Date: 2025-09-23
+  Bugfixes:
+    - Fixed migration crash with factory eject chests. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/233
+---------------------------------------------------------------------------------------------------
 Version: 3.10.1
 Date: 2025-09-22
   Locale:
