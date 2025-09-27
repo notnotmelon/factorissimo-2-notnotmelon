@@ -16,6 +16,8 @@ local function draw_planet_icon_on_inside_power_pole(factory)
         end
     end
 
+    if not sprite_path then return end
+
     local sprite_data = {
         sprite = sprite_path,
         surface = factory.inside_surface,
