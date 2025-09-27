@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.10.3
+Date: 2025-09-27
+  Bugfixes:
+    - Fixed crash when building factory on other planet in space exploration. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/236
+---------------------------------------------------------------------------------------------------
 Version: 3.10.2
 Date: 2025-09-23
   Bugfixes:
