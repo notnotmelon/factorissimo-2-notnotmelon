@@ -82,6 +82,17 @@ Belt.connect = function(factory, cid, cpos, outside_entity, inside_entity)
 
     if not prototypes.entity[inside_link_name] or not prototypes.entity[outside_link_name] then return end
 
+    local outside_link_position = {factory.outside_x + cpos.outside_x - cpos.indicator_dx, factory.outside_y + cpos.outside_y - cpos.indicator_dy}
+    local outside_link = outside_entity.surface.create_entity {
+        name = outside_link_name,
+        position = outside_link_position,
+        create_build_effect_smoke = false,
+        raise_built = false,
+    } or outside_entity.surface.find_entity(outside_link_name, outside_link_position)
+    if not outside_link then return end
+    outside_link.destructible = false
+    outside_link.force = outside_entity.force_index
+
     local inside_link = inside_entity.surface.create_entity {
         name = inside_link_name,
         position = {factory.inside_x + cpos.inside_x + cpos.indicator_dx, factory.inside_y + cpos.inside_y + cpos.indicator_dy},
@@ -91,16 +102,6 @@ Belt.connect = function(factory, cid, cpos, outside_entity, inside_entity)
     }
     if not inside_link then return end
     inside_link.destructible = false
-
-    local outside_link = outside_entity.surface.create_entity {
-        name = outside_link_name,
-        position = {factory.outside_x + cpos.outside_x - cpos.indicator_dx, factory.outside_y + cpos.outside_y - cpos.indicator_dy},
-        create_build_effect_smoke = false,
-        raise_built = false,
-        force = outside_entity.force
-    }
-    if not outside_link then return end
-    outside_link.destructible = false
 
     local connection
     if conn_facing == cpos.direction_in then
