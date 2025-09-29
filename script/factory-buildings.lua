@@ -138,11 +138,11 @@ local function which_void_surface_should_this_new_factory_be_placed_on(layout, b
         local x, y = building.position.x, building.position.y
         local D = layout.outside_size / 2
         local area = {{x - D, y - D}, {x + D, y + D}}
-        local is_placed_on_spaceship = 1 == surface.count_tiles_filtered{
+        local is_placed_on_spaceship = (surface.name == "se-spaceship-factory-floor") or (1 == surface.count_tiles_filtered {
             area = area,
             name = "se-spaceship-floor",
             limit = 1,
-        }
+        })
         if is_placed_on_spaceship then
             return "se-spaceship-factory-floor"
         end
@@ -426,7 +426,7 @@ end
 local function is_completely_empty(factory)
     local roboport_upgrade = factory.roboport_upgrade
     if roboport_upgrade then
-        for _, entity in pairs{roboport_upgrade.storage, roboport_upgrade.roboport} do
+        for _, entity in pairs {roboport_upgrade.storage, roboport_upgrade.roboport} do
             if entity and entity.valid then
                 for i = 1, entity.get_max_inventory_index() do
                     local inventory = entity.get_inventory(i)
