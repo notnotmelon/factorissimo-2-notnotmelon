@@ -116,20 +116,42 @@ function EntitySwap.swap_structure(entity, prototype_name)
     return clone
 end
 
+local banned_entities = table.invert {
+    "container",
+    "logistic-container",
+    "infinity-container",
+    "linked-container",
+    "proxy-container",
+    "storage-tank",
+    "cargo-wagon",
+    "locomotive",
+    "fluid-wagon",
+    "artillery-wagon",
+    "car",
+    "spider-vehicle"
+}
+
 factorissimo.on_event(factorissimo.events.on_built(), function(event)
     if not script.active_mods["space-exploration"] then
         return
     end
 
     local entity = event.entity
-    if not entity.valid then return end
+    if not entity.valid or has_layout(entity.name) then return end
+
     local surface = entity.surface
     if surface.name ~= "se-spaceship-factory-floor" then
+        return
+    end
+
+    local entity_type = entity.type == "entity-ghost" and entity.ghost_type or entity.type
+    if banned_entities[entity_type] then
+        factorissimo.cancel_creation(entity, event.player_index, {"se-cannot-build-in-spaceship-factory-building"})
         return
     end
 
     local grounded_name = entity.name .. name_suffix_grounded
     if not prototypes.entity[grounded_name] then return end
     -- replace with grounded
-    return EntitySwap.swap_structure(entity, grounded_name)
+    EntitySwap.swap_structure(entity, grounded_name)
 end)
