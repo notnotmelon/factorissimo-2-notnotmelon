@@ -136,7 +136,7 @@ local function init_connection(factory, cid, cpos) -- Only call this when factor
 
             local settings = get_connection_settings(factory, cid, outside_connection_type)
             local new_connection = c_connect[outside_connection_type](factory, cid, cpos, outside_entity, inside_entity, settings)
-            if not new_connection then
+            if new_connection then
                 factory.inside_surface.play_sound {path = "entity-close/assembling-machine-3", position = inside_entity.position}
                 factory.outside_surface.play_sound {path = "entity-close/assembling-machine-3", position = outside_entity.position}
                 register_connection(factory, cid, outside_connection_type, new_connection, settings)
