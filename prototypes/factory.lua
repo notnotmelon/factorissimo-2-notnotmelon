@@ -500,7 +500,7 @@ if mods["space-exploration"] then
     data.raw["storage-tank"]["space-factory-1"].collision_mask.layers.ground_tile = true
     data.raw["storage-tank"]["space-factory-2"].collision_mask.layers.ground_tile = true
     data.raw["storage-tank"]["space-factory-3"].collision_mask.layers.ground_tile = true
-    data.raw["storage-tank"]["space-factory-1"].collision_mask.layers.moving_tile = true
-    data.raw["storage-tank"]["space-factory-2"].collision_mask.layers.moving_tile = true
-    data.raw["storage-tank"]["space-factory-3"].collision_mask.layers.moving_tile = true
+    data.raw["storage-tank"]["space-factory-1"].collision_mask.layers.moving_tile = nil
+    data.raw["storage-tank"]["space-factory-2"].collision_mask.layers.moving_tile = nil
+    data.raw["storage-tank"]["space-factory-3"].collision_mask.layers.moving_tile = nil
 end
