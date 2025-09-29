@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.10.4
+Date: 2025-09-29
+  Compatibility:
+    - Allow space factories to be placed on space exploration spaceships.
+    - Fix belt connections getting severed when space exploration spaceship changes surface.
+    - Fixed some invisible entities staying around when factory is moved via space exploration spaceship.
+  Graphics:
+    - Updated icons for hidden entities factory eject chest and construction request chest.
+---------------------------------------------------------------------------------------------------
 Version: 3.10.3
 Date: 2025-09-27
   Bugfixes:
