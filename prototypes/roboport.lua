@@ -161,6 +161,8 @@ for _, factory_name in pairs {"factory-1", "factory-2", "factory-3"} do
     local requester_chest = table.deepcopy(data.raw.container["steel-chest"])
     requester_chest.name = "factory-requester-chest-" .. factory_name
     requester_chest.localised_name = {"entity-name.factory-requester-chest"}
+    requester_chest.icon = data.raw["storage-tank"][factory_name].icon
+    requester_chest.icon_size = data.raw["storage-tank"][factory_name].icon_size
     requester_chest.collision_box = table.deepcopy(data.raw["storage-tank"][factory_name].collision_box)
     requester_chest.selection_box = nil
     requester_chest.inventory_type = "with_custom_stack_size"
@@ -177,6 +179,8 @@ for _, factory_name in pairs {"factory-1", "factory-2", "factory-3"} do
     eject_chest.name = "factory-eject-chest-" .. factory_name
     eject_chest.inventory_size = 1
     eject_chest.localised_name = {"entity-name.factory-eject-chest"}
+    eject_chest.icon = data.raw["storage-tank"][factory_name].icon
+    eject_chest.icon_size = data.raw["storage-tank"][factory_name].icon_size
     eject_chest.collision_box = table.deepcopy(data.raw["storage-tank"][factory_name].collision_box)
     eject_chest.selection_box = nil
     eject_chest.picture = nil
