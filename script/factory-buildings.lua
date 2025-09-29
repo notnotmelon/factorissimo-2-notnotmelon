@@ -311,15 +311,25 @@ local function create_factory_interior(layout, building)
     factory.quality = building.quality
     factory.inside_door_x = layout.inside_door_x + factory.inside_x
     factory.inside_door_y = layout.inside_door_y + factory.inside_y
+
+    local tile_name_mapping = {}
+    if factory.inside_surface.name == "se-spaceship-factory-floor" then
+        tile_name_mapping["space-factory-floor"] = "se-spaceship-factory-floor"
+        tile_name_mapping["space-factory-entrance"] = "se-spaceship-factory-entrance"
+    end
+
     local tiles = {}
     for _, rect in pairs(layout.rectangles) do
-        add_tile_rect(tiles, rect.tile, rect.x1 + factory.inside_x, rect.y1 + factory.inside_y, rect.x2 + factory.inside_x, rect.y2 + factory.inside_y)
+        local tile_name = tile_name_mapping[rect.tile] or rect.tile
+        add_tile_rect(tiles, tile_name, rect.x1 + factory.inside_x, rect.y1 + factory.inside_y, rect.x2 + factory.inside_x, rect.y2 + factory.inside_y)
     end
     for _, mosaic in pairs(layout.mosaics) do
-        add_tile_mosaic(tiles, mosaic.tile, mosaic.x1 + factory.inside_x, mosaic.y1 + factory.inside_y, mosaic.x2 + factory.inside_x, mosaic.y2 + factory.inside_y, mosaic.pattern)
+        local tile_name = tile_name_mapping[mosaic.tile] or mosaic.tile
+        add_tile_mosaic(tiles, tile_name, mosaic.x1 + factory.inside_x, mosaic.y1 + factory.inside_y, mosaic.x2 + factory.inside_x, mosaic.y2 + factory.inside_y, mosaic.pattern)
     end
     for _, cpos in pairs(layout.connections) do
-        table.insert(tiles, {name = layout.connection_tile, position = {factory.inside_x + cpos.inside_x, factory.inside_y + cpos.inside_y}})
+        local tile_name = tile_name_mapping[layout.connection_tile] or layout.connection_tile
+        table.insert(tiles, {name = tile_name, position = {factory.inside_x + cpos.inside_x, factory.inside_y + cpos.inside_y}})
     end
     factory.inside_surface.set_tiles(tiles)
     add_hidden_tile_rect(factory)

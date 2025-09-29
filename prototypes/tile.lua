@@ -301,6 +301,26 @@ make_tile {
     localised_name = {"tile-name.factory-entrance"},
 }
 
+if mods["space-exploration"] then
+    make_tile {
+        name = "se-spaceship-factory-floor",
+        collision_mask = space_floor_mask(),
+        layer = 30,
+        variants = table.deepcopy(data.raw.tile["se-spaceship-floor"].variants),
+        map_color = floor_color(),
+        growable = true,
+        localised_name = {"tile-name.factory-floor"},
+    }
+    make_tile {
+        name = "se-spaceship-factory-entrance",
+        collision_mask = edge_mask(),
+        layer = 30,
+        variants = table.deepcopy(data.raw.tile["se-spaceship-floor"].variants),
+        map_color = floor_color(),
+        localised_name = {"tile-name.factory-entrance"},
+    }
+end
+
 -- Space Factory 1
 
 make_tile {
