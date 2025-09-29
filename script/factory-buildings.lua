@@ -132,11 +132,26 @@ end)
 
 -- FACTORY GENERATION --
 
-local function get_surface_name(layout, parent_surface)
+local function which_void_surface_should_this_new_factory_be_placed_on(layout, building)
+    local surface = building.surface
+    if script.active_mods["space-exploration"] and layout.surface_override == "space-factory-floor" then
+        local x, y = building.position.x, building.position.y
+        local D = layout.outside_size / 2
+        local area = {{x - D, y - D}, {x + D, y + D}}
+        local is_placed_on_spaceship = 1 == surface.count_tiles_filtered{
+            area = area,
+            name = "se-spaceship-floor",
+            limit = 1,
+        }
+        if is_placed_on_spaceship then
+            return "se-spaceship-factory-floor"
+        end
+    end
+
     if layout.surface_override then return layout.surface_override end
 
-    if parent_surface.planet then
-        return (parent_surface.name .. "-factory-floor"):gsub("%-factory%-floor%-factory%-floor", "-factory-floor")
+    if surface.planet then
+        return (surface.name .. "-factory-floor"):gsub("%-factory%-floor%-factory%-floor", "-factory-floor")
     end
 
     storage.next_factory_surface = storage.next_factory_surface + 1
@@ -172,8 +187,7 @@ local function find_first_unused_position(surface)
 end
 
 local function create_factory_position(layout, building)
-    local parent_surface = building.surface
-    local surface_name = get_surface_name(layout, parent_surface)
+    local surface_name = which_void_surface_should_this_new_factory_be_placed_on(layout, building)
     local surface = game.get_surface(surface_name)
 
     if surface then
@@ -199,9 +213,9 @@ local function create_factory_position(layout, building)
 
         if surface_name == "space-factory-floor" then
             surface.localised_name = {"space-location-name.space-factory-floor"}
-            surface.set_property("gravity", 0) 
-            surface.set_property("pressure", 0) 
-            surface.set_property("magnetic-field", 0) 
+            surface.set_property("gravity", 0)
+            surface.set_property("pressure", 0)
+            surface.set_property("magnetic-field", 0)
         end
 
         surface.daytime = 0.5

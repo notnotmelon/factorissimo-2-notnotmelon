@@ -5,7 +5,10 @@ local function draw_planet_icon_on_inside_power_pole(factory)
     local sprite_path
     local scale = 1
 
-    if factory.inside_surface.name == "space-factory-floor" then
+    if factory.inside_surface.name == "se-spaceship-factory-floor" then
+        sprite_path = "technology/se-spaceship"
+        scale = 0.4
+    elseif factory.inside_surface.name == "space-factory-floor" then
         sprite_path = "factory-floor-space"
         scale = 0.5
     elseif factory.inside_surface.planet then

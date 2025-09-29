@@ -22,5 +22,6 @@ require "compat.cerys"
 require "compat.maraxsis"
 require "compat.resource-spawner-overhaul"
 require "compat.picker-dollies"
+require "compat.space-exploration"
 
 factorissimo.finalize_events()

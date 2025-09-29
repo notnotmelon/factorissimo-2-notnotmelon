@@ -3,8 +3,6 @@
 
 local find_surrounding_factory = remote_api.find_surrounding_factory
 local find_factory_by_area = remote_api.find_factory_by_area
-local get_factory_by_building = remote_api.get_factory_by_building
-local has_layout = has_layout
 
 factorissimo.on_event(factorissimo.events.on_init(), function()
     storage.last_player_teleport = storage.last_player_teleport or {}
