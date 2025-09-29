@@ -118,27 +118,33 @@ local function init_connection(factory, cid, cpos) -- Only call this when factor
     if inside_entities == nil or not inside_entities[1] then return end
 
     for _, outside_entity in pairs(outside_entities) do
-        local oct = type_map[outside_entity.type] or type_map[outside_entity.name]
-        if oct ~= nil then
-            for _, inside_entity in pairs(inside_entities) do
-                local ict = type_map[inside_entity.type] or type_map[inside_entity.name]
-                if oct == ict then
-                    if c_unlocked[oct](factory.force) then
-                        local settings = get_connection_settings(factory, cid, oct)
-                        local conn = c_connect[oct](factory, cid, cpos, outside_entity, inside_entity, settings)
-                        if conn then
-                            factory.inside_surface.play_sound {path = "entity-close/assembling-machine-3", position = inside_entity.position}
-                            factory.outside_surface.play_sound {path = "entity-close/assembling-machine-3", position = outside_entity.position}
-                            register_connection(factory, cid, oct, conn, settings)
-                            return
-                        end
-                    else
-                        factorissimo.create_flying_text {position = inside_entity.position, text = {"research-required"}}
-                        factorissimo.create_flying_text {position = outside_entity.position, text = {"research-required"}}
-                    end
-                end
-            end
+        local outside_connection_type = type_map[outside_entity.type] or type_map[outside_entity.name]
+        if outside_connection_type == nil then
+            goto continue
         end
+
+        for _, inside_entity in pairs(inside_entities) do
+            local inside_connection_type = type_map[inside_entity.type] or type_map[inside_entity.name]
+            if outside_connection_type ~= inside_connection_type then
+                goto continue_2
+            end
+
+            if not c_unlocked[outside_connection_type](factory.force) then
+                factorissimo.create_flying_text {position = inside_entity.position, text = {"research-required"}}
+                factorissimo.create_flying_text {position = outside_entity.position, text = {"research-required"}}
+            end
+
+            local settings = get_connection_settings(factory, cid, outside_connection_type)
+            local new_connection = c_connect[outside_connection_type](factory, cid, cpos, outside_entity, inside_entity, settings)
+            if not new_connection then
+                factory.inside_surface.play_sound {path = "entity-close/assembling-machine-3", position = inside_entity.position}
+                factory.outside_surface.play_sound {path = "entity-close/assembling-machine-3", position = outside_entity.position}
+                register_connection(factory, cid, outside_connection_type, new_connection, settings)
+                return
+            end
+            ::continue_2::
+        end
+        ::continue::
     end
 end
 factorissimo.init_connection = init_connection
