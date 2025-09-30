@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.10.10
+Date: 2025-09-30
+  Bugfixes:
+    - Limited the total number of invisible construction bots per factorissimo to 500. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/238
+---------------------------------------------------------------------------------------------------
 Version: 3.10.9
 Date: 2025-09-30
   Bugfixes:
