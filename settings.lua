@@ -48,13 +48,6 @@ data:extend {
         order = "a-b-a",
     },
     {
-        type = "bool-setting",
-        name = "Factorissimo2-better-recursion-2",
-        setting_type = "runtime-global",
-        default_value = true,
-        order = "a-c",
-    },
-    {
         type = "string-setting",
         name = "Factorissimo2-factory-preview-mode",
         setting_type = "runtime-per-user",

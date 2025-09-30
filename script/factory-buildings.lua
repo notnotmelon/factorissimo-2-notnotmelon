@@ -80,33 +80,29 @@ local function set_factory_active_or_inactive(factory)
             end
         end
 
+        if settings.global["Factorissimo2-free-recursion"].value then
+            return true
+        end
+
         local surrounding_factory = find_surrounding_factory(surface, position)
         if not surrounding_factory then
             return true
         end
+
+        local has_tech_t2 = surrounding_factory.force.technologies["factory-recursion-t2"].researched
+        local has_tech_t1 = has_tech_t2 or surrounding_factory.force.technologies["factory-recursion-t1"].researched
+
         local inner_tier = factory.layout.tier
         local outer_tier = surrounding_factory.layout.tier
-
-        local has_tech = surrounding_factory.force.technologies["factory-recursion-t1"].researched
-        local has_setting = settings.global["Factorissimo2-free-recursion"].value
-        if outer_tier > inner_tier and (has_tech or has_setting) then
-            return true
-        end
-
-        local has_tech = surrounding_factory.force.technologies["factory-recursion-t2"].researched
-        local has_setting = settings.global["Factorissimo2-free-recursion"].value
-        local better_recursion_2 = settings.global["Factorissimo2-better-recursion-2"].value
-        if (outer_tier >= inner_tier or better_recursion_2) and (has_tech or has_setting) then
-            return true
-        end
-
-        if outer_tier > inner_tier then
-            return false, {"factory-connection-text.invalid-placement-recursion-1"}, false
-        elseif (outer_tier >= inner_tier or settings.global["Factorissimo2-better-recursion-2"].value) then
+        if not has_tech_t2 and inner_tier >= outer_tier then
             return false, {"factory-connection-text.invalid-placement-recursion-2"}, false
-        else
-            return false, {"factory-connection-text.invalid-placement"}, false
         end
+
+        if not has_tech_t1 then -- cannot do any recursion
+            return false, {"factory-connection-text.invalid-placement-recursion-1"}, false
+        end
+
+        return true
     end
 
     local can_place, msg, cancel_creation = can_place_factory_here()
