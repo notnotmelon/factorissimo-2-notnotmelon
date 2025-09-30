@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.10.8
+Date: 2025-09-30
+  Compatibility:
+    - Added incompatibility flags with bulk rail loader. Use https://mods.factorio.com/mod/train-loader instead. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/188
+---------------------------------------------------------------------------------------------------
 Version: 3.10.7
 Date: 2025-09-30
   Compatibility:
