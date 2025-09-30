@@ -1,4 +1,20 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.10.6
+Date: 2025-09-30
+  Balancing:
+    - The factory preview camera no longer renders until you have researched the "factory-interior-upgrade-lights" technology.
+  Compatibility:
+    - Banned placement of chests and storage tanks inside se spaceship factories.
+    - SE spaceship factorissimos now have special floor tilesets.
+    - Space exploration buildings are now marked as "grounded" if placed inside spaceship factorisismo.
+    - There is now a seperation between SE space factories and SE spaceship factories. Attemping to place one in the incorrect tiles will cause it to go inactive.
+  Bugfixes:
+    - Fixed se spaceship factories not being marked correctly when performing recursion.
+  Changes:
+    - Factory camera and overlays now work correctly if factory is set to inactive.
+    - If a factory building goes inactive it now destroys all belt/pipe/ect connections.
+    - Killing a factory via guns or biters now prints a warning @ position in chat. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/240
+---------------------------------------------------------------------------------------------------
 Version: 3.10.5
 Date: 2025-09-29
   Bugfixes:
