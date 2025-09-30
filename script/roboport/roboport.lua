@@ -582,7 +582,8 @@ factorissimo.on_nth_tick(43, function()
     end
 end)
 
--- yet another update function to ensure the hidden roboport is always half filled.
+-- ensure the hidden roboport is always filled to 500 bots in network.
+local TARGET_NUMBER_OF_ROBOTS_IN_NETWORK = 500
 factorissimo.on_nth_tick(367, function()
     for _, factory in pairs(storage.factories) do
         local roboport_upgrade = factory.roboport_upgrade
@@ -591,8 +592,12 @@ factorissimo.on_nth_tick(367, function()
         if not hidden_roboport or not hidden_roboport.valid then goto continue end
         local robot_inventory = hidden_roboport.get_inventory(defines.inventory.roboport_robot)
 
+        local all_construction_robots = hidden_roboport.logistic_network.all_construction_robots
+        local missing = math.max(0, TARGET_NUMBER_OF_ROBOTS_IN_NETWORK - all_construction_robots)
+        if missing == 0 then goto continue end
+
         robot_inventory.clear()
-        robot_inventory.insert {name = "factory-hidden-construction-robot", count = prototypes.item["factory-hidden-construction-robot"].stack_size / 2}
+        robot_inventory.insert {name = "factory-hidden-construction-robot", count = missing}
 
         ::continue::
     end
