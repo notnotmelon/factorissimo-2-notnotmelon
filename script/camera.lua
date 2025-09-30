@@ -111,6 +111,14 @@ local function set_camera(player, factory)
     update_camera(player)
 end
 
+factorissimo.on_event(defines.events.on_player_changed_position, function(event)
+    -- the normal on_tick check does not run in editor mode. check for game paused
+    if game.tick_paused then
+        local player = game.get_player(event.player_index)
+        update_camera(player)
+    end
+end)
+
 factorissimo.on_event(defines.events.on_tick, function()
     for player_index in pairs(storage.fancy_preview_active) do
         local player = game.get_player(player_index)

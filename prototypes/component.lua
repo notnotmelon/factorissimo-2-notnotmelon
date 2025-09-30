@@ -16,6 +16,7 @@ local function create_energy_interfaces(size, icon)
         icon = icon,
         icon_size = 64,
         flags = {"not-on-map"},
+        selection_priority = 1,
         minable = nil,
         max_health = 1,
         hidden = true,
