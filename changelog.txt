@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.10.9
+Date: 2025-09-30
+  Bugfixes:
+    - Fixed fluid connections sometimes disconnecting on save reload. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/206
+---------------------------------------------------------------------------------------------------
 Version: 3.10.8
 Date: 2025-09-30
   Compatibility:
