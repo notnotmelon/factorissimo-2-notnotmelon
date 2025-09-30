@@ -82,6 +82,9 @@ local function update_camera(player)
 end
 
 local function set_camera(player, factory)
+    local has_tech = player.force.technologies["factory-interior-upgrade-lights"].researched
+    if not has_tech then return end
+
     if not factory or factory.inactive then return end
     local inside_surface = factory.inside_surface
     if not inside_surface.valid then return end
