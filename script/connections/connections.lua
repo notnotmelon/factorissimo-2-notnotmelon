@@ -48,6 +48,11 @@ factorissimo.on_event(factorissimo.events.on_init(), function()
     for i = 0, CYCLIC_BUFFER_SIZE - 1 do
         storage.connections[i] = storage.connections[i] or {}
     end
+
+    -- https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/206
+    for _, factory in pairs(storage.factories) do
+        if factory.built then factorissimo.recheck_factory_connections(factory) end
+    end
 end)
 
 local function add_connection_to_queue(conn)
