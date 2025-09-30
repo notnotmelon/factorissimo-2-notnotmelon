@@ -426,6 +426,14 @@ local function create_factory_exterior(factory, building)
     oer.rotatable = false
     factory.outside_energy_receiver = oer
 
+    if factory.outside_surface.has_global_electric_network then
+        local genp = factory.outside_surface.create_entity {name = "factory-global-electric-network-pole", position = {factory.outside_x, factory.outside_y}, force = force}
+        genp.destructible = false
+        genp.operable = false
+        genp.rotatable = false
+        factory.global_electric_network_pole = genp
+    end
+
     factory.outside_overlay_displays = {}
     factory.outside_port_markers = {}
 

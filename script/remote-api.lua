@@ -23,6 +23,7 @@ factory = {
 	+layout = *,
 	+building = *,
 	+outside_energy_receiver = *,
+	+global_electric_network_pole = {*},
 	+outside_overlay_displays = {*},
 	+outside_port_markers = {*},
 

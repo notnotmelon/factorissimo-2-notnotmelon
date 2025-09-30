@@ -77,6 +77,12 @@ local function update_power_connection(factory, pole) -- pole parameter is optio
     local electric_network = factory.outside_energy_receiver.electric_network_id
     if electric_network == nil then return end
 
+    local genp = factory.global_electric_network_pole
+    if genp then
+        assert(genp.valid)
+        connect_power(factory, genp)
+    end
+
     local surface = factory.outside_surface
     local x = factory.outside_x
     local y = factory.outside_y
@@ -197,6 +203,9 @@ function factorissimo.cleanup_outside_energy_receiver(factory)
     factory.outside_energy_receiver.destroy()
     local pole = factorissimo.get_or_create_inside_power_pole(factory)
     factorissimo.disconnect_all_copper_connections(pole)
+
+    local genp = factory.global_electric_network_pole
+    if genp then genp.destroy() end
 
     if not factory.inside_surface.valid then return end
 

@@ -148,6 +148,26 @@ data:extend {{
     connection_points = {cwc0c(), cwc0c(), cwc0c(), cwc0c()},
 }}
 
+-- https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/239
+data:extend {{
+    type = "electric-pole",
+    name = "factory-global-electric-network-pole",
+    minable = nil,
+    selection_box = {{0, 0}, {0, 0}},
+    collision_box = {{0, 0}, {0, 0}},
+    collision_mask = {layers = {}},
+    icon = data.raw.item["substation"].icon,
+    icon_size = data.raw.item["substation"].icon_size,
+    flags = {"not-on-map"},
+    auto_connect_up_to_n_wires = 0,
+    draw_copper_wires = false,
+    draw_circuit_wires = false,
+    hidden = true,
+    maximum_wire_distance = 1,
+    supply_area_distance = 1,
+    connection_points = {cwc0c(), cwc0c(), cwc0c(), cwc0c()},
+}}
+
 -- This is required to allow the overlay controller to exist in blueprints.
 data:extend {{
     type = "item",
