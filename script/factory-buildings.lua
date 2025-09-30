@@ -646,8 +646,8 @@ factorissimo.on_event(defines.events.on_entity_died, function(event)
             count = 1,
             custom_description = generate_factory_item_description(factory)
         },
-        enable_looted = true,
-        force = entity.force_index,
+        enable_looted = false,
+        force = nil,
         allow_belts = false,
         max_radius = 0,
         use_start_position_on_failure = true
@@ -656,6 +656,7 @@ factorissimo.on_event(defines.events.on_entity_died, function(event)
     local item = items[1].stack.item
     assert(item and item.valid)
     factory.item = item
+    entity.force.print {"factory-killed-by-biters", items[1].gps_tag}
 end)
 
 factorissimo.on_event(defines.events.on_post_entity_died, function(event)
