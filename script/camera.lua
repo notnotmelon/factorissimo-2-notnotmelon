@@ -121,7 +121,7 @@ factorissimo.on_event(defines.events.on_tick, function()
 end)
 
 local function set_minimap(player, factory, inside)
-    if not factory or factory.inactive then return end
+    if not factory then return end
     local inside_surface = factory.inside_surface
     local outside_surface = factory.outside_surface
     if not inside_surface.valid or not outside_surface.valid then return end
@@ -203,13 +203,13 @@ local function update_factory_preview(player)
             end
         else
             factory = get_factory_by_entity(player.selected)
-            if preview_mode == "fancy" and factory and not factory.inactive then
+            if preview_mode == "fancy" and factory then
                 factorissimo.update_overlay(factory)
                 set_camera(player, factory)
                 return
             end
         end
-        if factory and not factory.inactive then
+        if factory then
             factorissimo.update_overlay(factory)
             set_minimap(player, factory, inside)
             return
