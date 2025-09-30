@@ -102,6 +102,7 @@ local function register_connection(factory, cid, ctype, conn, settings)
 end
 
 local function init_connection(factory, cid, cpos) -- Only call this when factory.connections[cid] == nil!
+    if factory.inactive then return end
     if not factory.outside_surface.valid then return end
     if not factory.inside_surface.valid then return end
 
@@ -150,7 +151,7 @@ end
 factorissimo.init_connection = init_connection
 
 local function destroy_connection(conn)
-    if conn._valid then
+    if conn and conn._valid then
         c_destroy[conn._type](conn)
         conn._valid = false                       -- _valid should be true iff conn._factory.connections[conn._id] == conn
         conn._factory.connections[conn._id] = nil -- Lua can handle this
