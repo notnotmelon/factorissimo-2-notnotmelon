@@ -20,37 +20,112 @@ end)
 
 -- RECURSION TECHNOLOGY --
 
-local function can_place_factory_here(tier, surface, position, original_planet)
-    if not surface or not surface.valid then error("Attempted to place factory on nonexisting surface.") end
+local function was_this_placed_on_a_space_exploration_spaceship(layout, building)
+    local surface = building.surface
 
-    -- Check if a player is trying to cheat by moving factories to diffrent planets.
-    if original_planet and original_planet.valid then
-        local original_planet_name = original_planet.name:gsub("%-factory%-floor$", "")
-        local surface_name = surface.name:gsub("%-factory%-floor$", "")
-        if original_planet_name ~= surface_name then
-            local original_planet_prototype = (game.planets[original_planet_name] or original_planet).prototype
-            local flying_text = {"factory-connection-text.invalid-placement-planet", original_planet_name, original_planet_prototype.localised_name}
-            factorissimo.create_flying_text {position = position, text = flying_text}
-            return false
+    if not script.active_mods["space-exploration"] then
+        return false
+    end
+
+    if layout.surface_override ~= "space-factory-floor" then
+        return false
+    end
+
+    if surface.name == "se-spaceship-factory-floor" then -- recursion
+        return true
+    end
+
+    local x, y = building.position.x, building.position.y
+    local D = layout.outside_size / 2
+    local area = {{x - D, y - D}, {x + D, y + D}}
+    return 1 == surface.count_tiles_filtered {
+        area = area,
+        name = "se-spaceship-floor",
+        limit = 1,
+    }
+end
+
+local function set_factory_active_or_inactive(factory)
+    local building = factory.building
+    if not building or not building.valid then
+        factory.inactive = false
+        return
+    end
+    local surface = building.surface
+    local position = building.position
+
+    local function can_place_factory_here()
+        -- Check if a player is trying to cheat by moving factories to diffrent planets.
+        local original_planet = factory.original_planet
+        if original_planet and original_planet.valid then
+            local original_planet_name = original_planet.name:gsub("%-factory%-floor$", "")
+            local surface_name = surface.name:gsub("%-factory%-floor$", "")
+            if original_planet_name ~= surface_name then
+                local original_planet_prototype = (game.planets[original_planet_name] or original_planet).prototype
+                local flying_text = {"factory-connection-text.invalid-placement-planet", original_planet_name, original_planet_prototype.localised_name}
+                return false, flying_text, true
+            end
+        end
+
+        -- In space exploration, we differentiate between space factories and spaceship factories.
+        if script.active_mods["space-exploration"] then
+            local inside_surface = factory.inside_surface
+            if inside_surface and inside_surface.valid then
+                local spaceship = was_this_placed_on_a_space_exploration_spaceship(factory.layout, building)
+                if inside_surface.name == "space-factory-floor" and spaceship then
+                    return false, {"factory-connection-text.se-must-not-build-factory-building-on-a-spaceship"}, true
+                elseif inside_surface.name == "se-spaceship-factory-floor" and not spaceship then
+                    return false, {"factory-connection-text.se-must-build-factory-building-on-a-spaceship"}, true
+                end
+            end
+        end
+
+        local surrounding_factory = find_surrounding_factory(surface, position)
+        if not surrounding_factory then
+            return true
+        end
+        local inner_tier = factory.layout.tier
+        local outer_tier = surrounding_factory.layout.tier
+
+        local has_tech = surrounding_factory.force.technologies["factory-recursion-t1"].researched
+        local has_setting = settings.global["Factorissimo2-free-recursion"].value
+        if outer_tier > inner_tier and (has_tech or has_setting) then
+            return true
+        end
+
+        local has_tech = surrounding_factory.force.technologies["factory-recursion-t2"].researched
+        local has_setting = settings.global["Factorissimo2-free-recursion"].value
+        local better_recursion_2 = settings.global["Factorissimo2-better-recursion-2"].value
+        if (outer_tier >= inner_tier or better_recursion_2) and (has_tech or has_setting) then
+            return true
+        end
+
+        if outer_tier > inner_tier then
+            return false, {"factory-connection-text.invalid-placement-recursion-1"}, false
+        elseif (outer_tier >= inner_tier or settings.global["Factorissimo2-better-recursion-2"].value) then
+            return false, {"factory-connection-text.invalid-placement-recursion-2"}, false
+        else
+            return false, {"factory-connection-text.invalid-placement"}, false
         end
     end
 
-    local factory = find_surrounding_factory(surface, position)
-    if not factory then return true end
-    local outer_tier = factory.layout.tier
-    if outer_tier > tier and (factory.force.technologies["factory-recursion-t1"].researched or settings.global["Factorissimo2-free-recursion"].value) then return true end
-    if (outer_tier >= tier or settings.global["Factorissimo2-better-recursion-2"].value)
-        and (factory.force.technologies["factory-recursion-t2"].researched or settings.global["Factorissimo2-free-recursion"].value) then
-        return true
+    local can_place, msg, cancel_creation = can_place_factory_here()
+
+    factory.inactive = not can_place
+    if can_place then return end
+    assert(msg)
+
+    -- TODO: vanilla bug; `player.mine_entity` does not respect event.buffer
+    -- if cancel_creation and storage.player_index then
+    --     local player = game.get_player(storage.player_index)
+    --     player.mine_entity(building, false)
+    -- end
+    factorissimo.create_flying_text {position = position, text = msg}
+
+    for cid, _ in pairs(factory.layout.connections) do
+        local conn = factory.connections[cid]
+        factorissimo.destroy_connection(conn)
     end
-    if outer_tier > tier then
-        factorissimo.create_flying_text {position = position, text = {"factory-connection-text.invalid-placement-recursion-1"}}
-    elseif (outer_tier >= tier or settings.global["Factorissimo2-better-recursion-2"].value) then
-        factorissimo.create_flying_text {position = position, text = {"factory-connection-text.invalid-placement-recursion-2"}}
-    else
-        factorissimo.create_flying_text {position = position, text = {"factory-connection-text.invalid-placement"}}
-    end
-    return false
 end
 
 local DEFAULT_FACTORY_UPGRADES = {
@@ -76,13 +151,7 @@ end
 --- This function reactivates these factories once the research is complete.
 local function activate_factories()
     for _, factory in pairs(storage.factories) do
-        factory.inactive = factory.outside_surface.valid and not can_place_factory_here(
-            factory.layout.tier,
-            factory.outside_surface,
-            {x = factory.outside_x, y = factory.outside_y},
-            factory.original_planet
-        )
-
+        set_factory_active_or_inactive(factory)
         build_factory_upgrades(factory)
     end
 end
@@ -133,23 +202,12 @@ end)
 -- FACTORY GENERATION --
 
 local function which_void_surface_should_this_new_factory_be_placed_on(layout, building)
-    local surface = building.surface
-    if script.active_mods["space-exploration"] and layout.surface_override == "space-factory-floor" then
-        local x, y = building.position.x, building.position.y
-        local D = layout.outside_size / 2
-        local area = {{x - D, y - D}, {x + D, y + D}}
-        local is_placed_on_spaceship = (surface.name == "se-spaceship-factory-floor") or (1 == surface.count_tiles_filtered {
-            area = area,
-            name = "se-spaceship-floor",
-            limit = 1,
-        })
-        if is_placed_on_spaceship then
-            return "se-spaceship-factory-floor"
-        end
+    if was_this_placed_on_a_space_exploration_spaceship(layout, building) then
+        return "se-spaceship-factory-floor"
     end
-
     if layout.surface_override then return layout.surface_override end
 
+    local surface = building.surface
     if surface.planet then
         return (surface.name .. "-factory-floor"):gsub("%-factory%-floor%-factory%-floor", "-factory-floor")
     end
@@ -449,7 +507,7 @@ local function is_completely_empty(factory)
     return true
 end
 
-local function cleanup_factory_interior(factory, hidden_entities)
+local function cleanup_factory_interior(factory)
     local x, y = factory.inside_x, factory.inside_y
     local D = (factory.layout.inside_size + 8) / 2
     local area = {{x - D, y - D}, {x + D, y + D}}
@@ -513,7 +571,7 @@ factorissimo.on_event({
             quality = entity.quality,
             health = entity.health / entity.max_health
         }
-        cleanup_factory_interior(factory, hidden_entities)
+        cleanup_factory_interior(factory)
         return
     end
 
@@ -654,7 +712,7 @@ local function create_fresh_factory(entity)
     local factory = create_factory_interior(layout, entity)
     create_factory_exterior(factory, entity)
     factory.original_planet = entity.surface.planet
-    factory.inactive = not can_place_factory_here(layout.tier, entity.surface, entity.position)
+    set_factory_active_or_inactive(factory)
     return factory
 end
 
@@ -692,7 +750,7 @@ local function handle_factory_placed(entity, tags)
         -- This is a saved factory, we need to unpack it
         factory.quality = entity.quality
         create_factory_exterior(factory, entity)
-        factory.inactive = not can_place_factory_here(factory.layout.tier, entity.surface, entity.position, factory.original_planet)
+        set_factory_active_or_inactive(factory)
         handle_factory_control_xed(factory)
         return
     end
@@ -788,6 +846,7 @@ factorissimo.on_event(defines.events.on_entity_cloned, function(event)
         cleanup_factory_exterior(factory, src_entity)
         if src_entity.valid then src_entity.destroy() end
         create_factory_exterior(factory, dst_entity)
+        set_factory_active_or_inactive(factory)
     end
 end)
 
