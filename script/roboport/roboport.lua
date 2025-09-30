@@ -3,15 +3,6 @@ local utility_constants = require "script.roboport.utility-constants"
 
 local STACK_SIZE_MULTIPLIER = 50
 
-local function add_task(tick, task)
-    local tasks_at_tick = storage.tasks_at_tick[tick]
-    if tasks_at_tick then
-        tasks_at_tick[#tasks_at_tick + 1] = task
-    else
-        storage.tasks_at_tick[tick] = {task}
-    end
-end
-
 local function get_tilebox(bounding_box)
     local left_top = bounding_box.left_top
     local right_bottom = bounding_box.right_bottom
@@ -98,14 +89,12 @@ factorissimo.register_delayed_function("unpause_construction_animation", unpause
 factorissimo.register_delayed_function("destroy_entity", function(entity) entity.destroy() end)
 
 local TICKS_PER_FRAME = 2
-local FRAMES_BEFORE_BUILT = 16
 local FRAMES_BETWEEN_BUILDING = 8 * 2
 local FRAMES_BETWEEN_REMOVING = 4
 
 local function request_platform_animation_for(entity)
     if blacklisted_names[entity.name] then return end
 
-    local tick = game.tick
     local surface = entity.surface
 
     surface.play_sound {
@@ -176,7 +165,7 @@ local function eject_unneeded_items(factory, requests_by_itemname)
     if not ejector or not ejector.valid then return end
     local ejector_inventory = ejector.get_inventory(defines.inventory.chest)
     if not ejector_inventory.is_empty() then return end
-    
+
     for i = 1, #storage_inventory do
         local itemstack = storage_inventory[i]
         if itemstack.valid_for_read then
@@ -414,7 +403,7 @@ local function get_construction_requests_by_factory()
             if ghost.name == GHOST_PROTOTYPE_NAME or ghost.name == TILE_GHOST_PROTOTYPE_NAME then
                 items_to_place = ghost.ghost_prototype.items_to_place_this -- collect all items_to_place_this for construction ghosts
             elseif ghost.type == "item-request-proxy" then
-                items_to_place = ghost.item_requests           -- items can also be delived to the `item-request-proxy` prototype
+                items_to_place = ghost.item_requests                       -- items can also be delived to the `item-request-proxy` prototype
             elseif ghost.to_be_upgraded() then
                 local upgrade_target, quality = ghost.get_upgrade_target()
                 items_to_place = upgrade_target.items_to_place_this -- collect all items_to_place_this for upgrade planner ghosts
@@ -509,8 +498,7 @@ create_or_remove_item_request_proxies = function(factory, requests_by_itemname)
     for _, proxy in pairs(item_request_proxies) do
         if not proxy.valid then goto we_are_no_longer_requesting_this_item end
 
-        local item_requests = proxy.item_requests
-        for _, request in pairs(item_requests) do
+        for _, request in pairs(proxy.item_requests) do
             local name, quality = request.name, request.quality -- destroy any proxies that have their requests fulfilled already
             if not requests_by_itemname[name] or not requests_by_itemname[name][quality] then
                 proxy.destroy()
@@ -518,12 +506,10 @@ create_or_remove_item_request_proxies = function(factory, requests_by_itemname)
             end
         end
 
-        for _, request in pairs(item_requests) do
-            for _, insert_plan in pairs(proxy.insert_plan) do
-                for _, inventory_locator in pairs(insert_plan.items.in_inventory) do
-                    -- inventory_locator.stack is 0-indexed for some reason. adjust.
-                    already_occupied_inventory_indexes[inventory_locator.stack + 1] = true
-                end
+        for _, insert_plan in pairs(proxy.insert_plan) do
+            for _, inventory_locator in pairs(insert_plan.items.in_inventory) do
+                -- inventory_locator.stack is 0-indexed for some reason. adjust.
+                already_occupied_inventory_indexes[inventory_locator.stack + 1] = true
             end
         end
 
