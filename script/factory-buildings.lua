@@ -57,19 +57,22 @@ local function set_factory_active_or_inactive(factory)
     local function can_place_factory_here()
         -- Check if a player is trying to cheat by moving factories to diffrent planets.
         local original_planet = factory.original_planet
+        local inside_surface = factory.inside_surface
+
         if original_planet and original_planet.valid then
-            local original_planet_name = original_planet.name:gsub("%-factory%-floor$", "")
-            local surface_name = surface.name:gsub("%-factory%-floor$", "")
-            if original_planet_name ~= surface_name then
-                local original_planet_prototype = (game.planets[original_planet_name] or original_planet).prototype
-                local flying_text = {"factory-connection-text.invalid-placement-planet", original_planet_name, original_planet_prototype.localised_name}
-                return false, flying_text, true
+            if inside_surface and inside_surface.valid and inside_surface.name ~= "se-spaceship-factory-floor" then
+                local original_planet_name = original_planet.name:gsub("%-factory%-floor$", "")
+                local surface_name = surface.name:gsub("%-factory%-floor$", "")
+                if original_planet_name ~= surface_name then
+                    local original_planet_prototype = (game.planets[original_planet_name] or original_planet).prototype
+                    local flying_text = {"factory-connection-text.invalid-placement-planet", original_planet_name, original_planet_prototype.localised_name}
+                    return false, flying_text, true
+                end
             end
         end
 
         -- In space exploration, we differentiate between space factories and spaceship factories.
         if script.active_mods["space-exploration"] then
-            local inside_surface = factory.inside_surface
             if inside_surface and inside_surface.valid then
                 local spaceship = was_this_placed_on_a_space_exploration_spaceship(factory.layout, building)
                 if inside_surface.name == "space-factory-floor" and spaceship then
