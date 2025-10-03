@@ -74,8 +74,6 @@ local function set_factory_active_or_inactive(factory)
                 local spaceship = was_this_placed_on_a_space_exploration_spaceship(factory.layout, building)
                 if inside_surface.name == "space-factory-floor" and spaceship then
                     return false, {"factory-connection-text.se-must-not-build-factory-building-on-a-spaceship"}, true
-                elseif inside_surface.name == "se-spaceship-factory-floor" and not spaceship then
-                    return false, {"factory-connection-text.se-must-build-factory-building-on-a-spaceship"}, true
                 end
             end
         end
