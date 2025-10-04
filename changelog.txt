@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.10.14
+Date: 2025-10-04
+  Compatibility:
+    - Fixed fluid connections somtimes being disconnected when sending SE spaceship factory to space.
+    - Removed restriction on "SE spaceship factories" not being placable in space.
+---------------------------------------------------------------------------------------------------
 Version: 3.10.13
 Date: 2025-10-03
   Compatibility:
