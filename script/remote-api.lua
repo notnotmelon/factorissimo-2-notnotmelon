@@ -141,6 +141,7 @@ end
 _G.has_layout = remote_api.has_layout
 
 remote_api.is_factorissimo_surface = function(surface)
+    if not surface then return false end
     local surface_index
     local surface_type = type(surface)
 
