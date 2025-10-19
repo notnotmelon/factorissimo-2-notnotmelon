@@ -50,10 +50,10 @@ end
 local function true_name(surface)
     if surface.name:find("%-factory%-floor$") then
         return surface.name:gsub("%-factory%-floor$", "")
-    elseif (surface.object_name or type(surface)) == "LuaSurface" and surface.planet then
-        return surface.planet.name
-    elseif surface.name:find("platform") then
-        return surface.name
+    elseif (surface.object_name or type(surface)) == "LuaSurface" then
+        if surface.planet or surface.platform then
+            return surface.planet.name
+        end
     end
     return surface.name:gsub("%-%d+$", "")
 end
@@ -108,7 +108,6 @@ local function set_factory_active_or_inactive(factory)
 
         local inner_tier = factory.layout.tier
         local outer_tier = surrounding_factory.layout.tier
-        game.print("inner: "..inner_tier.." outer: "..outer_tier)
         if not has_tech_t2 and inner_tier >= outer_tier then
             return false, {"factory-connection-text.invalid-placement-recursion-2"}, false
         end
