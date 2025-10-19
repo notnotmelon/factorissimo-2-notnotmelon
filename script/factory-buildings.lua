@@ -53,7 +53,7 @@ local function true_name(surface)
     elseif (surface.object_name or type(surface)) == "LuaSurface" and surface.planet then
         return surface.planet.name
     elseif surface.name:find("platform") then
-        return surface,name
+        return surface.name
     end
     return surface.name:gsub("%-%d+$", "")
 end
