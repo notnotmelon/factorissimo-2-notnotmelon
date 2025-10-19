@@ -45,6 +45,19 @@ local function was_this_placed_on_a_space_exploration_spaceship(layout, building
     }
 end
 
+--- @param surface LuaSurface|LuaPlanet
+--- @return string
+local function true_name(surface)
+    if surface.name:find("%-factory%-floor$") then
+        return surface.name:gsub("%-factory%-floor$", "")
+    elseif (surface.object_name or type(surface)) == "LuaSurface" and surface.planet then
+        return surface.planet.name
+    elseif surface.name:find("platform") then
+        return surface,name
+    end
+    return surface.name:gsub("%-%d+$", "")
+end
+
 local function set_factory_active_or_inactive(factory)
     local building = factory.building
     if not building or not building.valid then
@@ -61,8 +74,8 @@ local function set_factory_active_or_inactive(factory)
 
         if original_planet and original_planet.valid then
             if inside_surface and inside_surface.valid and inside_surface.name ~= "se-spaceship-factory-floor" then
-                local original_planet_name = original_planet.name:gsub("%-factory%-floor$", "")
-                local surface_name = surface.name:gsub("%-factory%-floor$", "")
+                local original_planet_name = true_name(original_planet)
+                local surface_name = true_name(surface)
                 if original_planet_name ~= surface_name then
                     local original_planet_prototype = (game.planets[original_planet_name] or original_planet).prototype
                     local flying_text = {"factory-connection-text.invalid-placement-planet", original_planet_name, original_planet_prototype.localised_name}
@@ -95,6 +108,7 @@ local function set_factory_active_or_inactive(factory)
 
         local inner_tier = factory.layout.tier
         local outer_tier = surrounding_factory.layout.tier
+        game.print("inner: "..inner_tier.." outer: "..outer_tier)
         if not has_tech_t2 and inner_tier >= outer_tier then
             return false, {"factory-connection-text.invalid-placement-recursion-2"}, false
         end
@@ -206,7 +220,7 @@ local function which_void_surface_should_this_new_factory_be_placed_on(layout, b
 
     local surface = building.surface
     if surface.planet then
-        return (surface.name .. "-factory-floor"):gsub("%-factory%-floor%-factory%-floor", "-factory-floor")
+        return (surface.planet.name .. "-factory-floor")
     end
 
     storage.next_factory_surface = storage.next_factory_surface + 1
