@@ -204,8 +204,10 @@ function factorissimo.cleanup_outside_energy_receiver(factory)
     local pole = factorissimo.get_or_create_inside_power_pole(factory)
     factorissimo.disconnect_all_copper_connections(pole)
 
-    local genp = factory.global_electric_network_pole
-    if genp then genp.destroy() end
+    if factory.global_electric_network_pole then
+        factory.global_electric_network_pole.destroy()
+        factory.global_electric_network_pole = nil
+    end
 
     if not factory.inside_surface.valid then return end
 
