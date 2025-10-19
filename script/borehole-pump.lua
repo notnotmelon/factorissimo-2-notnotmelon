@@ -30,6 +30,8 @@ local BOREHOLE_PUMP_FIXED_RECIPES = {
     ["frozeta"] = NO_FLUID_ON_THIS_SURFACE,
     ["ringworld"] = NO_FLUID_ON_THIS_SURFACE,
     ["shipyard"] = "gray-goo",
+    ["neo-nauvis"] = "water",
+    ["electria"] = "water"
 }
 local BOREHOLE_PUMP_SMOKE_OFFSETS = {
     [defines.direction.north] = {-1.2, -2.1},
