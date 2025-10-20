@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.11.0
+Date: 2025-10-20
+  Features:
+    - added first draft of support for Dimensional Warp that could be extended to support Warptorio 2. Neo nauvis will be a valid factory floor despite being hidden, both Neo nauvis and Electria will have water for the borehole-pump, factory floors will try to use the planet name and remove trailing -<num> to be compatible with numbered surfaces
+  Bugfixes:
+    - genp being destroyed but not set to nill when moving a platform between global electric network and standard electric network resulting in a failing assert
+    - left some debug
+    - mistyped a '.' in factory-buildings.lua:56
+---------------------------------------------------------------------------------------------------
 Version: 3.10.15
 Date: 2025-10-05
   Compatibility:
