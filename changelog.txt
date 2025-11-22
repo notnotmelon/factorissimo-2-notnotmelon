@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.11.1
+Date: 2025-11-22
+  Bugfixes:
+    - Fixes duplicate "-factory-floor" in surface name. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/251
+---------------------------------------------------------------------------------------------------
 Version: 3.11.0
 Date: 2025-10-20
   Features:
