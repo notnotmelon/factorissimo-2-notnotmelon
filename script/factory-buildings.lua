@@ -219,7 +219,7 @@ local function which_void_surface_should_this_new_factory_be_placed_on(layout, b
 
     local surface = building.surface
     if surface.planet then
-        return (surface.planet.name .. "-factory-floor")
+        return (surface.planet.name .. "-factory-floor"):gsub("%-factory%-floor%-factory%-floor", "-factory-floor")
     end
 
     storage.next_factory_surface = storage.next_factory_surface + 1
