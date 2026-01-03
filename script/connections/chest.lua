@@ -200,6 +200,7 @@ local function balance_chests(outside_inv, inside_inv)
 end
 
 local function move_items_inwards(outside_inv, inside_inv)
+    if inside_inv.is_full() then return end
     for i = 1, #outside_inv do
         local stack = outside_inv[i]
         if stack.valid_for_read then
@@ -212,6 +213,7 @@ local function move_items_inwards(outside_inv, inside_inv)
 end
 
 local function move_items_outwards(outside_inv, inside_inv)
+    if outside_inv.is_full() then return end
     for i = 1, #inside_inv do
         local stack = inside_inv[i]
         if stack.valid_for_read then
@@ -222,6 +224,7 @@ local function move_items_outwards(outside_inv, inside_inv)
         end
     end
 end
+
 
 Chest.tick = function(conn)
     local outside = conn.outside
