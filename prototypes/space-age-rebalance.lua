@@ -183,6 +183,9 @@ data.raw["electric-pole"]["factory-circuit-connector"].surface_conditions = {{
 
 if not settings.startup["Factorissimo2-space-architecture"].value then return end
 
+-- https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/247
+data.raw["electric-pole"]["factory-circuit-connector"].surface_conditions = {}
+
 data.raw["storage-tank"]["space-factory-1"].surface_conditions = {{
     property = "gravity",
     max = 0.1
