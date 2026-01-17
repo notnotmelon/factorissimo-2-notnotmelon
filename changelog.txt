@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.11.3
+Date: 2026-01-17
+  Bugfixes:
+    - Fixed factory circuit connectors not being placeable in space. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/247
+---------------------------------------------------------------------------------------------------
 Version: 3.11.2
 Date: 2026-01-17
   Optimizations:
