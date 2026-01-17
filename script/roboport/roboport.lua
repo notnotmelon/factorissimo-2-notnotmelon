@@ -2,6 +2,8 @@ local blacklisted_names = require "script.roboport.blacklist"
 local utility_constants = require "script.roboport.utility-constants"
 
 local STACK_SIZE_MULTIPLIER = 50
+local FACTORY_HIDDEN_CONSTRUCTION_ROBOT = "factory-hidden-construction-robot"
+local TARGET_NUMBER_OF_ROBOTS_IN_NETWORK = 200
 
 local function get_tilebox(bounding_box)
     local left_top = bounding_box.left_top
@@ -114,7 +116,6 @@ local function request_platform_animation_for(entity)
     end
 
     local remove_scaffold_delay = (largest_manhattan_distance + 4) * FRAMES_BETWEEN_BUILDING
-    local all_scaffolding_down_at = 1 + largest_manhattan_distance * FRAMES_BETWEEN_REMOVING + remove_scaffold_delay + 16 * TICKS_PER_FRAME
 
     for _, position in ipairs(tilebox) do
         local piece = get_piece(position.center, entity.position)
@@ -203,7 +204,7 @@ end
 factorissimo.on_event(defines.events.on_script_trigger_effect, function(event)
     if event.effect_id ~= "factory-hidden-construction-robot-created" then return end
     local construction_robot = event.target_entity
-    assert(construction_robot and construction_robot.name == "factory-hidden-construction-robot")
+    assert(construction_robot and construction_robot.name == FACTORY_HIDDEN_CONSTRUCTION_ROBOT)
     if not storage.surface_factories[construction_robot.surface_index] then
         factorissimo.execute_later("destroy_entity", 1, construction_robot)
     end
@@ -219,12 +220,36 @@ factorissimo.register_delayed_function("destroy_robot_if_empty_inventory", destr
 
 factorissimo.on_event(defines.events.on_robot_built_entity, function(event)
     local robot = event.robot
-    if robot.name ~= "factory-hidden-construction-robot" then return end
-    local unit_number = robot.unit_number
+    if robot.name ~= FACTORY_HIDDEN_CONSTRUCTION_ROBOT then return end
     local entity = event.entity
     if not entity.valid then return end
     request_platform_animation_for(event.entity)
     factorissimo.execute_later("destroy_robot_if_empty_inventory", 1, robot)
+end)
+
+-- ensure the hidden roboport is always filled to TARGET_NUMBER_OF_ROBOTS_IN_NETWORK bots in network.
+local function ensure_target_number_of_robots(factory)
+    local roboport_upgrade = factory.roboport_upgrade
+    if not roboport_upgrade then return end
+    local hidden_roboport = roboport_upgrade.hidden_roboport
+    if not hidden_roboport or not hidden_roboport.valid then return end
+    local robot_inventory = hidden_roboport.get_inventory(defines.inventory.roboport_robot)
+
+    local all_construction_robots = hidden_roboport.logistic_network.all_construction_robots
+    local missing = TARGET_NUMBER_OF_ROBOTS_IN_NETWORK - all_construction_robots
+    if missing == 0 then return end
+
+    missing = missing + robot_inventory.get_item_count(FACTORY_HIDDEN_CONSTRUCTION_ROBOT)
+    robot_inventory.clear()
+    if missing > 0 then
+        robot_inventory.insert {name = FACTORY_HIDDEN_CONSTRUCTION_ROBOT, count = missing}
+    end
+end
+
+factorissimo.on_nth_tick(367, function()
+    for _, factory in pairs(storage.factories) do
+        ensure_target_number_of_robots(factory)
+    end
 end)
 
 factorissimo.build_roboport_upgrade = function(factory)
@@ -271,7 +296,7 @@ factorissimo.build_roboport_upgrade = function(factory)
         force = factory.force,
     }
     hidden_roboport.backer_name = ""
-    hidden_roboport.get_inventory(defines.inventory.roboport_robot).insert {name = "factory-hidden-construction-robot", count = prototypes.item["factory-hidden-construction-robot"].stack_size / 2}
+    ensure_target_number_of_robots(factory)
 
     storage = storage or factory.inside_surface.create_entity {
         name = "factory-construction-chest",
@@ -582,27 +607,6 @@ factorissimo.on_nth_tick(43, function()
     end
 end)
 
--- ensure the hidden roboport is always filled to 500 bots in network.
-local TARGET_NUMBER_OF_ROBOTS_IN_NETWORK = 500
-factorissimo.on_nth_tick(367, function()
-    for _, factory in pairs(storage.factories) do
-        local roboport_upgrade = factory.roboport_upgrade
-        if not roboport_upgrade then goto continue end
-        local hidden_roboport = roboport_upgrade.hidden_roboport
-        if not hidden_roboport or not hidden_roboport.valid then goto continue end
-        local robot_inventory = hidden_roboport.get_inventory(defines.inventory.roboport_robot)
-
-        local all_construction_robots = hidden_roboport.logistic_network.all_construction_robots
-        local missing = math.max(0, TARGET_NUMBER_OF_ROBOTS_IN_NETWORK - all_construction_robots)
-        if missing == 0 then goto continue end
-
-        robot_inventory.clear()
-        robot_inventory.insert {name = "factory-hidden-construction-robot", count = missing}
-
-        ::continue::
-    end
-end)
-
 factorissimo.on_event(defines.events.on_gui_opened, function(event)
     local gui_type = event.gui_type
     if gui_type ~= defines.gui_type.entity then return end
@@ -611,5 +615,5 @@ factorissimo.on_event(defines.events.on_gui_opened, function(event)
     if entity.type ~= "roboport" then return end
 
     local robot_inventory = entity.get_inventory(defines.inventory.roboport_robot)
-    robot_inventory.remove {name = "factory-hidden-construction-robot", count = 10000} -- bad! no contraband
+    robot_inventory.remove {name = FACTORY_HIDDEN_CONSTRUCTION_ROBOT, count = 10000} -- bad! no contraband
 end)
