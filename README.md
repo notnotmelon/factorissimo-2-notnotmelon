@@ -10,10 +10,8 @@
 
 Factorissimo is a mod about putting your factory inside buildings, and then putting those buildings inside other buildings.
 
-Help translate this mod on [GitHub](https://github.com/notnotmelon/factorissimo-2-notnotmelon/pulls)  
-Also check out the [Space Exploration](https://mods.factorio.com/mod/space-factorissimo-updated) extension for this mod.  
+Help translate this mod on [GitHub](https://github.com/notnotmelon/factorissimo-2-notnotmelon/pulls)   
 This mod supports [Factorio Maps](https://youtu.be/zDkEtZGG0IQ)  
-Want to help translate this mod? Visit our [Crowdin](https://crowdin.com/project/factorio-mods-localization) page.  
 
 ---
 
@@ -103,10 +101,14 @@ After researching the factory roboport upgrade, construction bots can enter fact
 
 ---
 
-## Space exploration compatibility
-Check out the awesome [space exploration compatibility mod](https://mods.factorio.com/mod/space-factorissimo-lizard) made by Crazy_Editor & Yariazen.
+## Space factories
 
-![https://mods.factorio.com/mod/space-factorissimo-lizard](https://assets-mod.factorio.com/assets/7888beb1108a2a7227c95654596b6ef4970f1580.png)
+With further research, you can place factory buildings in space. Works in space age and also space exploration.
+Can be turned off with mod setting.
+
+![https://mods.factorio.com/mod/space-factorissimo-lizard](https://assets-mod.factorio.com/assets/99c8f3ca77b5cbf1fd5bd04e748aa9568781af1d.png)
+
+Huge thanks to Crazy_Editor & Yariazen for making this work.
 
 ---
 
