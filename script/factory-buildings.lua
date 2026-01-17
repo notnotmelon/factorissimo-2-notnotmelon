@@ -254,17 +254,26 @@ local function find_first_unused_position(surface)
     return #used_indexes + 1
 end
 
+local function surface_sanity_checks(surface)
+    if surface.name == "space-factory-floor" then
+        surface.localised_name = {"space-location-name.space-factory-floor"}
+        surface.set_property("gravity", 0)
+        surface.set_property("pressure", 0)
+        surface.set_property("magnetic-field", 0)
+    end
+
+    surface.daytime = 0.5
+    surface.freeze_daytime = true
+
+    -- Ensure grass does not generate.
+    surface.map_gen_settings = {width = 2, height = 2}
+end
+
 local function create_factory_position(layout, building)
     local surface_name = which_void_surface_should_this_new_factory_be_placed_on(layout, building)
     local surface = game.get_surface(surface_name)
 
-    if surface then
-        -- A bit of extra safety to ensure grass does not generate.
-        local mgs = surface.map_gen_settings
-        mgs.width = 2
-        mgs.height = 2
-        surface.map_gen_settings = mgs
-    else
+    if not surface then
         if remote.interfaces["RSO"] then -- RSO compatibility
             pcall(remote.call, "RSO", "ignoreSurface", surface_name)
         end
@@ -279,16 +288,11 @@ local function create_factory_position(layout, building)
             surface.localised_name = {"space-location-name.factory-floor", storage.next_factory_surface}
         end
 
-        if surface_name == "space-factory-floor" then
-            surface.localised_name = {"space-location-name.space-factory-floor"}
-            surface.set_property("gravity", 0)
-            surface.set_property("pressure", 0)
-            surface.set_property("magnetic-field", 0)
-        end
-
-        surface.daytime = 0.5
-        surface.freeze_daytime = true
+        assert(surface)
+        assert(surface.name == surface_name)
     end
+
+    surface_sanity_checks(surface)
 
     local n = find_first_unused_position(surface) - 1
     local FACTORISSIMO_CHUNK_SPACING = 16
