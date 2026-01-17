@@ -35,4 +35,4 @@ Attach your save file and `factorio-current.log` file.
 
 **Help wanted?**
 - [ ] I am familiar with programming and will submit a pull request to resolve this issue. (Note: Please do not use AI coding tools.)
-- [ ] I need someone else to solve this issue please.
+- [X] I need someone else to solve this issue please.
