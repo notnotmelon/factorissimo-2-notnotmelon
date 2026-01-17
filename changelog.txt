@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.11.4
+Date: 2026-01-17
+  Bugfixes:
+    - Fixed warning of "Not enough empty roboport slots..." when using factory roboport upgrade. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/261
+---------------------------------------------------------------------------------------------------
 Version: 3.11.3
 Date: 2026-01-17
   Bugfixes:
