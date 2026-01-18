@@ -6,6 +6,7 @@ factorissimo.on_event(factorissimo.events.on_init(), function()
         if not factory.force or not factory.force.valid then
             factory.force = game.forces.player
         end
+
         -- Fix issues when quality prototypes are removed.
         if not factory.quality or not factory.quality.valid then
             if factory.building and factory.building.valid then
@@ -14,9 +15,8 @@ factorissimo.on_event(factorissimo.events.on_init(), function()
                 factory.quality = prototypes.quality.normal
             end
         end
-        -- Ensure that original planet is set.
-        if not factory.original_planet and factory.outside_surface and factory.outside_surface.valid then
-            factory.original_planet = factory.outside_surface.planet
-        end
+
+        -- Clean deprecated data.
+        factory.original_planet = nil
     end
 end)

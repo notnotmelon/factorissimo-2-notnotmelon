@@ -18,22 +18,6 @@ for _, factory in pairs(storage.factories) do
     factorissimo.update_power_connection(factory)
 end
 
-local new_surface_factories = {}
-for surface_name, factory_list in pairs(storage.surface_factories or {}) do
-    if type(surface_name) == "string" then
-        local surface = game.get_surface(surface_name)
-        new_surface_factories[surface.index] = factory_list
-    else
-        new_surface_factories[surface_name] = factory_list
-    end
-end
-
 storage.surface_factory_counters = nil
 storage.middleman_circuit_connectors = nil
 storage.spidertrons = nil
-
-local old_factory_surface = game.surfaces["factory-floor-1"]
-local planet = game.planets["nauvis-factory-floor"]
-if old_factory_surface and planet and not planet.surface then
-    planet.associate_surface(old_factory_surface)
-end

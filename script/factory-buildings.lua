@@ -14,8 +14,6 @@ factorissimo.on_event(factorissimo.events.on_init(), function()
     storage.factories_by_entity = storage.factories_by_entity or {}
     -- Map: Surface index -> list of factories on it
     storage.surface_factories = storage.surface_factories or {}
-    -- Scalar
-    storage.next_factory_surface = storage.next_factory_surface or 0
 end)
 
 -- RECURSION TECHNOLOGY --
@@ -45,17 +43,32 @@ local function was_this_placed_on_a_space_exploration_spaceship(layout, building
     }
 end
 
---- @param surface LuaSurface|LuaPlanet
---- @return string
-local function true_name(surface)
-    if surface.name:find("%-factory%-floor$") then
-        return surface.name:gsub("%-factory%-floor$", "")
-    elseif (surface.object_name or type(surface)) == "LuaSurface" then
-        if surface.planet or surface.platform then
-            return surface.planet.name
-        end
+local function surface_localised_name(surface)
+    if surface.localised_name then
+        return surface.localised_name
+    elseif surface.planet and surface.planet.prototype.localised_name then
+        return {"", "[img=space-location.", surface.planet.name, "] ", surface.planet.prototype.localised_name}
+    else
+        return {"?", {"space-location-name." .. surface.name}, surface.name}
     end
-    return surface.name:gsub("%-%d+$", "")
+end
+
+--- @return string
+local function which_surface_should_this_new_factory_be_placed_on(layout, building)
+    if was_this_placed_on_a_space_exploration_spaceship(layout, building) then
+        return "se-spaceship-factory-floor"
+    end
+
+    local surface = building.surface
+    if layout.surface_override then
+        return layout.surface_override
+    elseif surface.platform then
+        return "space-factory-floor"
+    elseif surface.planet then
+        return surface.planet.name:gsub("%-factory%-floor", "") .. "-factory-floor"
+    else
+        return surface.name:gsub("%-factory%-floor", "") .. "-factory-floor"
+    end
 end
 
 local function set_factory_active_or_inactive(factory)
@@ -68,30 +81,10 @@ local function set_factory_active_or_inactive(factory)
     local position = building.position
 
     local function can_place_factory_here()
-        -- Check if a player is trying to cheat by moving factories to diffrent planets.
-        local original_planet = factory.original_planet
-        local inside_surface = factory.inside_surface
-
-        if original_planet and original_planet.valid then
-            if inside_surface and inside_surface.valid and inside_surface.name ~= "se-spaceship-factory-floor" then
-                local original_planet_name = true_name(original_planet)
-                local surface_name = true_name(surface)
-                if original_planet_name ~= surface_name then
-                    local original_planet_prototype = (game.planets[original_planet_name] or original_planet).prototype
-                    local flying_text = {"factory-connection-text.invalid-placement-planet", original_planet_name, original_planet_prototype.localised_name}
-                    return false, flying_text, true
-                end
-            end
-        end
-
-        -- In space exploration, we differentiate between space factories and spaceship factories.
-        if script.active_mods["space-exploration"] then
-            if inside_surface and inside_surface.valid then
-                local spaceship = was_this_placed_on_a_space_exploration_spaceship(factory.layout, building)
-                if inside_surface.name == "space-factory-floor" and spaceship then
-                    return false, {"factory-connection-text.se-must-not-build-factory-building-on-a-spaceship"}, true
-                end
-            end
+        -- Check if a player is trying to cheat by moving factories between surfaces.
+        if factory.inside_surface.name ~= which_surface_should_this_new_factory_be_placed_on(factory.layout, building) then
+            flying_text = {"factory-connection-text.invalid-placement-surface", surface_localised_name(factory.inside_surface), surface_localised_name(surface)}
+            return false, flying_text, true
         end
 
         if settings.global["Factorissimo2-free-recursion"].value then
@@ -211,21 +204,6 @@ end)
 
 -- FACTORY GENERATION --
 
-local function which_void_surface_should_this_new_factory_be_placed_on(layout, building)
-    if was_this_placed_on_a_space_exploration_spaceship(layout, building) then
-        return "se-spaceship-factory-floor"
-    end
-    if layout.surface_override then return layout.surface_override end
-
-    local surface = building.surface
-    if surface.planet then
-        return (surface.planet.name .. "-factory-floor"):gsub("%-factory%-floor%-factory%-floor", "-factory-floor")
-    end
-
-    storage.next_factory_surface = storage.next_factory_surface + 1
-    return storage.next_factory_surface .. "-factory-floor"
-end
-
 factorissimo.on_event(defines.events.on_surface_created, function(event)
     local surface = game.get_surface(event.surface_index)
     if not surface.name:find("%-factory%-floor$") then return end
@@ -254,12 +232,23 @@ local function find_first_unused_position(surface)
     return #used_indexes + 1
 end
 
-local function surface_sanity_checks(surface)
+local function surface_sanity_checks(surface, building)
+    if remote.interfaces["RSO"] then -- RSO compatibility
+        pcall(remote.call, "RSO", "ignoreSurface", surface.name)
+    end
+
     if surface.name == "space-factory-floor" then
         surface.localised_name = {"space-location-name.space-factory-floor"}
         surface.set_property("gravity", 0)
         surface.set_property("pressure", 0)
         surface.set_property("magnetic-field", 0)
+    elseif surface.name == "se-spaceship-factory-floor" then
+        surface.localised_name = {"space-location-name.se-spaceship-factory-floor"}
+        surface.set_property("gravity", 0)
+        surface.set_property("pressure", 0)
+        surface.set_property("magnetic-field", 0)
+    else
+        surface.localised_name = surface_localised_name(surface)
     end
 
     surface.daytime = 0.5
@@ -269,30 +258,35 @@ local function surface_sanity_checks(surface)
     surface.map_gen_settings = {width = 2, height = 2}
 end
 
+local function create_factory_surface(surface_name)
+    assert(_G.surface == nil)
+
+    if remote.interfaces["RSO"] then -- RSO compatibility
+        pcall(remote.call, "RSO", "ignoreSurface", surface_name)
+    end
+
+    local surface = game.get_surface(surface_name)
+    if surface then
+        return surface
+    end
+
+    local planet = game.planets[surface_name]
+    if planet then
+        return planet.create_surface()
+    end
+
+    return game.create_surface(surface_name, {width = 2, height = 2})
+end
+
 local function create_factory_position(layout, building)
-    local surface_name = which_void_surface_should_this_new_factory_be_placed_on(layout, building)
+    local surface_name = which_surface_should_this_new_factory_be_placed_on(layout, building)
     local surface = game.get_surface(surface_name)
 
     if not surface then
-        if remote.interfaces["RSO"] then -- RSO compatibility
-            pcall(remote.call, "RSO", "ignoreSurface", surface_name)
-        end
-
-        local planet = game.planets[surface_name]
-        if planet then
-            surface = planet.surface or planet.create_surface()
-        end
-
-        if not surface then
-            surface = game.create_surface(surface_name, {width = 2, height = 2})
-            surface.localised_name = {"space-location-name.factory-floor", storage.next_factory_surface}
-        end
-
-        assert(surface)
-        assert(surface.name == surface_name)
+        surface = create_factory_surface(surface_name)
     end
 
-    surface_sanity_checks(surface)
+    surface_sanity_checks(surface, building)
 
     local n = find_first_unused_position(surface) - 1
     local FACTORISSIMO_CHUNK_SPACING = 16
@@ -345,7 +339,6 @@ end
 
 local function add_hidden_tile_rect(factory)
     local surface = factory.inside_surface
-    local layout = factory.layout
     local xmin = factory.inside_x - 64
     local ymin = factory.inside_y - 64
     local xmax = factory.inside_x + 64
@@ -487,6 +480,8 @@ local sprite_path_translation = {
     virtual = "virtual-signal",
 }
 local function generate_factory_item_description(factory)
+    local bound_to = {"item-description.bound-to", surface_localised_name(factory.inside_surface)}
+
     local overlay = factory.inside_overlay_controller
     local params = {}
     if overlay and overlay.valid then
@@ -500,7 +495,11 @@ local function generate_factory_item_description(factory)
         end
     end
     local params = table.concat(params, "\n")
-    if params ~= "" then return "[font=heading-2]" .. params .. "[/font]" end
+    if params == "" then
+        return bound_to
+    else
+        return {"", bound_to, "\n[font=heading-2]" .. params .. "[/font]"}
+    end
 end
 
 local function is_completely_empty(factory)
@@ -547,7 +546,7 @@ local function cleanup_factory_interior(factory)
     factory.inside_surface.set_tiles(out_of_map_tiles)
 
     local factory_lists = {storage.factories, storage.saved_factories, storage.factories_by_entity}
-    for surface_index, factory_list in pairs(storage.surface_factories) do
+    for _, factory_list in pairs(storage.surface_factories) do
         factory_lists[#factory_lists + 1] = factory_list
     end
 
@@ -734,7 +733,6 @@ local function create_fresh_factory(entity)
     local layout = remote_api.create_layout(entity.name, entity.quality)
     local factory = create_factory_interior(layout, entity)
     create_factory_exterior(factory, entity)
-    factory.original_planet = entity.surface.planet
     set_factory_active_or_inactive(factory)
     return factory
 end

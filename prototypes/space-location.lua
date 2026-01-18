@@ -23,7 +23,7 @@ data:extend {{
         gravity = -1,
         pressure = 10000,
         ["solar-power"] = 0,
-    }
+    },
 }}
 
 data:extend{{
@@ -126,7 +126,7 @@ end
 -- we need to copy all existing planets in order to create factory floors for them
 local factory_floors = {}
 for _, planet in pairs(data.raw.planet) do
-    if planet.hidden and not planet.name == "neo-nauvis" then goto continue end
+    if planet.hidden and planet.name ~= "neo-nauvis" then goto continue end
     if planet.ignored_for_factorissimo then goto continue end
 
     local factory_floor = table.deepcopy(planet)
