@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.11.5
+Date: 2026-01-18
+  Bugfixes:
+    - Added surface sanity checks to ensure grass does not generate in factory buildings.
+    - Removed "Factory floor 0". Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/256
+---------------------------------------------------------------------------------------------------
 Version: 3.11.4
 Date: 2026-01-17
   Bugfixes:
