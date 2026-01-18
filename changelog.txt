@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.11.6
+Date: 2026-01-18
+  Compatibility:
+    - Fixed placement error with jellystem and yumako when warptorio space age is installed. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/255
+---------------------------------------------------------------------------------------------------
 Version: 3.11.5
 Date: 2026-01-18
   Bugfixes:
