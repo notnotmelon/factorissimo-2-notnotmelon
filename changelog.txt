@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.11.9
+Date: 2026-01-18
+  Bugfixes:
+    - Fixed a crash involving factory placement checks. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/264
+---------------------------------------------------------------------------------------------------
 Version: 3.11.8
 Date: 2026-01-18
   Bugfixes:
