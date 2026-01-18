@@ -794,6 +794,52 @@ local function handle_factory_placed(entity, tags)
     entity.destroy()
 end
 
+-- https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/259
+local function try_randomly_tag_an_itemized_factory_from_space_platform_hub(entity_ghost, player_index)
+    if not player_index then return end
+    if entity_ghost.tags then return end
+    local player = game.get_player(player_index)
+    if not player then return end
+    local space_platform = entity_ghost.surface.platform
+    if not space_platform then return end
+    local hub = space_platform.hub
+    if not hub then return end
+    local cursor_ghost = player.cursor_ghost
+    if not cursor_ghost then return end
+    local cursor_ghost_name = player.cursor_ghost.name.name
+    if not has_layout(cursor_ghost_name) then return end
+    if not cursor_ghost_name:ends_with("-instantiated") then return end
+    local inventory = hub.get_inventory(defines.inventory.hub_main)
+    if not inventory then return end
+    if inventory.is_empty() or inventory.get_item_count(cursor_ghost_name) == 0 then return end
+
+    local random_indicies = {}
+    for i = 1, #inventory do
+        local stack = inventory[i]
+        if stack and stack.valid_for_read and stack.name == cursor_ghost_name then
+            if stack.type == "item-with-tags" and stack.tags and stack.tags.id then
+                local factory = storage.saved_factories[stack.tags.id]
+                if factory and factory.inside_surface.name == "space-factory-floor" then
+                    random_indicies[#random_indicies+1] = i
+                end
+            end
+        end
+    end
+
+    if #random_indicies == 0 then return end
+    local index = random_indicies[math.random(1, #random_indicies)]
+    local stack = inventory[index]
+    entity_ghost.tags = stack.tags
+    local factory = storage.saved_factories[entity_ghost.tags.id]
+
+    if #random_indicies > 1 then
+        local certainty = string.format("%.2f", 100 / #random_indicies)
+        local gps_1 = entity_ghost.gps_tag
+        local gps_2 = string.format("[gps=%s,%s,%s]", factory.inside_x, factory.inside_y, factory.inside_surface.name)
+        game.print{"command-help-message.could-not-determine-with-certainty", gps_1, gps_2, certainty}
+    end
+end
+
 factorissimo.on_event(factorissimo.events.on_built(), function(event)
     local entity = event.entity
     if not entity.valid then return end
@@ -808,8 +854,11 @@ factorissimo.on_event(factorissimo.events.on_built(), function(event)
 
     if entity.type ~= "entity-ghost" then return end
     local ghost_name = entity.ghost_name
+    if not has_layout(ghost_name) then return end
 
-    if has_layout(ghost_name) and entity.tags then
+    try_randomly_tag_an_itemized_factory_from_space_platform_hub(entity, event.player_index)
+
+    if entity.tags then
         local copied_from_factory = storage.factories[entity.tags.id]
         if copied_from_factory then
             factorissimo.update_overlay(copied_from_factory, entity)

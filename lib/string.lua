@@ -26,3 +26,11 @@ end
 string.starts_with = function(s, start)
     return s:sub(1, #start) == start
 end
+
+---Returns a boolean indicating if the first string ends with the second string.
+---@param s string
+---@param ending string
+---@return boolean
+string.ends_with = function(s, ending)
+    return ending == "" or s:sub(-#ending) == ending
+end
