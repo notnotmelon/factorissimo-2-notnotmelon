@@ -816,7 +816,7 @@ local function try_randomly_tag_an_itemized_factory_from_space_platform_hub(enti
     local random_indicies = {}
     for i = 1, #inventory do
         local stack = inventory[i]
-        if stack and stack.valid_for_read and stack.name == cursor_ghost_name then
+        if stack and stack.valid_for_read and stack.name == cursor_ghost_name and stack.quality.name == cursor_ghost.quality.name then
             if stack.type == "item-with-tags" and stack.tags and stack.tags.id then
                 local factory = storage.saved_factories[stack.tags.id]
                 if factory and factory.inside_surface.name == "space-factory-floor" then
