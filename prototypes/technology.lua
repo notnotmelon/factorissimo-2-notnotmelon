@@ -102,7 +102,7 @@ if (mods["space-exploration"] or mods["space-age"]) and settings.startup["Factor
         prerequisites[#prerequisites + 1] = "se-space-platform-scaffold"
     elseif mods["space-age"] then
         unit = {
-            count = 3000,
+            count = 5000,
             ingredients = {
                 {"automation-science-pack", 1},
                 {"logistic-science-pack", 1},
@@ -113,12 +113,15 @@ if (mods["space-exploration"] or mods["space-age"]) and settings.startup["Factor
                 {"metallurgic-science-pack", 1},
                 {"electromagnetic-science-pack", 1},
                 {"agricultural-science-pack", 1},
+                {"cryogenic-science-pack", 1},
+                {"promethium-science-pack", 1},
             },
-            time = 60
+            time = 120
         }
-        prerequisites[#prerequisites + 1] = "metallurgic-science-pack"
-        prerequisites[#prerequisites + 1] = "electromagnetic-science-pack"
-        prerequisites[#prerequisites + 1] = "agricultural-science-pack"
+        prerequisites[#prerequisites + 1] = "promethium-science-pack"
+        prerequisites[#prerequisites + 1] = "factory-upgrade-greenhouse"
+        prerequisites[#prerequisites + 1] = "factory-connection-type-heat"
+        prerequisites[#prerequisites + 1] = "factory-upgrade-borehole-pump"
         prerequisites[#prerequisites + 1] = "solar-energy"
     else
         error("unreachable")
