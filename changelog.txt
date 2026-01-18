@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.11.7
+Date: 2026-01-18
+  Balancing:
+    - With space age DLC, the space factory technology is now unlocked with promethium science packs, rather than all 3 planetary science packs. Cost increased from 3000 to 5000.
+  Bugfixes:
+    - Fixed that space factory buildings could get "stuck" in the space platform hub with no way to construct them. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/259
+---------------------------------------------------------------------------------------------------
 Version: 3.11.6
 Date: 2026-01-18
   Compatibility:
