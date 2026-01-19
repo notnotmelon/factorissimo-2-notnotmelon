@@ -71,6 +71,10 @@ local function which_surface_should_this_new_factory_be_placed_on(layout, buildi
     end
 end
 
+local function is_legacy_factory_floor(surface)
+  return surface.name:match("^%d+%-factory%-floor$") ~= nil
+end
+
 local function set_factory_active_or_inactive(factory)
     local building = factory.building
     if not building or not building.valid then
@@ -83,8 +87,10 @@ local function set_factory_active_or_inactive(factory)
     local function can_place_factory_here()
         -- Check if a player is trying to cheat by moving factories between surfaces.
         if factory.inside_surface.valid and factory.inside_surface.name ~= which_surface_should_this_new_factory_be_placed_on(factory.layout, building) then
-            flying_text = {"factory-connection-text.invalid-placement-surface", surface_localised_name(factory.inside_surface), surface_localised_name(surface)}
-            return false, flying_text, true
+            if not is_legacy_factory_floor(factory.inside_surface) then
+                flying_text = {"factory-connection-text.invalid-placement-surface", surface_localised_name(factory.inside_surface), surface_localised_name(surface)}
+                return false, flying_text, true
+            end
         end
 
         if settings.global["Factorissimo2-free-recursion"].value then
