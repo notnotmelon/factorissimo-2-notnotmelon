@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.11.10
+Date: 2026-01-19
+  Compatibility:
+    - Factory buildings can no longer be constructed via the `Mouse Over Construction` mod. Resolves https://codeberg.org/raiguard/MouseOverConstruction/issues/36
+---------------------------------------------------------------------------------------------------
 Version: 3.11.9
 Date: 2026-01-18
   Bugfixes:
