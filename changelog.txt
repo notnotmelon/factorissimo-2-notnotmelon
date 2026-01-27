@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.11.13
+Date: 2026-01-27
+  Bugfixes:
+    - Fixed "This won't work here! This factory building is designed for Factory floor 1. Was instead Nauvis factory floor. ". Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/268
+---------------------------------------------------------------------------------------------------
 Version: 3.11.12
 Date: 2026-01-27
   Bugfixes:
