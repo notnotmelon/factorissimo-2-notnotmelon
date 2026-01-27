@@ -26,7 +26,7 @@ data:extend {{
     },
 }}
 
-data:extend{{
+data:extend {{
     type = "sprite",
     name = "factory-floor-space",
     filename = "__factorissimo-2-notnotmelon__/graphics/icon/factory-floor-space.png",

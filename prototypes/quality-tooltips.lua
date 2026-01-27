@@ -34,7 +34,7 @@ local function add_quality_factoriopedia_info(entity, factoriopedia_info)
 end
 
 add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-1"], {
-    {"interior-space", function(entity, quality_level) return "30×30" end},
+    {"interior-space",       function(entity, quality_level) return "30×30" end},
     {"connections", function(entity, quality_level)
         local connection_count
         if quality_level <= 0 then
@@ -56,7 +56,7 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-1"], {
 })
 
 add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-2"], {
-    {"interior-space", function(entity, quality_level) return "46×46" end},
+    {"interior-space",       function(entity, quality_level) return "46×46" end},
     {"connections", function(entity, quality_level)
         local connection_count
         if quality_level <= 0 then
@@ -78,7 +78,7 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-2"], {
 })
 
 add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-3"], {
-    {"interior-space", function(entity, quality_level) return "60×60" end},
+    {"interior-space",       function(entity, quality_level) return "60×60" end},
     {"connections", function(entity, quality_level)
         local connection_count
         if quality_level <= 0 then
@@ -102,7 +102,7 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-3"], {
 if not settings.startup["Factorissimo2-space-architecture"].value then return end
 
 add_quality_factoriopedia_info(data.raw["storage-tank"]["space-factory-1"], {
-    {"interior-space", function(entity, quality_level) return "30×30" end},
+    {"interior-space",       function(entity, quality_level) return "30×30" end},
     {"connections", function(entity, quality_level)
         local connection_count
         if quality_level <= 0 then
@@ -124,7 +124,7 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["space-factory-1"], {
 })
 
 add_quality_factoriopedia_info(data.raw["storage-tank"]["space-factory-2"], {
-    {"interior-space", function(entity, quality_level) return "46×46" end},
+    {"interior-space",       function(entity, quality_level) return "46×46" end},
     {"connections", function(entity, quality_level)
         local connection_count
         if quality_level <= 0 then
@@ -146,7 +146,7 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["space-factory-2"], {
 })
 
 add_quality_factoriopedia_info(data.raw["storage-tank"]["space-factory-3"], {
-    {"interior-space", function(entity, quality_level) return "60×60" end},
+    {"interior-space",       function(entity, quality_level) return "60×60" end},
     {"connections", function(entity, quality_level)
         local connection_count
         if quality_level <= 0 then

@@ -32,5 +32,5 @@ end
 ---@param ending string
 ---@return boolean
 string.ends_with = function(s, ending)
-    return ending == "" or s:sub(-#ending) == ending
+    return ending == "" or s:sub(- #ending) == ending
 end
