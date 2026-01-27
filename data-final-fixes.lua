@@ -15,12 +15,19 @@ if construction_robotics and roboport_upgrade and architecture_2 then
         roboport_upgrade.count = math.max(construction_robotics.count or 0, architecture_2.count or 0) + 15
         roboport_upgrade.time = math.max(construction_robotics.time or 0, architecture_2.time or 0) + 15
         local ingredients = {}
-        for _, tech in pairs{construction_robotics, architecture_2} do
+        for _, tech in pairs {construction_robotics, architecture_2} do
             for _, ingredient in pairs(tech.ingredients) do
-                ingredients[#ingredients+1] = ingredient
+                if type(ingredient) == "table" and type(ingredient[1]) == "string" then
+                    for _, existing in pairs(ingredients) do
+                        if existing[1] == ingredient[1] then
+                            goto dedupe
+                        end
+                    end
+                    ingredients[#ingredients + 1] = ingredient
+                    ::dedupe::
+                end
             end
         end
-        ingredients = table.dedupe(ingredients)
         roboport_upgrade.ingredients = ingredients
     end
 end
