@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.11.15
+Date: 2026-01-27
+  Bugfixes:
+    - Fixed crash on load.
+  Changes:
+    - Added "+" icons under technologies which previously had no effects listed.
+---------------------------------------------------------------------------------------------------
 Version: 3.11.14
 Date: 2026-01-27
   Compatibility:
