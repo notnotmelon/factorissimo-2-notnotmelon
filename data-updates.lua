@@ -3,6 +3,7 @@ require "prototypes.ceiling"
 require "prototypes.factory-pumps"
 require "prototypes.quality-tooltips"
 require "script.roboport.utility-constants"
+require "compat.pyanodon"
 
 local F = "__factorissimo-2-notnotmelon__"
 
