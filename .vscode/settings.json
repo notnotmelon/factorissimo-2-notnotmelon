@@ -24,14 +24,15 @@
         "lowercase-global"
     ],
     "Lua.runtime.version": "Lua 5.2",
-    "factorio.versions": [
-        {
-            "name": "Steam",
-            "factorioPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Factorio\\bin\\x64\\factorio.exe"
-        }
-    ],
-    "Lua.workspace.userThirdParty": [
-        "c:\\Users\\aaron\\AppData\\Roaming\\Code\\User\\workspaceStorage\\2c0db3f7f6703ee2242e9402900b5888\\justarandomgeek.factoriomod-debug\\sumneko-3rd"
-    ],
-    "Lua.workspace.checkThirdParty": "ApplyInMemory"
+    "Lua.format.defaultConfig": {
+        "call_arg_parentheses": "remove_table_only",
+        "max_line_length": "999999",
+        "space_around_table_field_list": "false",
+        "indent_style": "space",
+        "indent_size": "4",
+        "space_around_table_append_operator": "false",
+        "space_inside_square_brackets": "false",
+        "quote_style": "double"
+    },
+    "editor.formatOnSave": true
 }
