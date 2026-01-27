@@ -1,5 +1,6 @@
 -- if you don't have space age, this thing would just produce water
 if not mods["space-age"] then return end
+if mods["space-is-fake"] then return end
 
 -- py basically already has this feature
 if mods.pypetroleumhandling then return end

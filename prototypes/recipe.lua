@@ -119,7 +119,7 @@ if settings.startup["Factorissimo2-space-architecture"].value then
         data.raw.recipe["space-factory-1"].category = "space-manufacturing"
         data.raw.recipe["space-factory-2"].category = "space-manufacturing"
         data.raw.recipe["space-factory-3"].category = "space-manufacturing"
-    elseif mods["space-age"] then
+    elseif mods["space-age"] and not mods["space-is-fake"] then
         data.raw.recipe["space-factory-1"].ingredients = {
             {type = "item", name = "factory-1",                 amount = 1},
             {type = "item", name = "low-density-structure",     amount = 500},

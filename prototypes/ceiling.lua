@@ -25,6 +25,7 @@ for _, prototype in pairs(banned_from_being_placed_indoors) do
 end
 
 if not mods["space-age"] then return end
+if mods["space-is-fake"] then return end
 
 for _, entity in pairs(data.raw["solar-panel"]) do
     entity.surface_conditions = entity.surface_conditions or {}

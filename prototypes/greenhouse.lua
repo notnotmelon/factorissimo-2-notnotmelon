@@ -1,4 +1,5 @@
 if not mods["space-age"] then return end
+if mods["space-is-fake"] then return end
 
 local F = "__factorissimo-2-notnotmelon__"
 local pf = "p-q-"

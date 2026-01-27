@@ -2,6 +2,7 @@
 -- t3 factory buildings are unlocked on vulcanus now!
 
 if not mods["space-age"] then return end
+if mods["space-is-fake"] then return end
 if settings.startup["Factorissimo2-cheap-research"].value then return end
 
 data.raw.technology["factory-architecture-t2"].unit = {

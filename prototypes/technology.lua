@@ -100,7 +100,7 @@ if (mods["space-exploration"] or mods["space-age"]) and settings.startup["Factor
         prerequisites[#prerequisites + 1] = "se-aeroframe-pole"
         prerequisites[#prerequisites + 1] = "se-space-solar-panel"
         prerequisites[#prerequisites + 1] = "se-space-platform-scaffold"
-    elseif mods["space-age"] then
+    elseif mods["space-age"] and not mods["space-is-fake"] then
         unit = {
             count = 5000,
             ingredients = {
