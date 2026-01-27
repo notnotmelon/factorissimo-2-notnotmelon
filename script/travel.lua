@@ -26,7 +26,10 @@ local function purgatory_surface()
     return surface
 end
 
-local function teleport_safely(e, surface, position, player, leaving)
+local function teleport_safely(e, surface, position, player)
+    if not e.valid then return end
+    if not player.valid then return end
+
     position = {x = position.x or position[1], y = position.y or position[2]}
 
     if e.is_player() and not e.character then -- god controller
@@ -46,11 +49,11 @@ local function teleport_safely(e, surface, position, player, leaving)
 end
 
 local function enter_factory(e, factory, player)
-    teleport_safely(e, factory.inside_surface, {factory.inside_door_x, factory.inside_door_y}, player, false)
+    teleport_safely(e, factory.inside_surface, {factory.inside_door_x, factory.inside_door_y}, player)
 end
 
 local function leave_factory(e, factory, player)
-    teleport_safely(e, factory.outside_surface, {factory.outside_door_x, factory.outside_door_y}, player, true)
+    teleport_safely(e, factory.outside_surface, {factory.outside_door_x, factory.outside_door_y}, player)
 end
 
 -- https://mods.factorio.com/mod/jetpack
