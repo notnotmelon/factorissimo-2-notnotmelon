@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.11.12
+Date: 2026-01-27
+  Bugfixes:
+    - Resolved crash with maraxsis. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/267
+---------------------------------------------------------------------------------------------------
 Version: 3.11.11
 Date: 2026-01-19
   Bugfixes:
