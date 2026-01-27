@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.11.16
+Date: 2026-01-27
+  Compatibility:
+    - Added compatibility with "space-is-fake". Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/265
+---------------------------------------------------------------------------------------------------
 Version: 3.11.15
 Date: 2026-01-27
   Bugfixes:
