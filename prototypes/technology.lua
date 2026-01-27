@@ -86,13 +86,13 @@ if (mods["space-exploration"] or mods["space-age"]) and settings.startup["Factor
         unit = {
             count = 3000,
             ingredients = {
-                {"automation-science-pack", 1},
-                {"logistic-science-pack", 1},
-                {"chemical-science-pack", 1},
-                {"se-rocket-science-pack", 1},
-                {"space-science-pack", 1},
-                {"production-science-pack", 1},
-                {"utility-science-pack", 1},
+                {"automation-science-pack",      1},
+                {"logistic-science-pack",        1},
+                {"chemical-science-pack",        1},
+                {"se-rocket-science-pack",       1},
+                {"space-science-pack",           1},
+                {"production-science-pack",      1},
+                {"utility-science-pack",         1},
                 {"se-astronomic-science-pack-1", 1},
             },
             time = 60
@@ -104,17 +104,17 @@ if (mods["space-exploration"] or mods["space-age"]) and settings.startup["Factor
         unit = {
             count = 5000,
             ingredients = {
-                {"automation-science-pack", 1},
-                {"logistic-science-pack", 1},
-                {"chemical-science-pack", 1},
-                {"production-science-pack", 1},
-                {"utility-science-pack", 1},
-                {"space-science-pack", 1},
-                {"metallurgic-science-pack", 1},
+                {"automation-science-pack",      1},
+                {"logistic-science-pack",        1},
+                {"chemical-science-pack",        1},
+                {"production-science-pack",      1},
+                {"utility-science-pack",         1},
+                {"space-science-pack",           1},
+                {"metallurgic-science-pack",     1},
                 {"electromagnetic-science-pack", 1},
-                {"agricultural-science-pack", 1},
-                {"cryogenic-science-pack", 1},
-                {"promethium-science-pack", 1},
+                {"agricultural-science-pack",    1},
+                {"cryogenic-science-pack",       1},
+                {"promethium-science-pack",      1},
             },
             time = 120
         }
@@ -160,7 +160,10 @@ data:extend {{
     icon = F .. "/graphics/technology/factory-connection-type-fluid.png",
     icon_size = 256,
     prerequisites = {"factory-architecture-t1"}, -- 'fluid-handling'
-    effects = {},
+    effects = {{
+        type = "nothing",
+        effect_description = ""
+    }},
     unit = {
         count = 100,
         ingredients = {{"automation-science-pack", 1}},
@@ -174,7 +177,10 @@ data:extend {{
     icon = F .. "/graphics/technology/factory-connection-type-chest.png",
     icon_size = 256,
     prerequisites = {"factory-architecture-t2", "logistics-2"},
-    effects = {},
+    effects = {{
+        type = "nothing",
+        effect_description = ""
+    }},
     unit = {
         count = 200,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}},
@@ -202,7 +208,10 @@ data:extend {{
     icon = F .. "/graphics/technology/factory-connection-type-heat.png",
     icon_size = 256,
     prerequisites = {"factory-architecture-t2"},
-    effects = {},
+    effects = {{
+        type = "nothing",
+        effect_description = ""
+    }},
     unit = {
         count = 600,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}},
@@ -219,7 +228,10 @@ data:extend {{
     icon = F .. "/graphics/technology/factory-interior-upgrade-lights.png",
     icon_size = 256,
     prerequisites = {"factory-architecture-t1", "lamp"},
-    effects = {},
+    effects = {{
+        type = "nothing",
+        effect_description = ""
+    }},
     unit = {
         count = 50,
         ingredients = {{"automation-science-pack", 1}},
@@ -233,7 +245,10 @@ data:extend {{
     icon = F .. "/graphics/technology/factory-interior-upgrade-display.png",
     icon_size = 256,
     prerequisites = {"factory-architecture-t2", "lamp"},
-    effects = {},
+    effects = {{
+        type = "nothing",
+        effect_description = ""
+    }},
     unit = {
         count = 100,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}},
@@ -247,7 +262,10 @@ data:extend {{
     icon = F .. "/graphics/technology/factory-interior-upgrade-roboport.png",
     icon_size = 256,
     prerequisites = {"factory-architecture-t2", "construction-robotics"},
-    effects = {},
+    effects = {{
+        type = "nothing",
+        effect_description = ""
+    }},
     unit = {
         count = 1000,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}, {"chemical-science-pack", 1}},
@@ -262,7 +280,10 @@ data:extend {{
     icon = F .. "/graphics/technology/factory-recursion-1.png",
     icon_size = 256,
     prerequisites = {"factory-architecture-t2", "logistics-2"},
-    effects = {},
+    effects = {{
+        type = "nothing",
+        effect_description = ""
+    }},
     unit = {
         count = 2000,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}},
@@ -276,7 +297,10 @@ data:extend {{
     icon = F .. "/graphics/technology/factory-recursion-2.png",
     icon_size = 256,
     prerequisites = {"factory-recursion-t1", "factory-architecture-t3"},
-    effects = {},
+    effects = {{
+        type = "nothing",
+        effect_description = ""
+    }},
     unit = {
         count = 5000,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}, {"chemical-science-pack", 1}, {"production-science-pack", 1}},
