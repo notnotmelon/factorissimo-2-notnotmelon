@@ -75,6 +75,10 @@ local function is_legacy_factory_floor(surface_name)
     return surface_name:match("^%d+%-factory%-floor$") ~= nil
 end
 
+local function is_warptorio_factory_floor(surface_name)
+    return string.sub(surface_name, 1, 9) == "warpzone_"
+end
+
 local function set_factory_active_or_inactive(factory)
     local building = factory.building
     if not building or not building.valid then
@@ -90,7 +94,7 @@ local function set_factory_active_or_inactive(factory)
         -- https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/268
         local surface_name = surface_name:gsub("%-factory%-floor%-factory%-floor", "-factory-floor")
         if factory.inside_surface.valid and surface_name ~= which_surface_should_this_new_factory_be_placed_on(factory.layout, building) then
-            if not is_legacy_factory_floor(surface_name) then
+            if not is_legacy_factory_floor(surface_name) and not is_warptorio_factory_floor(surface_name) then
                 flying_text = {"factory-connection-text.invalid-placement-surface", surface_localised_name(factory.inside_surface), surface_localised_name(surface)}
                 return false, flying_text, true
             end
@@ -829,7 +833,7 @@ local function try_randomly_tag_an_itemized_factory_from_space_platform_hub(enti
             if stack.type == "item-with-tags" and stack.tags and stack.tags.id then
                 local factory = storage.saved_factories[stack.tags.id]
                 if factory and factory.inside_surface.name == "space-factory-floor" then
-                    random_indicies[#random_indicies+1] = i
+                    random_indicies[#random_indicies + 1] = i
                 end
             end
         end
@@ -845,7 +849,7 @@ local function try_randomly_tag_an_itemized_factory_from_space_platform_hub(enti
         local certainty = string.format("%.2f", 100 / #random_indicies)
         local gps_1 = entity_ghost.gps_tag
         local gps_2 = string.format("[gps=%s,%s,%s]", factory.inside_x, factory.inside_y, factory.inside_surface.name)
-        game.print{"command-help-message.could-not-determine-with-certainty", gps_1, gps_2, certainty}
+        game.print {"command-help-message.could-not-determine-with-certainty", gps_1, gps_2, certainty}
     end
 end
 
