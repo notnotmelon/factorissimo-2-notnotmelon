@@ -75,8 +75,8 @@ local function is_legacy_factory_floor(surface_name)
     return surface_name:match("^%d+%-factory%-floor$") ~= nil
 end
 
-local function is_warptorio_factory_floor(surface_name)
-    return string.sub(surface_name, 1, 9) == "warpzone_"
+local function can_skip_factory_surface_check()
+    return script.active_mods["warptorio-space-age"] or script.active_mods["Warp-Drive-Machine"] or script.active_mods["warptorio2"]
 end
 
 local function set_factory_active_or_inactive(factory)
@@ -89,14 +89,16 @@ local function set_factory_active_or_inactive(factory)
     local position = building.position
 
     local function can_place_factory_here()
-        -- Check if a player is trying to cheat by moving factories between surfaces.
-        local surface_name = factory.inside_surface.name
-        -- https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/268
-        local surface_name = surface_name:gsub("%-factory%-floor%-factory%-floor", "-factory-floor")
-        if factory.inside_surface.valid and surface_name ~= which_surface_should_this_new_factory_be_placed_on(factory.layout, building) then
-            if not is_legacy_factory_floor(surface_name) and not is_warptorio_factory_floor(surface_name) then
-                flying_text = {"factory-connection-text.invalid-placement-surface", surface_localised_name(factory.inside_surface), surface_localised_name(surface)}
-                return false, flying_text, true
+        if not can_skip_factory_surface_check() then
+            -- Check if a player is trying to cheat by moving factories between surfaces.
+            local surface_name = factory.inside_surface.name
+            -- https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/268
+            local surface_name = surface_name:gsub("%-factory%-floor%-factory%-floor", "-factory-floor")
+            if factory.inside_surface.valid and surface_name ~= which_surface_should_this_new_factory_be_placed_on(factory.layout, building) then
+                if not is_legacy_factory_floor(surface_name) then
+                    flying_text = {"factory-connection-text.invalid-placement-surface", surface_localised_name(factory.inside_surface), surface_localised_name(surface)}
+                    return false, flying_text, true
+                end
             end
         end
 
