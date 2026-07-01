@@ -75,7 +75,7 @@ if data.raw["assembling-machine"]["borehole-pump"] then
             energy_required = 4,
             allow_productivity = true,
             hide_from_player_crafting = true,
-            category = "borehole-pump",
+            categories = {"borehole-pump"},
             subgroup = "borehole-pump",
             results = {
                 {type = "fluid", name = fluid_name, amount = 600}
@@ -111,7 +111,3 @@ if data.raw["assembling-machine"]["borehole-pump"] then
     add_surface_conditions_to_borehole_recipe("borehole-pump-lava", data.raw.recipe["metallurgic-science-pack"])
     add_surface_conditions_to_borehole_recipe("borehole-pump-water", (data.raw["agricultural-tower"] or {})["agricultural-tower"])
 end
-
-data.raw.recipe["factory-1-instantiated-recycling"] = nil
-data.raw.recipe["factory-2-instantiated-recycling"] = nil
-data.raw.recipe["factory-3-instantiated-recycling"] = nil

@@ -55,6 +55,7 @@ data:extend {
     },
     {
         type = "item-with-tags",
+        auto_recycle = false,
         name = "factory-1-instantiated",
         localised_name = {"item-name.factory-packed", {"entity-name.factory-1"}},
         icons = {
@@ -136,6 +137,7 @@ data:extend {
     },
     {
         type = "item-with-tags",
+        auto_recycle = false,
         name = "factory-2-instantiated",
         localised_name = {"item-name.factory-packed", {"entity-name.factory-2"}},
         icons = {
@@ -217,6 +219,7 @@ data:extend {
     },
     {
         type = "item-with-tags",
+        auto_recycle = false,
         name = "factory-3-instantiated",
         localised_name = {"item-name.factory-packed", {"entity-name.factory-3"}},
         icons = {
@@ -301,6 +304,7 @@ data:extend {
     },
     {
         type = "item-with-tags",
+        auto_recycle = false,
         name = "space-factory-1-instantiated",
         localised_name = {"item-name.factory-packed", {"entity-name.space-factory-1"}},
         icons = {
@@ -382,6 +386,7 @@ data:extend {
     },
     {
         type = "item-with-tags",
+        auto_recycle = false,
         name = "space-factory-2-instantiated",
         localised_name = {"item-name.factory-packed", {"entity-name.space-factory-2"}},
         icons = {
@@ -463,6 +468,7 @@ data:extend {
     },
     {
         type = "item-with-tags",
+        auto_recycle = false,
         name = "space-factory-3-instantiated",
         localised_name = {"item-name.factory-packed", {"entity-name.space-factory-3"}},
         icons = {

@@ -66,7 +66,7 @@ function EntitySwap.swap_structure(entity, prototype_name)
         entity.crafting_progress = 0
     end
     clone.operable = entity.operable
-    clone.active = entity.active
+    clone.disabled_by_script = entity.disabled_by_script
     clone.destructible = entity.destructible
     clone.rotatable = entity.rotatable
     local inventories = {}

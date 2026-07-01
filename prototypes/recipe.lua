@@ -13,7 +13,7 @@ data:extend {
         results = {{type = "item", name = "factory-1", amount = 1}},
         main_product = "factory-1",
         localised_name = {"entity-name.factory-1"},
-        category = data.raw["recipe-category"]["metallurgy-or-assembling"] and "metallurgy-or-assembling" or nil
+        categories = data.raw["recipe-category"]["metallurgy"] and {"metallurgy", "crafting"} or nil
     },
     {
         type = "recipe",
@@ -28,7 +28,7 @@ data:extend {
         results = {{type = "item", name = "factory-2", amount = 1}},
         main_product = "factory-2",
         localised_name = {"entity-name.factory-2"},
-        category = data.raw["recipe-category"]["metallurgy-or-assembling"] and "metallurgy-or-assembling" or nil
+        categories = data.raw["recipe-category"]["metallurgy"] and {"metallurgy", "crafting"} or nil
     },
     {
         type = "recipe",
@@ -43,7 +43,7 @@ data:extend {
         results = {{type = "item", name = "factory-3", amount = 1}},
         main_product = "factory-3",
         localised_name = {"entity-name.factory-3"},
-        category = data.raw["recipe-category"]["metallurgy-or-assembling"] and "metallurgy-or-assembling" or nil
+        categories = data.raw["recipe-category"]["metallurgy"] and {"metallurgy", "crafting"} or nil
     },
     -- Utilities
     {
@@ -58,11 +58,6 @@ data:extend {
         results = {{type = "item", name = "factory-circuit-connector", amount = 1}},
     }
 }
-
--- small vanilla change to allow factories to be crafted at the start of the game
-if data.raw["recipe-category"]["metallurgy-or-assembling"] then
-    table.insert(data.raw["assembling-machine"]["assembling-machine-1"].crafting_categories or {}, "metallurgy-or-assembling")
-end
 
 if settings.startup["Factorissimo2-space-architecture"].value then
     data:extend {{
@@ -116,9 +111,9 @@ if settings.startup["Factorissimo2-space-architecture"].value then
             {type = "item", name = "se-pylon-construction",              amount = 50},
             {type = "item", name = "se-deep-space-transport-belt-black", amount = 10},
         }
-        data.raw.recipe["space-factory-1"].category = "space-manufacturing"
-        data.raw.recipe["space-factory-2"].category = "space-manufacturing"
-        data.raw.recipe["space-factory-3"].category = "space-manufacturing"
+        data.raw.recipe["space-factory-1"].categories = {"space-manufacturing"}
+        data.raw.recipe["space-factory-2"].categories = {"space-manufacturing"}
+        data.raw.recipe["space-factory-3"].categories = {"space-manufacturing"}
     elseif mods["space-age"] and not mods["space-is-fake"] then
         data.raw.recipe["space-factory-1"].ingredients = {
             {type = "item", name = "factory-1",                 amount = 1},
@@ -138,8 +133,8 @@ if settings.startup["Factorissimo2-space-architecture"].value then
             {type = "item", name = "solar-panel",               amount = 50},
             {type = "item", name = "space-platform-foundation", amount = 900},
         }
-        data.raw.recipe["space-factory-1"].category = "metallurgy"
-        data.raw.recipe["space-factory-2"].category = "metallurgy"
-        data.raw.recipe["space-factory-3"].category = "metallurgy"
+        data.raw.recipe["space-factory-1"].categories = {"metallurgy"}
+        data.raw.recipe["space-factory-2"].categories = {"metallurgy"}
+        data.raw.recipe["space-factory-3"].categories = {"metallurgy"}
     end
 end

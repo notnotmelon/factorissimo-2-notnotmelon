@@ -43,7 +43,7 @@ local function create_linked_connections(factory, cpos, settings)
     outside_connector.operable = false
     outside_connector.rotatable = false
 
-    inside_connector.fluidbox.add_linked_connection(0, outside_connector, 0)
+    inside_connector.add_fluid_box_linked_connection(0, outside_connector, 0)
 
     return inside_connector, outside_connector
 end
