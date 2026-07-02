@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.12.2
+Date: 2026-07-02
+  Bugfixes:
+    - fixed crash when rotating an underground belt. resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/282
+---------------------------------------------------------------------------------------------------
 Version: 3.12.1
 Date: 2026-07-01
   Bugfixes:
