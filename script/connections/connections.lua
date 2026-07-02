@@ -399,7 +399,7 @@ factorissimo.on_event(defines.events.on_player_rotated_entity, function(event)
     elseif is_connectable(entity) then
         recheck_nearby_connections(entity)
         if entity.valid and entity.type == "underground-belt" then
-            local neighbour = entity.neighbours
+            local neighbour = entity.underground_belt_neighbour
             if neighbour then
                 recheck_nearby_connections(neighbour)
             end
