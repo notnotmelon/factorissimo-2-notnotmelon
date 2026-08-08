@@ -108,12 +108,25 @@ local function update_surface_render_parameters(planet, factory_floor)
     end
 end
 
+local function music_matches_planet(music, planet_name)
+    if music.planets then
+        for _, name in pairs(music.planets) do
+            if name == planet_name then return true end
+        end
+    end
+    -- `AmbientSound::planet` was replaced by `planets` in Factorio 2.1.7 and became a hard
+    -- error in 2.1.13. Keep checking it for mods/base versions that still emit the old field.
+    if music.planet == planet_name then return true end
+    return music.track_type == "hero-track" and music.name:find(planet_name)
+end
+
 local function add_music(planet, factory_floor)
     for _, music in pairs(data.raw["ambient-sound"]) do
-        if music.planet == planet.name or (music.track_type == "hero-track" and music.name:find(planet.name)) then
+        if music_matches_planet(music, planet.name) then
             local new_music = table.deepcopy(music)
             new_music.name = music.name .. "-" .. factory_floor.name
-            new_music.planet = factory_floor.name
+            new_music.planet = nil
+            new_music.planets = {factory_floor.name}
             if new_music.track_type == "hero-track" then
                 new_music.track_type = "main-track"
                 new_music.weight = 10
