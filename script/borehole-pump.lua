@@ -31,7 +31,7 @@ local BOREHOLE_PUMP_FIXED_RECIPES = {
     ["ringworld"] = NO_FLUID_ON_THIS_SURFACE,
     ["shipyard"] = "gray-goo",
     ["neo-nauvis"] = "water",
-    ["electria"] = "water"
+    ["electria"] = "water",
 }
 local BOREHOLE_PUMP_SMOKE_OFFSETS = {
     [defines.direction.north] = {-1.2, -2.1},
@@ -56,7 +56,7 @@ local function update_borehole_smokestacks()
             smokestack_data.smokestack = borehole.surface.create_entity {
                 name = "borehole-pump-smokestack",
                 position = get_borehole_smoke_position(borehole),
-                force = borehole.force_index
+                force = borehole.force_index,
             }
         end
     end
@@ -86,7 +86,7 @@ factorissimo.on_event(factorissimo.events.on_built(), function(event)
     local smokestack = surface.create_entity {
         name = "borehole-pump-smokestack",
         position = get_borehole_smoke_position(borehole),
-        force = borehole.force_index
+        force = borehole.force_index,
     }
     smokestack.destroy() -- Instantly destroy the first smokestack. This handles the case when the borehole is initally unpowered.
 

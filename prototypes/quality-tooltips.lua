@@ -27,7 +27,7 @@ local function add_quality_factoriopedia_info(entity, factoriopedia_info)
                 name = {"description." .. stat_to_buff},
                 quality_header = "quality-tooltip." .. stat_to_buff,
                 value = tostring(factoriopedia_function(entity, 0)),
-                quality_values = quality_values
+                quality_values = quality_values,
             }
         )
     end
@@ -52,7 +52,7 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-1"], {
         end
         return connection_count
     end},
-    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
+    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end},
 })
 
 add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-2"], {
@@ -74,7 +74,7 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-2"], {
         end
         return connection_count
     end},
-    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
+    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end},
 })
 
 add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-3"], {
@@ -96,7 +96,7 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["factory-3"], {
         end
         return connection_count
     end},
-    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
+    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end},
 })
 
 if not settings.startup["Factorissimo2-space-architecture"].value then return end
@@ -120,7 +120,7 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["space-factory-1"], {
         end
         return connection_count
     end},
-    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
+    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end},
 })
 
 add_quality_factoriopedia_info(data.raw["storage-tank"]["space-factory-2"], {
@@ -142,7 +142,7 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["space-factory-2"], {
         end
         return connection_count
     end},
-    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
+    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end},
 })
 
 add_quality_factoriopedia_info(data.raw["storage-tank"]["space-factory-3"], {
@@ -164,5 +164,5 @@ add_quality_factoriopedia_info(data.raw["storage-tank"]["space-factory-3"], {
         end
         return connection_count
     end},
-    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end}
+    {"fluid-transfer-speed", function(entity, quality_level) return tostring(FACTORY_PUMPING_SPEED * get_quality_buff(quality_level)) .. "/s" end},
 })

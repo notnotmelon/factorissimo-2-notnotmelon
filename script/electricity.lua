@@ -25,7 +25,7 @@ local function draw_planet_icon_on_inside_power_pole(factory)
         sprite = sprite_path,
         surface = factory.inside_surface,
         target = {
-            entity = factory._inside_power_pole
+            entity = factory._inside_power_pole,
         },
         only_in_alt_mode = true,
         render_layer = "entity-info-icon",
@@ -55,7 +55,7 @@ local function get_or_create_inside_power_pole(factory)
         name = "factory-power-pole",
         position = {factory.inside_x + layout.inside_energy_x, factory.inside_y + layout.inside_energy_y},
         force = factory.force,
-        quality = factory.quality
+        quality = factory.quality,
     }
     power_pole.destructible = false
     factory._inside_power_pole = power_pole
@@ -215,8 +215,8 @@ function factorissimo.cleanup_outside_energy_receiver(factory)
         surface = factory.inside_surface,
         area = {
             {factory.inside_x - 128, factory.inside_y - 128},
-            {factory.inside_x + 128, factory.inside_y + 128}
-        }
+            {factory.inside_x + 128, factory.inside_y + 128},
+        },
     }
 
     for _, child in pairs(recursive_children) do

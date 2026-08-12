@@ -1,7 +1,7 @@
 local utility_constants = {
-    small_area_size = 1.5, -- less than this plays the 'small' sound variants
+    small_area_size = 1.5,  -- less than this plays the 'small' sound variants
     medium_area_size = 6.5, -- less than this plays the 'medium' sound variants
-    large_area_size = 15, -- less than this plays the 'large' sound variants, otherwise plays the 'huge' sound variants.
+    large_area_size = 15,   -- less than this plays the 'large' sound variants, otherwise plays the 'huge' sound variants.
 }
 
 -- if data stage

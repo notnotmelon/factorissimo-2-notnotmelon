@@ -1,4 +1,4 @@
-local F = "__factorissimo-2-notnotmelon__";
+local F = "__factorissimo-2-notnotmelon__"
 
 require("circuit-connector-sprites")
 
@@ -51,7 +51,7 @@ data:extend {{
     stack_size = 1,
     hidden = true,
     hidden_in_factoriopedia = true,
-    flags = {"not-stackable", "only-in-cursor"}
+    flags = {"not-stackable", "only-in-cursor"},
 }}
 
 local function create_indicator(ctype, suffix, image)
@@ -81,12 +81,12 @@ local function create_indicator(ctype, suffix, image)
                     frames = 4,
                     width = 64,
                     height = 64,
-                    scale = 0.5
+                    scale = 0.5,
                 },
             },
         },
         flow_length_in_ticks      = 100,
-        circuit_wire_max_distance = 0
+        circuit_wire_max_distance = 0,
     }}
 end
 
@@ -125,7 +125,7 @@ data:extend {{
     hidden = true,
     collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
     selection_box = {{-0.5, -0.5}, {0.5, 0.5}},
-    placeable_by = {item = "simple-entity-with-force", count = 1}
+    placeable_by = {item = "simple-entity-with-force", count = 1},
 }}
 
 local j = 0.99
@@ -179,7 +179,7 @@ data:extend {{
     hidden = true,
     hidden_in_factoriopedia = true,
     flags = {"not-stackable", "only-in-cursor"},
-    place_result = "factory-overlay-controller"
+    place_result = "factory-overlay-controller",
 }}
 
 local overlay_controller = table.deepcopy(data.raw["constant-combinator"]["constant-combinator"])
@@ -230,7 +230,7 @@ data:extend {
             default_temperature = 0,
             min_working_temperature = 0,
             min_temperature_gradient = 0,
-            connections = table.deepcopy(data.raw["heat-pipe"]["heat-pipe"].heat_buffer.connections)
-        }
-    }
+            connections = table.deepcopy(data.raw["heat-pipe"]["heat-pipe"].heat_buffer.connections),
+        },
+    },
 }

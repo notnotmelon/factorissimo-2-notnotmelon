@@ -45,17 +45,17 @@ data:extend {{
                 scale = 0.51,
                 draw_as_shadow = true,
             },
-        }
+        },
     },
     connection_points = {{
         shadow = {
             red = {0.75, 0.5625},
-            green = {0.21875, 0.5625}
+            green = {0.21875, 0.5625},
         },
         wire = {
             red = {0.28125, 0.15625},
-            green = {-0.21875, 0.15625}
-        }
+            green = {-0.21875, 0.15625},
+        },
     }},
     maximum_wire_distance = 14,
 }}

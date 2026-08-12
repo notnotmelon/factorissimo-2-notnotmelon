@@ -8,7 +8,7 @@ defines.opposite_direction = {
     [defines.direction.south] = defines.direction.north,
     [defines.direction.southwest] = defines.direction.northeast,
     [defines.direction.west] = defines.direction.east,
-    [defines.direction.northwest] = defines.direction.southeast
+    [defines.direction.northwest] = defines.direction.southeast,
 }
 
 defines.color = {
@@ -158,5 +158,5 @@ defines.color = {
     white = {r = 1.0000, g = 1.0000, b = 1.0000, a = 1},
     whitesmoke = {r = 0.9608, g = 0.9608, b = 0.9608, a = 1},
     yellow = {r = 1.0000, g = 1.0000, b = 0.0000, a = 1},
-    yellowgreen = {r = 0.6039, g = 0.8039, b = 0.1961, a = 1}
+    yellowgreen = {r = 0.6039, g = 0.8039, b = 0.1961, a = 1},
 }

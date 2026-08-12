@@ -3,7 +3,7 @@ data:extend {{
     type = "surface-property",
     default_value = 1,
     is_time = true,
-    hidden = true
+    hidden = true,
 }}
 
 if not feature_flags.space_travel then return end

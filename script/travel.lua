@@ -141,9 +141,9 @@ local function check_position_and_enter_factory(player, is_airborne)
         surface = player.physical_surface,
         area = (not is_airborne) and {
             {physical_position.x - 0.2, physical_position.y - 0.3},
-            {physical_position.x + 0.2, physical_position.y}
+            {physical_position.x + 0.2, physical_position.y},
         } or nil,
-        position = is_airborne and player.physical_position or nil
+        position = is_airborne and player.physical_position or nil,
     }
 
     if not factory or factory.inactive then return end

@@ -8,12 +8,12 @@ data:extend {
         ingredients = {
             {type = "item", name = "stone",        amount = 500},
             {type = "item", name = "iron-plate",   amount = 500},
-            {type = "item", name = "copper-plate", amount = 200}
+            {type = "item", name = "copper-plate", amount = 200},
         },
         results = {{type = "item", name = "factory-1", amount = 1}},
         main_product = "factory-1",
         localised_name = {"entity-name.factory-1"},
-        categories = data.raw["recipe-category"]["metallurgy"] and {"metallurgy", "crafting"} or nil
+        categories = data.raw["recipe-category"]["metallurgy"] and {"metallurgy", "crafting"} or nil,
     },
     {
         type = "recipe",
@@ -23,12 +23,12 @@ data:extend {
         ingredients = {
             {type = "item", name = "stone-brick",       amount = 1000},
             {type = "item", name = "steel-plate",       amount = 250},
-            {type = "item", name = "big-electric-pole", amount = 50}
+            {type = "item", name = "big-electric-pole", amount = 50},
         },
         results = {{type = "item", name = "factory-2", amount = 1}},
         main_product = "factory-2",
         localised_name = {"entity-name.factory-2"},
-        categories = data.raw["recipe-category"]["metallurgy"] and {"metallurgy", "crafting"} or nil
+        categories = data.raw["recipe-category"]["metallurgy"] and {"metallurgy", "crafting"} or nil,
     },
     {
         type = "recipe",
@@ -38,12 +38,12 @@ data:extend {
         ingredients = {
             {type = "item", name = "concrete",    amount = 5000},
             {type = "item", name = "steel-plate", amount = 2000},
-            {type = "item", name = "substation",  amount = 100}
+            {type = "item", name = "substation",  amount = 100},
         },
         results = {{type = "item", name = "factory-3", amount = 1}},
         main_product = "factory-3",
         localised_name = {"entity-name.factory-3"},
-        categories = data.raw["recipe-category"]["metallurgy"] and {"metallurgy", "crafting"} or nil
+        categories = data.raw["recipe-category"]["metallurgy"] and {"metallurgy", "crafting"} or nil,
     },
     -- Utilities
     {
@@ -53,10 +53,10 @@ data:extend {
         energy_required = 1,
         ingredients = {
             {type = "item", name = "electronic-circuit", amount = 2},
-            {type = "item", name = "copper-cable",       amount = 5}
+            {type = "item", name = "copper-cable",       amount = 5},
         },
         results = {{type = "item", name = "factory-circuit-connector", amount = 1}},
-    }
+    },
 }
 
 if settings.startup["Factorissimo2-space-architecture"].value then

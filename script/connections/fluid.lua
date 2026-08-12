@@ -51,7 +51,7 @@ Fluid.connect = function(factory, cid, cpos, outside_entity, inside_entity, sett
         outside = outside_entity,
         inside_connector = inside_connector,
         outside_connector = outside_connector,
-        do_tick_update = false
+        do_tick_update = false,
     }
 end
 

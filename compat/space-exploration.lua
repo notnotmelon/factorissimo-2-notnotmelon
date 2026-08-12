@@ -30,7 +30,7 @@ function move_inventory_items(inv_a, inv_b)
                             stack = inv_a[i],
                             enable_looted = true,
                             force = entity.force,
-                            allow_belts = false
+                            allow_belts = false,
                         }
                     end
                 end
@@ -78,7 +78,7 @@ function EntitySwap.swap_structure(entity, prototype_name)
         defines.inventory.furnace_modules,
         defines.inventory.assembling_machine_input,
         defines.inventory.assembling_machine_output,
-        defines.inventory.assembling_machine_modules
+        defines.inventory.assembling_machine_modules,
     } do
         inventories[inv_type] = inv_type -- no duplicate indexes
     end
@@ -108,7 +108,7 @@ function EntitySwap.swap_structure(entity, prototype_name)
             target = clone,
             --modules = util.deep_copy(proxy.item_requests)
             modules = util.deep_copy(proxy.insert_plan),
-            removal_plan = util.deep_copy(proxy.removal_plan)
+            removal_plan = util.deep_copy(proxy.removal_plan),
         }
     end
     entity.destroy()
@@ -128,7 +128,7 @@ local banned_entities = table.invert {
     "fluid-wagon",
     "artillery-wagon",
     "car",
-    "spider-vehicle"
+    "spider-vehicle",
 }
 
 factorissimo.on_event(factorissimo.events.on_built(), function(event)

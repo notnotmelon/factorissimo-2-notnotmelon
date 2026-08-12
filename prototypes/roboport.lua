@@ -82,8 +82,8 @@ hidden_construction_robot.created_effect = {
                 type = "script",
                 effect_id = "factory-hidden-construction-robot-created",
             },
-        }
-    }
+        },
+    },
 }
 hidden_construction_robot.speed = 0.5
 hidden_construction_robot.energy_per_move = nil
@@ -214,7 +214,7 @@ data:extend {{
     hidden = true,
     hidden_in_factoriopedia = true,
     flags = {"not-stackable", "only-in-cursor"},
-    place_result = "factory-construction-roboport"
+    place_result = "factory-construction-roboport",
 }}
 
 -- This is required to allow the construction chest to exist in blueprints.
@@ -227,5 +227,5 @@ data:extend {{
     hidden = true,
     hidden_in_factoriopedia = true,
     flags = {"not-stackable", "only-in-cursor"},
-    place_result = "factory-construction-chest"
+    place_result = "factory-construction-chest",
 }}

@@ -45,7 +45,7 @@ data:extend {{
     collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
     collision_mask = {layers = {}},
     quality_indicator_scale = 0,
-    squeak_behaviour = false
+    squeak_behaviour = false,
 }}
 
 data:extend {{
@@ -76,7 +76,7 @@ data:extend {{
     collision_box = {{-0.5, -0.5}, {0.5, 0.5}},
     collision_mask = {layers = {}},
     quality_indicator_scale = 0,
-    squeak_behaviour = false
+    squeak_behaviour = false,
 }}
 
 local outside_input = table.deepcopy(data.raw["pump"]["factory-inside-pump-input"])

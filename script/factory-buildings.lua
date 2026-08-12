@@ -150,7 +150,7 @@ local DEFAULT_FACTORY_UPGRADES = {
     {"factorissimo", "build_lights_upgrade"},
     {"factorissimo", "build_greenhouse_upgrade"},
     {"factorissimo", "build_display_upgrade"},
-    {"factorissimo", "build_roboport_upgrade"}
+    {"factorissimo", "build_roboport_upgrade"},
 }
 
 local function build_factory_upgrades(factory)
@@ -589,7 +589,7 @@ end
 factorissimo.on_event({
     defines.events.on_player_mined_entity,
     defines.events.on_robot_mined_entity,
-    defines.events.on_space_platform_mined_entity
+    defines.events.on_space_platform_mined_entity,
 }, function(event)
     local entity = event.entity
     if not has_layout(entity.name) then return end
@@ -605,7 +605,7 @@ factorissimo.on_event({
             name = factory.layout.name,
             count = 1,
             quality = entity.quality,
-            health = entity.health / entity.max_health
+            health = entity.health / entity.max_health,
         }
         cleanup_factory_interior(factory)
         return
@@ -620,7 +620,7 @@ factorissimo.on_event({
         tags = {id = factory.id},
         custom_description = generate_factory_item_description(factory),
         quality = entity.quality,
-        health = entity.health / entity.max_health
+        health = entity.health / entity.max_health,
     }
     local item_stack = buffer[1]
     assert(item_stack.valid_for_read and item_stack.is_item_with_tags)
@@ -639,7 +639,7 @@ local function prevent_factory_mining(entity)
         force = entity.force,
         raise_built = false,
         create_build_effect_smoke = false,
-        player = entity.last_user
+        player = entity.last_user,
     }
     storage.factories_by_entity[entity.unit_number] = factory
     factory.building = entity
@@ -680,13 +680,13 @@ factorissimo.on_event(defines.events.on_entity_died, function(event)
             tags = {id = factory.id},
             quality = entity.quality.name,
             count = 1,
-            custom_description = generate_factory_item_description(factory)
+            custom_description = generate_factory_item_description(factory),
         },
         enable_looted = false,
         force = nil,
         allow_belts = false,
         max_radius = 0,
-        use_start_position_on_failure = true
+        use_start_position_on_failure = true,
     }
     assert(table_size(items) == 1, "Failed to generate factory item. Are you using the quantum-fabricator mod? See https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/203")
     local item = items[1].stack.item

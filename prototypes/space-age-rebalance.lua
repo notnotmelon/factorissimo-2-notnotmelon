@@ -12,7 +12,7 @@ data.raw.technology["factory-architecture-t2"].unit = {
         {"logistic-science-pack",   1},
         {"chemical-science-pack",   1},
     },
-    time = 45
+    time = 45,
 }
 data.raw.technology["factory-architecture-t2"].prerequisites = {
     "factory-architecture-t1",
@@ -30,7 +30,7 @@ data.raw.technology["factory-architecture-t3"].unit = {
         {"utility-science-pack",     1},
         {"metallurgic-science-pack", 1},
     },
-    time = 60
+    time = 60,
 }
 data.raw.technology["factory-architecture-t3"].prerequisites = {
     "metallurgic-science-pack",
@@ -51,7 +51,7 @@ data.raw.technology["factory-recursion-t2"].unit = {
         {"utility-science-pack",     1},
         {"metallurgic-science-pack", 1},
     },
-    time = 60
+    time = 60,
 }
 data.raw.technology["factory-recursion-t2"].prerequisites = {
     "factory-architecture-t3",
@@ -73,7 +73,7 @@ data.raw.technology["factory-connection-type-heat"].unit = {
         {"electromagnetic-science-pack", 1},
         {"cryogenic-science-pack",       1},
     },
-    time = 60
+    time = 60,
 }
 data.raw.technology["factory-connection-type-heat"].prerequisites = {
     "factory-architecture-t3",
@@ -87,11 +87,11 @@ data.raw.technology["factory-connection-type-chest"].unit = {
         {"logistic-science-pack",   1},
         {"chemical-science-pack",   1},
     },
-    time = 45
+    time = 45,
 }
 data.raw.technology["factory-connection-type-chest"].prerequisites = {
     "factory-architecture-t2",
-    "logistic-system"
+    "logistic-system",
 }
 
 data.raw.technology["factory-connection-type-circuit"].unit = {
@@ -100,11 +100,11 @@ data.raw.technology["factory-connection-type-circuit"].unit = {
         {"automation-science-pack", 1},
         {"logistic-science-pack",   1},
     },
-    time = 30
+    time = 30,
 }
 data.raw.technology["factory-connection-type-circuit"].prerequisites = {
     "factory-architecture-t1",
-    "circuit-network"
+    "circuit-network",
 }
 
 data.raw.technology["factory-recursion-t1"].unit = {
@@ -115,7 +115,7 @@ data.raw.technology["factory-recursion-t1"].unit = {
         {"chemical-science-pack",   1},
         {"space-science-pack",      1},
     },
-    time = 45
+    time = 45,
 }
 data.raw.technology["factory-recursion-t1"].prerequisites = {
     "factory-architecture-t2",
@@ -127,11 +127,11 @@ data.raw.technology["factory-interior-upgrade-display"].unit = {
         {"automation-science-pack", 1},
         {"logistic-science-pack",   1},
     },
-    time = 30
+    time = 30,
 }
 data.raw.technology["factory-interior-upgrade-display"].prerequisites = {
     "factory-interior-upgrade-lights",
-    "logistic-science-pack"
+    "logistic-science-pack",
 }
 
 data.raw.technology["factory-interior-upgrade-roboport"].unit = {
@@ -141,7 +141,7 @@ data.raw.technology["factory-interior-upgrade-roboport"].unit = {
         {"logistic-science-pack",   1},
         {"chemical-science-pack",   1},
     },
-    time = 45
+    time = 45,
 }
 
 data.raw.technology["factory-upgrade-greenhouse"].prerequisites = {
@@ -162,24 +162,24 @@ data.raw.technology["factory-upgrade-greenhouse"].unit = {
         {"agricultural-science-pack",    1},
         {"electromagnetic-science-pack", 1},
     },
-    time = 60
+    time = 60,
 }
 
 data.raw["storage-tank"]["factory-1"].surface_conditions = {{
     property = "gravity",
-    min = 0.1
+    min = 0.1,
 }}
 data.raw["storage-tank"]["factory-2"].surface_conditions = {{
     property = "gravity",
-    min = 0.1
+    min = 0.1,
 }}
 data.raw["storage-tank"]["factory-3"].surface_conditions = {{
     property = "gravity",
-    min = 0.1
+    min = 0.1,
 }}
 data.raw["electric-pole"]["factory-circuit-connector"].surface_conditions = {{
     property = "gravity",
-    min = 0.1
+    min = 0.1,
 }}
 
 if not settings.startup["Factorissimo2-space-architecture"].value then return end
@@ -189,25 +189,25 @@ data.raw["electric-pole"]["factory-circuit-connector"].surface_conditions = {}
 
 data.raw["storage-tank"]["space-factory-1"].surface_conditions = {{
     property = "gravity",
-    max = 0.1
+    max = 0.1,
 }}
 data.raw["storage-tank"]["space-factory-2"].surface_conditions = {{
     property = "gravity",
-    max = 0.1
+    max = 0.1,
 }}
 data.raw["storage-tank"]["space-factory-3"].surface_conditions = {{
     property = "gravity",
-    max = 0.1
+    max = 0.1,
 }}
 data.raw["recipe"]["space-factory-1"].surface_conditions = {{
     property = "gravity",
-    max = 0.1
+    max = 0.1,
 }}
 data.raw["recipe"]["space-factory-2"].surface_conditions = {{
     property = "gravity",
-    max = 0.1
+    max = 0.1,
 }}
 data.raw["recipe"]["space-factory-3"].surface_conditions = {{
     property = "gravity",
-    max = 0.1
+    max = 0.1,
 }}

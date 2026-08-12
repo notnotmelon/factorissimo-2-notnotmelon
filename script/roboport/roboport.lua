@@ -190,9 +190,9 @@ local function eject_unneeded_items(factory, requests_by_itemname)
                             quality = quality,
                         },
                         items = {
-                            in_inventory = {{inventory = defines.inventory.chest, stack = 0, count = ejected_count}}
-                        }
-                    }}
+                            in_inventory = {{inventory = defines.inventory.chest, stack = 0, count = ejected_count}},
+                        },
+                    }},
                 }
                 return
             end
@@ -317,7 +317,7 @@ factorissimo.build_roboport_upgrade = function(factory)
         requester = requester,
         ejector = ejector,
         hidden_roboport = hidden_roboport,
-        item_request_proxies = (factory.roboport_upgrade and factory.roboport_upgrade.item_request_proxies) or {}
+        item_request_proxies = (factory.roboport_upgrade and factory.roboport_upgrade.item_request_proxies) or {},
     }
 end
 
@@ -561,8 +561,8 @@ create_or_remove_item_request_proxies = function(factory, requests_by_itemname)
                     quality = quality,
                 },
                 items = {
-                    in_inventory = {{inventory = defines.inventory.chest, stack = next_available_inventory_slot - 1, count = count}}
-                }
+                    in_inventory = {{inventory = defines.inventory.chest, stack = next_available_inventory_slot - 1, count = count}},
+                },
             }}
 
             local proxy = item_request_proxies[item_name][quality]
@@ -574,7 +574,7 @@ create_or_remove_item_request_proxies = function(factory, requests_by_itemname)
                     position = requester.position,
                     target = requester,
                     modules = insert_plan,
-                    force = requester.force_index
+                    force = requester.force_index,
                 }
             end
         end

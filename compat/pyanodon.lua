@@ -14,7 +14,7 @@ data.raw.technology["factory-architecture-t2"].unit.ingredients = {
 }
 
 data.raw.technology["factory-interior-upgrade-display"].prerequisites = {
-    "factory-architecture-t1"
+    "factory-architecture-t1",
 }
 data.raw.technology["factory-interior-upgrade-display"].unit.ingredients = {
     {"automation-science-pack", 1},

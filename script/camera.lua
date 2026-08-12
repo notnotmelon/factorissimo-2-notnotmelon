@@ -41,14 +41,14 @@ local function minimap_dimensions(player)
         return {
             size = size,
             x = player.display_resolution.width - (8 + size + 12) * player.display_scale,
-            y = (40 + 144) * player.display_scale
+            y = (40 + 144) * player.display_scale,
         }
     end
 
     return {
         size = size,
         x = player.display_resolution.width - (8 + size) * player.display_scale,
-        y = 144 * player.display_scale
+        y = 144 * player.display_scale,
     }
 end
 
@@ -71,7 +71,7 @@ local function update_camera(player)
 
     camera_frame.location = {
         left_margin + display_resolution.width / 2 - preview_size_screen / 2,
-        top_margin + display_resolution.height / 2 - preview_size_screen / 2
+        top_margin + display_resolution.height / 2 - preview_size_screen / 2,
     }
 
     local camera = camera_frame.factory_camera
@@ -178,7 +178,7 @@ end
 
 local function update_factory_preview(player)
     local preview_mode = settings.get_player_settings(player)["Factorissimo2-factory-preview-mode"].value
-    
+
     if preview_mode == "off" then
         unset_camera(player)
         return
@@ -234,7 +234,7 @@ factorissimo.on_event({
     defines.events.on_player_display_resolution_changed,
     defines.events.on_player_display_scale_changed,
     defines.events.on_player_controller_changed,
-    defines.events.on_player_changed_surface
+    defines.events.on_player_changed_surface,
 }, function(event)
     local player = game.get_player(event.player_index)
     factorissimo.update_factory_preview(player)
@@ -256,7 +256,7 @@ local function camera_teleport(player, surface, position)
     player.set_controller {
         type = defines.controllers.remote,
         position = position,
-        surface = surface
+        surface = surface,
     }
     player.zoom = 0.6
     player.opened = nil

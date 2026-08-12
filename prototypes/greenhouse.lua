@@ -12,12 +12,12 @@ data:extend {{
     prerequisites = {"factory-architecture-t3", "factory-interior-upgrade-lights"},
     effects = {{
         type = "nothing",
-        effect_description = ""
+        effect_description = "",
     }},
     unit = {
         count = 2000,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}, {"chemical-science-pack", 1}, {"production-science-pack", 1}},
-        time = 60
+        time = 60,
     },
     order = pf .. "a-d",
 }}
@@ -26,7 +26,7 @@ for _, tower in pairs(data.raw["agricultural-tower"]) do
     tower.surface_conditions = tower.surface_conditions or {}
     table.insert(tower.surface_conditions, {
         property = "solar-power",
-        min = 1
+        min = 1,
     })
 end
 
@@ -37,7 +37,7 @@ if not mods["warptorio-space-age"] then -- https://github.com/notnotmelon/factor
         table.insert(plant.surface_conditions, {
             property = "pressure",
             min = 2000,
-            max = 2000
+            max = 2000,
         })
     end
 end

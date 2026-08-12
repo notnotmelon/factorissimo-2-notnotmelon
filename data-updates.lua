@@ -12,7 +12,7 @@ local function blank()
         filename = F .. "/graphics/nothing.png",
         priority = "high",
         width = 1,
-        height = 1
+        height = 1,
     }
 end
 
@@ -31,7 +31,7 @@ for _, type in ipairs {"linked-belt", "transport-belt", "underground-belt", "loa
         linked.name = "factory-linked-" .. linked.name
         linked.structure = {
             direction_in = blank(),
-            direction_out = blank()
+            direction_out = blank(),
         }
         linked.heating_energy = nil
         linked.selection_box = nil
@@ -55,7 +55,7 @@ if data.raw["assembling-machine"]["borehole-pump"] then
         type = "item-subgroup",
         name = "borehole-pump",
         group = "space",
-        order = "x-a"
+        order = "x-a",
     }}
 
 
@@ -78,9 +78,9 @@ if data.raw["assembling-machine"]["borehole-pump"] then
             categories = {"borehole-pump"},
             subgroup = "borehole-pump",
             results = {
-                {type = "fluid", name = fluid_name, amount = 600}
+                {type = "fluid", name = fluid_name, amount = 600},
             },
-            surface_conditions = table.deepcopy(data.raw["assembling-machine"]["borehole-pump"].surface_conditions)
+            surface_conditions = table.deepcopy(data.raw["assembling-machine"]["borehole-pump"].surface_conditions),
         }}
         table.insert(data.raw.technology["factory-upgrade-borehole-pump"].effects, {type = "unlock-recipe", recipe = recipe_name})
     end

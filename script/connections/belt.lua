@@ -98,7 +98,7 @@ Belt.connect = function(factory, cid, cpos, outside_entity, inside_entity)
         position = {factory.inside_x + cpos.inside_x + cpos.indicator_dx, factory.inside_y + cpos.inside_y + cpos.indicator_dy},
         create_build_effect_smoke = false,
         raise_built = false,
-        force = inside_entity.force
+        force = inside_entity.force,
     }
     if not inside_link then return end
     inside_link.destructible = false
@@ -112,7 +112,7 @@ Belt.connect = function(factory, cid, cpos, outside_entity, inside_entity)
             to_link = inside_link,
             facing = cpos.direction_in,
             spill_location = inside_entity.position,
-            do_tick_update = false
+            do_tick_update = false,
         }
     else
         connection = {
@@ -122,7 +122,7 @@ Belt.connect = function(factory, cid, cpos, outside_entity, inside_entity)
             to_link = outside_link,
             facing = cpos.direction_out,
             spill_location = inside_entity.position,
-            do_tick_update = false
+            do_tick_update = false,
         }
     end
 
@@ -160,7 +160,7 @@ local function spill_link_items(belt, link, surface, position)
                     enable_looted = true,
                     force = link.force_index,
                     allow_belts = false,
-                    use_start_position_on_failure = true
+                    use_start_position_on_failure = true,
                 }
             end
         end

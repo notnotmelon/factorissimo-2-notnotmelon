@@ -9,7 +9,7 @@ function factorissimo.toggle_port_markers(factory)
                 orientation = cpos.direction_out / 16,
                 target = {
                     entity = factory.building,
-                    offset = {cpos.outside_x - 0.5 * cpos.indicator_dx, cpos.outside_y - 0.5 * cpos.indicator_dy}
+                    offset = {cpos.outside_x - 0.5 * cpos.indicator_dx, cpos.outside_y - 0.5 * cpos.indicator_dy},
                 },
                 surface = factory.building.surface,
                 only_in_alt_mode = true,

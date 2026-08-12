@@ -8,10 +8,10 @@ local function build_display_upgrade(factory)
         name = "factory-overlay-controller",
         position = {
             factory.inside_x + pos.inside_x,
-            factory.inside_y + pos.inside_y
+            factory.inside_y + pos.inside_y,
         },
         force = factory.force,
-        quality = factory.quality
+        quality = factory.quality,
     }
     controller.minable_flag = false
     controller.destructible = false
@@ -97,7 +97,7 @@ local function get_nice_overlay_arrangement(width, height, amount)
         table.insert(result, {
             x = (2 * col + 1 - cols_in_row) * width / (2 * opt_cols),
             y = (2 * row + 1 - opt_rows) * height / (2 * opt_rows),
-            scale = opt_scale
+            scale = opt_scale,
         })
     end
     return result

@@ -5,7 +5,7 @@ local function spawn_maraxsis_water_shader(surface, chunk_position)
     local fancy_water = surface.create_entity {
         name = "maraxsis-water-shader",
         position = {x, y},
-        create_build_effect_smoke = false
+        create_build_effect_smoke = false,
     }
     fancy_water.disabled_by_script = false
     fancy_water.destructible = false
@@ -20,7 +20,7 @@ function factorissimo.spawn_maraxsis_water_shaders(surface, chunk_position)
         for y = -7, 8 do
             spawn_maraxsis_water_shader(surface, {
                 x = chunk_position.x + x,
-                y = chunk_position.y + y
+                y = chunk_position.y + y,
             })
         end
     end

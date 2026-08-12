@@ -18,13 +18,13 @@ local function cleanup_entities_for_factoriomaps()
                     from = {
                         {factory.outside_x - factory.layout.outside_size / 2, factory.outside_y - factory.layout.outside_size / 2},
                         {factory.outside_x + factory.layout.outside_size / 2, factory.outside_y + factory.layout.outside_size / 2},
-                        surface = factory.outside_surface.name
+                        surface = factory.outside_surface.name,
                     },
                     to = {
                         {factory.inside_x - factory.layout.inside_size / 2 - 1, factory.inside_y - factory.layout.inside_size / 2 - 1},
                         {factory.inside_x + factory.layout.inside_size / 2 + 1, factory.inside_y + factory.layout.inside_size / 2 + 1},
-                        surface = factory.inside_surface.name
-                    }
+                        surface = factory.inside_surface.name,
+                    },
                 })
             end
         end

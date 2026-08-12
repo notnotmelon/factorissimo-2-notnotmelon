@@ -59,7 +59,7 @@ data:extend {{
             {"metallurgic-science-pack",     1},
             {"electromagnetic-science-pack", 1},
         },
-        time = 60
+        time = 60,
     },
     order = pf .. "d-c",
 }}
@@ -95,9 +95,9 @@ data:extend {{
             {
                 position = {0.5, 1},
                 flow_direction = "output",
-                direction = defines.direction.south
+                direction = defines.direction.south,
             },
-        }
+        },
     }},
     impact_category = "default",
     open_sound = sounds.machine_open,
@@ -111,12 +111,12 @@ data:extend {{
             },
             {
                 filename = "__base__/sound/burner-mining-drill-1.ogg",
-                volume = 0.75
+                volume = 0.75,
             },
             {
                 filename = "__base__/sound/burner-mining-drill-2.ogg",
-                volume = 0.75
-            }
+                volume = 0.75,
+            },
         },
         match_volume_to_activity = true,
         audible_distance_modifier = 0.7,
@@ -154,7 +154,7 @@ data:extend {{
                         draw_as_shadow = true,
                         scale = 0.5,
                     },
-                }
+                },
             },
             east = {
                 layers = {
@@ -181,7 +181,7 @@ data:extend {{
                         draw_as_shadow = true,
                         scale = 0.5,
                     },
-                }
+                },
             },
             south = {
                 layers = {
@@ -209,7 +209,7 @@ data:extend {{
                         scale = 0.5,
                     },
 
-                }
+                },
             },
             west = {
                 layers = {
@@ -236,7 +236,7 @@ data:extend {{
                         draw_as_shadow = true,
                         scale = 0.5,
                     },
-                }
+                },
             },
         },
     },
@@ -251,7 +251,7 @@ data:extend {{
         type = "electric",
         usage_priority = "secondary-input",
         emissions_per_minute = {
-            pollution = 15
+            pollution = 15,
         },
     },
     energy_usage = "1.65MW",
@@ -259,12 +259,12 @@ data:extend {{
         property = "ceiling",
         max = 0,
     }},
-    return_ingredients_on_change = false
+    return_ingredients_on_change = false,
 }}
 
 data:extend {{
     type = "recipe-category",
-    name = "borehole-pump"
+    name = "borehole-pump",
 }}
 
 data:extend {{
@@ -290,5 +290,5 @@ data:extend {{
     burnt_patch_lifetime = 0,
     icon = data.raw.fire["fire-flame"].icon,
     icon_size = 64,
-    hidden = true
+    hidden = true,
 }}

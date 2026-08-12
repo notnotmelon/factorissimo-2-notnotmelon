@@ -15,7 +15,7 @@ data:extend {{
     type = "item-subgroup",
     name = "factorissimo-tiles",
     order = "q",
-    group = "tiles"
+    group = "tiles",
 }}
 
 local function tile_transitions(tile_variants)
@@ -31,7 +31,7 @@ local function tile_transitions(tile_variants)
 
             spritesheet = "__factorissimo-2-notnotmelon__/graphics/tile/out-of-map-transition.png",
             layout = tile_spritesheet_layout.transition_4_4_8_1_1,
-            overlay_enabled = false
+            overlay_enabled = false,
         }
     end
     return tile_variants
@@ -66,7 +66,7 @@ local function make_tile(tinfo)
         needs_correction = false,
         collision_mask = tinfo.collision_mask,
         variants = tinfo.variants or tile_transitions {
-            main = tinfo.pictures
+            main = tinfo.pictures,
         },
         layer = tinfo.layer or 50,
         walking_speed_modifier = 1.4,
@@ -103,7 +103,7 @@ local function wall_mask()
             object = true,
             player = true,
             doodad = true,
-        }
+        },
     }
 end
 
@@ -117,7 +117,7 @@ local function edge_mask()
             item = true,
             object = true,
             doodad = true,
-        }
+        },
     }
 end
 
@@ -125,7 +125,7 @@ local function floor_mask()
     return {
         layers = {
             ground_tile = true,
-        }
+        },
     }
 end
 
@@ -134,19 +134,19 @@ local function pictures_factory_floor_tile()
         {
             picture = F .. "/graphics/tile/factory-floor-1.png",
             count = 16,
-            size = 1
+            size = 1,
         },
         {
             picture = F .. "/graphics/tile/factory-floor-2.png",
             count = 4,
             size = 2,
-            probability = 0.39
+            probability = 0.39,
         },
         {
             picture = F .. "/graphics/tile/factory-floor-4.png",
             count = 4,
             size = 4,
-            probability = 1
+            probability = 1,
         },
     }
 end
@@ -157,7 +157,7 @@ local function pictures_factory_wall_tile(i, space)
         {
             picture = F .. "/graphics/tile/" .. space .. "factory-wall-" .. i .. ".png",
             count = 16,
-            size = 1
+            size = 1,
         },
     }
 end
@@ -261,7 +261,7 @@ if feature_flags.expansion_shaders then
         space = {
             star_scale = 0,
             nebula_saturation = 1,
-        }
+        },
     }}
 
     data.raw.tile["out-of-map"].effect = "factorissimo-out-of-map"
@@ -275,8 +275,8 @@ local function space_floor_mask()
     if mods["space-exploration"] then
         return {
             layers = {
-                space_tile = true
-            }
+                space_tile = true,
+            },
         }
     end
 

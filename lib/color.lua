@@ -2,7 +2,7 @@ factorissimo.tints = {
     {r = 1.0,   g = 1.0,   b = 0.0,   a = 1.0},
     {r = 1.0,   g = 0.0,   b = 0.0,   a = 1.0},
     {r = 0.223, g = 0.490, b = 0.858, a = 1.0},
-    {r = 1.0,   g = 0.0,   b = 1.0,   a = 1.0}
+    {r = 1.0,   g = 0.0,   b = 1.0,   a = 1.0},
 }
 
 factorissimo.light_tints = {}
@@ -40,6 +40,6 @@ function factorissimo.color_combine(a, b, percent)
         r = a.r * percent + b.r * (1 - percent),
         g = a.g * percent + b.g * (1 - percent),
         b = a.b * percent + b.b * (1 - percent),
-        a = a.a * percent + b.a * (1 - percent)
+        a = a.a * percent + b.a * (1 - percent),
     }
 end

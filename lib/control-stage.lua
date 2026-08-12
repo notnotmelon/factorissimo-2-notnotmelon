@@ -16,7 +16,7 @@ factorissimo.draw_error_sprite = function(entity, sprite, time_to_live)
         target = entity,
         surface = entity.surface,
         time_to_live = time_to_live or 30,
-        render_layer = "air-entity-info-icon"
+        render_layer = "air-entity-info-icon",
     }
 end
 
@@ -77,7 +77,7 @@ factorissimo.cancel_creation = function(entity, player_index, message, color)
             stack = item_to_place,
             enable_looted = true,
             force = entity.force_index,
-            allow_belts = false
+            allow_belts = false,
         }
     end
 
@@ -93,7 +93,7 @@ factorissimo.cancel_creation = function(entity, player_index, message, color)
                 text = message,
                 position = position,
                 color = color,
-                create_at_cursor = player.index == player_index
+                create_at_cursor = player.index == player_index,
             }
         end
         storage._last_cancel_creation_message = game.tick
@@ -121,7 +121,7 @@ local si_prefixes = {
     "si-prefix-symbol-peta",
     "si-prefix-symbol-exa",
     "si-prefix-symbol-zetta",
-    "si-prefix-symbol-yotta"
+    "si-prefix-symbol-yotta",
 }
 ---formats a number into the amount of energy. Requires 'W' or 'J' as the second parameter
 ---@param energy number

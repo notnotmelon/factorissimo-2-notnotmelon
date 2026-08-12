@@ -81,7 +81,7 @@ local function set_connection_indicator(factory, cid, ctype, setting, dir)
         position = {x = factory.inside_x + cpos.inside_x + cpos.indicator_dx, y = factory.inside_y + cpos.inside_y + cpos.indicator_dy},
         create_build_effect_smoke = false,
         direction = dir,
-        quality = factory.quality
+        quality = factory.quality,
     }
     new_indicator.destructible = false
     factory.connection_indicators[cid] = new_indicator
@@ -113,13 +113,13 @@ local function init_connection(factory, cid, cpos) -- Only call this when factor
 
     local outside_entities = factory.outside_surface.find_entities_filtered {
         position = {cpos.outside_x + factory.outside_x, cpos.outside_y + factory.outside_y},
-        force = factory.force
+        force = factory.force,
     }
     if outside_entities == nil or not outside_entities[1] then return end
 
     local inside_entities = factory.inside_surface.find_entities_filtered {
         position = {cpos.inside_x + factory.inside_x, cpos.inside_y + factory.inside_y},
-        force = factory.force
+        force = factory.force,
     }
     if inside_entities == nil or not inside_entities[1] then return end
 
@@ -207,7 +207,7 @@ local function recheck_factory_connections_delayed(factory, outside_area, inside
     storage.delayed_connection_checks[1 + #(storage.delayed_connection_checks)] = {
         factory = factory,
         outside_area = outside_area,
-        inside_area = inside_area
+        inside_area = inside_area,
     }
 end
 
@@ -253,7 +253,7 @@ local function recheck_nearby_connections(entity, delayed)
     -- Expand box to catch factories and also avoid illegal zero-area finds
     local bounding_box = {
         left_top = {x = pos.x - 0.3 + collision_box.left_top.x, y = pos.y - 0.3 + collision_box.left_top.y},
-        right_bottom = {x = pos.x + 0.3 + collision_box.right_bottom.x, y = pos.y + 0.3 + collision_box.right_bottom.y}
+        right_bottom = {x = pos.x + 0.3 + collision_box.right_bottom.x, y = pos.y + 0.3 + collision_box.right_bottom.y},
     }
 
     for _, factory in pairs(storage.factories) do

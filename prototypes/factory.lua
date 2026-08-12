@@ -1,4 +1,4 @@
-local F = "__factorissimo-2-notnotmelon__";
+local F = "__factorissimo-2-notnotmelon__"
 require("circuit-connector-sprites")
 
 local function cwc0()
@@ -29,7 +29,7 @@ data:extend {
                         height = 320 * 2,
                         scale = 0.5,
                         shift = {1.5, 0},
-                        draw_as_shadow = true
+                        draw_as_shadow = true,
                     },
                     {
                         filename = F .. "/graphics/factory/factory-1.png",
@@ -37,8 +37,8 @@ data:extend {
                         height = 320 * 2,
                         scale = 0.5,
                         shift = {1.5, 0},
-                    }
-                }
+                    },
+                },
             },
         },
         window_bounding_box = {{0, 0}, {0, 0}},
@@ -66,7 +66,7 @@ data:extend {
             {
                 icon = F .. "/graphics/icon/packing-tape.png",
                 icon_size = 64,
-            }
+            },
         },
         subgroup = "factorissimo2",
         order = "b-a",
@@ -75,7 +75,7 @@ data:extend {
         weight = 100000000,
         flags = {"not-stackable"},
         hidden_in_factoriopedia = true,
-        factoriopedia_alternative = "factory-1"
+        factoriopedia_alternative = "factory-1",
     },
     {
         type = "item",
@@ -87,8 +87,8 @@ data:extend {
         weight = 100000000,
         place_result = "factory-1",
         stack_size = 1,
-        flags = {"primary-place-result", "not-stackable"}
-    }
+        flags = {"primary-place-result", "not-stackable"},
+    },
 }
 
 data:extend {
@@ -111,7 +111,7 @@ data:extend {
                         height = 448 * 2,
                         scale = 0.5,
                         shift = {1.5, 0},
-                        draw_as_shadow = true
+                        draw_as_shadow = true,
                     },
                     {
                         filename = F .. "/graphics/factory/factory-2.png",
@@ -119,8 +119,8 @@ data:extend {
                         height = 448 * 2,
                         scale = 0.5,
                         shift = {1.5, 0},
-                    }
-                }
+                    },
+                },
             },
         },
         window_bounding_box = {{0, 0}, {0, 0}},
@@ -148,7 +148,7 @@ data:extend {
             {
                 icon = F .. "/graphics/icon/packing-tape.png",
                 icon_size = 64,
-            }
+            },
         },
         subgroup = "factorissimo2",
         order = "b-b",
@@ -157,7 +157,7 @@ data:extend {
         weight = 100000000,
         flags = {"not-stackable"},
         hidden_in_factoriopedia = true,
-        factoriopedia_alternative = "factory-2"
+        factoriopedia_alternative = "factory-2",
     },
     {
         type = "item",
@@ -169,8 +169,8 @@ data:extend {
         weight = 100000000,
         place_result = "factory-2",
         stack_size = 1,
-        flags = {"primary-place-result", "not-stackable"}
-    }
+        flags = {"primary-place-result", "not-stackable"},
+    },
 }
 
 data:extend {
@@ -193,7 +193,7 @@ data:extend {
                         height = 608 * 2,
                         scale = 0.5,
                         shift = {2, -0.09375},
-                        draw_as_shadow = true
+                        draw_as_shadow = true,
                     },
                     {
                         filename = F .. "/graphics/factory/factory-3.png",
@@ -201,8 +201,8 @@ data:extend {
                         height = 608 * 2,
                         scale = 0.5,
                         shift = {2, -0.09375},
-                    }
-                }
+                    },
+                },
             },
         },
         window_bounding_box = {{0, 0}, {0, 0}},
@@ -230,7 +230,7 @@ data:extend {
             {
                 icon = F .. "/graphics/icon/packing-tape.png",
                 icon_size = 64,
-            }
+            },
         },
         subgroup = "factorissimo2",
         order = "b-c",
@@ -239,7 +239,7 @@ data:extend {
         stack_size = 1,
         flags = {"not-stackable"},
         hidden_in_factoriopedia = true,
-        factoriopedia_alternative = "factory-3"
+        factoriopedia_alternative = "factory-3",
     },
     {
         type = "item",
@@ -251,8 +251,8 @@ data:extend {
         weight = 100000000,
         place_result = "factory-3",
         stack_size = 1,
-        flags = {"primary-place-result", "not-stackable"}
-    }
+        flags = {"primary-place-result", "not-stackable"},
+    },
 }
 
 if not settings.startup["Factorissimo2-space-architecture"].value then return end
@@ -279,15 +279,15 @@ data:extend {
                         height = 320 * 2,
                         scale = 0.5,
                         shift = {1.5, 0},
-                        draw_as_shadow = true
+                        draw_as_shadow = true,
                     },
                     {
                         filename = F .. "/graphics/factory/space-factory-1.png",
                         width = 416,
                         height = 320,
                         shift = {1.5, 0},
-                    }
-                }
+                    },
+                },
             },
         },
         window_bounding_box = {{0, 0}, {0, 0}},
@@ -315,7 +315,7 @@ data:extend {
             {
                 icon = F .. "/graphics/icon/packing-tape.png",
                 icon_size = 64,
-            }
+            },
         },
         subgroup = "factorissimo2",
         order = "a-a",
@@ -324,7 +324,7 @@ data:extend {
         weight = 1000000,
         flags = {"not-stackable"},
         hidden_in_factoriopedia = true,
-        factoriopedia_alternative = "space-factory-1"
+        factoriopedia_alternative = "space-factory-1",
     },
     {
         type = "item",
@@ -336,8 +336,8 @@ data:extend {
         weight = 1000000,
         place_result = "space-factory-1",
         stack_size = 1,
-        flags = {"primary-place-result", "not-stackable"}
-    }
+        flags = {"primary-place-result", "not-stackable"},
+    },
 }
 
 data:extend {
@@ -361,15 +361,15 @@ data:extend {
                         height = 448 * 2,
                         scale = 0.5,
                         shift = {1.5, 0},
-                        draw_as_shadow = true
+                        draw_as_shadow = true,
                     },
                     {
                         filename = F .. "/graphics/factory/space-factory-2.png",
                         width = 544,
                         height = 448,
                         shift = {1.5, 0},
-                    }
-                }
+                    },
+                },
             },
         },
         window_bounding_box = {{0, 0}, {0, 0}},
@@ -397,7 +397,7 @@ data:extend {
             {
                 icon = F .. "/graphics/icon/packing-tape.png",
                 icon_size = 64,
-            }
+            },
         },
         subgroup = "factorissimo2",
         order = "a-b",
@@ -406,7 +406,7 @@ data:extend {
         weight = 1000000,
         flags = {"not-stackable"},
         hidden_in_factoriopedia = true,
-        factoriopedia_alternative = "space-factory-2"
+        factoriopedia_alternative = "space-factory-2",
     },
     {
         type = "item",
@@ -418,8 +418,8 @@ data:extend {
         weight = 1000000,
         place_result = "space-factory-2",
         stack_size = 1,
-        flags = {"primary-place-result", "not-stackable"}
-    }
+        flags = {"primary-place-result", "not-stackable"},
+    },
 }
 
 data:extend {
@@ -443,15 +443,15 @@ data:extend {
                         height = 608 * 2,
                         scale = 0.5,
                         shift = {2, -0.09375},
-                        draw_as_shadow = true
+                        draw_as_shadow = true,
                     },
                     {
                         filename = F .. "/graphics/factory/space-factory-3.png",
                         width = 704,
                         height = 608,
                         shift = {2, -0.09375},
-                    }
-                }
+                    },
+                },
             },
         },
         window_bounding_box = {{0, 0}, {0, 0}},
@@ -479,7 +479,7 @@ data:extend {
             {
                 icon = F .. "/graphics/icon/packing-tape.png",
                 icon_size = 64,
-            }
+            },
         },
         subgroup = "factorissimo2",
         order = "a-c",
@@ -488,7 +488,7 @@ data:extend {
         stack_size = 1,
         flags = {"not-stackable"},
         hidden_in_factoriopedia = true,
-        factoriopedia_alternative = "space-factory-3"
+        factoriopedia_alternative = "space-factory-3",
     },
     {
         type = "item",
@@ -500,8 +500,8 @@ data:extend {
         weight = 1000000,
         place_result = "space-factory-3",
         stack_size = 1,
-        flags = {"primary-place-result", "not-stackable"}
-    }
+        flags = {"primary-place-result", "not-stackable"},
+    },
 }
 
 if mods["space-exploration"] then

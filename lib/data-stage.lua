@@ -11,7 +11,7 @@ factorissimo.empty_image = function()
         priority = "high",
         direction_count = 1,
         frame_count = 1,
-        line_length = 1
+        line_length = 1,
     }
 end
 

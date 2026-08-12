@@ -46,16 +46,16 @@ local layout_generators = {
         overlay_y = 3,
         rectangles = {
             {
-                x1 = -16, x2 = 16, y1 = -16, y2 = 16, tile = "factory-wall-1"
+                x1 = -16, x2 = 16, y1 = -16, y2 = 16, tile = "factory-wall-1",
             },
             {
-                x1 = -15, x2 = 15, y1 = -15, y2 = 15, tile = "factory-floor"
+                x1 = -15, x2 = 15, y1 = -15, y2 = 15, tile = "factory-floor",
             },
             {
-                x1 = -3, x2 = 3, y1 = 15, y2 = 18, tile = "factory-wall-1"
+                x1 = -3, x2 = 3, y1 = 15, y2 = 18, tile = "factory-wall-1",
             },
             {
-                x1 = -2, x2 = 2, y1 = 15, y2 = 18, tile = "factory-entrance"
+                x1 = -2, x2 = 2, y1 = 15, y2 = 18, tile = "factory-entrance",
             },
         },
         mosaics = {
@@ -74,7 +74,7 @@ local layout_generators = {
                     "++  ++   ++ ",
                     "++  ++   ++ ",
                     " ++++  +++++",
-                }
+                },
             },
         },
         connection_tile = "factory-floor",
@@ -143,16 +143,16 @@ local layout_generators = {
         overlay_y = 5,
         rectangles = {
             {
-                x1 = -24, x2 = 24, y1 = -24, y2 = 24, tile = "factory-wall-2"
+                x1 = -24, x2 = 24, y1 = -24, y2 = 24, tile = "factory-wall-2",
             },
             {
-                x1 = -23, x2 = 23, y1 = -23, y2 = 23, tile = "factory-floor"
+                x1 = -23, x2 = 23, y1 = -23, y2 = 23, tile = "factory-floor",
             },
             {
-                x1 = -3, x2 = 3, y1 = 23, y2 = 26, tile = "factory-wall-2"
+                x1 = -3, x2 = 3, y1 = 23, y2 = 26, tile = "factory-wall-2",
             },
             {
-                x1 = -2, x2 = 2, y1 = 23, y2 = 26, tile = "factory-entrance"
+                x1 = -2, x2 = 2, y1 = 23, y2 = 26, tile = "factory-entrance",
             },
         },
         mosaics = {
@@ -171,7 +171,7 @@ local layout_generators = {
                     "++  ++ ++   ",
                     "++  ++ ++ ++",
                     " ++++  +++++",
-                }
+                },
             },
         },
         connection_tile = "factory-floor",
@@ -247,16 +247,16 @@ local layout_generators = {
         overlay_y = 7,
         rectangles = {
             {
-                x1 = -31, x2 = 31, y1 = -31, y2 = 31, tile = "factory-wall-3"
+                x1 = -31, x2 = 31, y1 = -31, y2 = 31, tile = "factory-wall-3",
             },
             {
-                x1 = -30, x2 = 30, y1 = -30, y2 = 30, tile = "factory-floor"
+                x1 = -30, x2 = 30, y1 = -30, y2 = 30, tile = "factory-floor",
             },
             {
-                x1 = -3, x2 = 3, y1 = 30, y2 = 33, tile = "factory-wall-3"
+                x1 = -3, x2 = 3, y1 = 30, y2 = 33, tile = "factory-wall-3",
             },
             {
-                x1 = -2, x2 = 2, y1 = 30, y2 = 33, tile = "factory-entrance"
+                x1 = -2, x2 = 2, y1 = 30, y2 = 33, tile = "factory-entrance",
             },
         },
         mosaics = {
@@ -275,7 +275,7 @@ local layout_generators = {
                     "++  ++    ++",
                     "++  ++ ++ ++",
                     " ++++   +++ ",
-                }
+                },
             },
         },
         connection_tile = "factory-floor",
@@ -344,7 +344,7 @@ local layout_generators = {
             {15,  -15},
             {-15, -15},
         },
-    }
+    },
 }
 
 local function add_space_factories()

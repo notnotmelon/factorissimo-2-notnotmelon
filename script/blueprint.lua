@@ -32,7 +32,7 @@ local function paste_blueprint(inventory, destination)
             position = {destination.inside_x - 1, destination.inside_y - 1},
             build_mode = defines.build_mode.forced,
             skip_fog_of_war = true,
-            raise_built = true
+            raise_built = true,
         }
         stack.clear()
     end
@@ -57,7 +57,7 @@ function factorissimo.copy_entity_ghosts(source, destination)
         area = area,
         always_include_tiles = true,
         include_trains = true,
-        include_station_names = true
+        include_station_names = true,
     }
     setup_blueprint_tags(stack, mapping)
     script.raise_event("on_script_setup_blueprint", {
@@ -69,7 +69,7 @@ function factorissimo.copy_entity_ghosts(source, destination)
         quality = stack.quality.name,
         name = "on_script_setup_blueprint",
         tick = game.tick,
-        mapping = mapping
+        mapping = mapping,
     })
 
     factorissimo.copy_overlay_between_factory_buildings(source, destination)

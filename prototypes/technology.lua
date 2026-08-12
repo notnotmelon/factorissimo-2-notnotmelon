@@ -12,8 +12,8 @@ end
 local effects = {
     {
         type = "unlock-recipe",
-        recipe = "factory-1"
-    }
+        recipe = "factory-1",
+    },
 }
 
 if not mods["solarsystemplusplus"] then
@@ -36,7 +36,7 @@ data:extend {{
     unit = {
         count = 200,
         ingredients = {{"automation-science-pack", 1}},
-        time = 30
+        time = 30,
     },
     order = pf .. "a-a",
 }}
@@ -50,12 +50,12 @@ data:extend {{
         {
             type = "unlock-recipe",
             recipe = "factory-2",
-        }
+        },
     },
     unit = {
         count = 600,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}},
-        time = 45
+        time = 45,
     },
     order = pf .. "a-b",
 }}
@@ -69,12 +69,12 @@ data:extend {{
         {
             type = "unlock-recipe",
             recipe = "factory-3",
-        }
+        },
     },
     unit = {
         count = 2000,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}, {"chemical-science-pack", 1}, {"production-science-pack", 1}},
-        time = 60
+        time = 60,
     },
     order = pf .. "a-c",
 }}
@@ -95,7 +95,7 @@ if (mods["space-exploration"] or mods["space-age"]) and settings.startup["Factor
                 {"utility-science-pack",         1},
                 {"se-astronomic-science-pack-1", 1},
             },
-            time = 60
+            time = 60,
         }
         prerequisites[#prerequisites + 1] = "se-aeroframe-pole"
         prerequisites[#prerequisites + 1] = "se-space-solar-panel"
@@ -116,7 +116,7 @@ if (mods["space-exploration"] or mods["space-age"]) and settings.startup["Factor
                 {"cryogenic-science-pack",       1},
                 {"promethium-science-pack",      1},
             },
-            time = 120
+            time = 120,
         }
         prerequisites[#prerequisites + 1] = "promethium-science-pack"
         prerequisites[#prerequisites + 1] = "factory-upgrade-greenhouse"
@@ -162,12 +162,12 @@ data:extend {{
     prerequisites = {"factory-architecture-t1"}, -- 'fluid-handling'
     effects = {{
         type = "nothing",
-        effect_description = ""
+        effect_description = "",
     }},
     unit = {
         count = 100,
         ingredients = {{"automation-science-pack", 1}},
-        time = 30
+        time = 30,
     },
     order = pf .. "c-a",
 }}
@@ -179,12 +179,12 @@ data:extend {{
     prerequisites = {"factory-architecture-t2", "logistics-2"},
     effects = {{
         type = "nothing",
-        effect_description = ""
+        effect_description = "",
     }},
     unit = {
         count = 200,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}},
-        time = 30
+        time = 30,
     },
     order = pf .. "c-b",
 }}
@@ -198,7 +198,7 @@ data:extend {{
     unit = {
         count = 300,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}},
-        time = 30
+        time = 30,
     },
     order = pf .. "c-c",
 }}
@@ -210,12 +210,12 @@ data:extend {{
     prerequisites = {"factory-architecture-t2"},
     effects = {{
         type = "nothing",
-        effect_description = ""
+        effect_description = "",
     }},
     unit = {
         count = 600,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}},
-        time = 45
+        time = 45,
     },
     order = pf .. "c-d",
 }}
@@ -230,12 +230,12 @@ data:extend {{
     prerequisites = {"factory-architecture-t1", "lamp"},
     effects = {{
         type = "nothing",
-        effect_description = ""
+        effect_description = "",
     }},
     unit = {
         count = 50,
         ingredients = {{"automation-science-pack", 1}},
-        time = 30
+        time = 30,
     },
     order = pf .. "d-a",
 }}
@@ -247,12 +247,12 @@ data:extend {{
     prerequisites = {"factory-architecture-t2", "lamp"},
     effects = {{
         type = "nothing",
-        effect_description = ""
+        effect_description = "",
     }},
     unit = {
         count = 100,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}},
-        time = 30
+        time = 30,
     },
     order = pf .. "d-b",
 }}
@@ -264,12 +264,12 @@ data:extend {{
     prerequisites = {"factory-architecture-t2", "construction-robotics"},
     effects = {{
         type = "nothing",
-        effect_description = ""
+        effect_description = "",
     }},
     unit = {
         count = 1000,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}, {"chemical-science-pack", 1}},
-        time = 45
+        time = 45,
     },
     order = pf .. "d-d",
 }}
@@ -282,12 +282,12 @@ data:extend {{
     prerequisites = {"factory-architecture-t2", "logistics-2"},
     effects = {{
         type = "nothing",
-        effect_description = ""
+        effect_description = "",
     }},
     unit = {
         count = 2000,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}},
-        time = 60
+        time = 60,
     },
     order = pf .. "b-a",
 }}
@@ -299,12 +299,12 @@ data:extend {{
     prerequisites = {"factory-recursion-t1", "factory-architecture-t3"},
     effects = {{
         type = "nothing",
-        effect_description = ""
+        effect_description = "",
     }},
     unit = {
         count = 5000,
         ingredients = {{"automation-science-pack", 1}, {"logistic-science-pack", 1}, {"chemical-science-pack", 1}, {"production-science-pack", 1}},
-        time = 60
+        time = 60,
     },
     order = pf .. "b-b",
 }}

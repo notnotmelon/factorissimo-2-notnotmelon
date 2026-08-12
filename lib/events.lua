@@ -63,7 +63,7 @@ _G.gui_events = {
     [defines.events.on_gui_value_changed] = {},
     [defines.events.on_gui_location_changed] = {},
     [defines.events.on_gui_selected_tab_changed] = {},
-    [defines.events.on_gui_switch_state_changed] = {}
+    [defines.events.on_gui_switch_state_changed] = {},
 }
 local function process_gui_event(event)
     if event.element and event.element.valid then
@@ -97,7 +97,7 @@ function factorissimo.execute_later(function_key, ticks, ...)
         to = {0, 0},
         create_build_effect_smoke = false,
         surface = "nauvis",
-        time_to_live = ticks
+        time_to_live = ticks,
     }
     storage._delayed_functions = storage._delayed_functions or {}
     storage._delayed_functions[script.register_on_object_destroyed(marked_for_death_render_object)] = {function_key, {...}}
@@ -141,7 +141,7 @@ factorissimo.events = {
             defines.events.script_raised_built,
             defines.events.script_raised_revive,
             defines.events.on_space_platform_built_entity,
-            defines.events.on_biter_base_built
+            defines.events.on_biter_base_built,
         }
     end,
     --- Called after the results of an entity being mined are collected just before the entity is destroyed. [...]
@@ -151,7 +151,7 @@ factorissimo.events = {
             defines.events.on_robot_mined_entity,
             defines.events.on_entity_died,
             defines.events.script_raised_destroy,
-            defines.events.on_space_platform_mined_entity
+            defines.events.on_space_platform_mined_entity,
         }
     end,
     --- Called after a tile is built.
@@ -176,5 +176,5 @@ factorissimo.events = {
     --- Custom event for when a player clicks on an entity
     on_entity_clicked = function()
         return "build"
-    end
+    end,
 }

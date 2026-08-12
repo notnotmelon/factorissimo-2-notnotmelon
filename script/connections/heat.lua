@@ -10,7 +10,7 @@ Heat.connect = function(factory, cid, cpos, outside_entity, inside_entity)
         position = {factory.inside_x + cpos.inside_x + cpos.indicator_dx, factory.inside_y + cpos.inside_y + cpos.indicator_dy},
         create_build_effect_smoke = false,
         raise_built = false,
-        force = inside_entity.force
+        force = inside_entity.force,
     }
     inside_link.destructible = false
     inside_link.disabled_by_script = false
@@ -20,7 +20,7 @@ Heat.connect = function(factory, cid, cpos, outside_entity, inside_entity)
         position = {outside_entity.position.x - cpos.indicator_dx, outside_entity.position.y - cpos.indicator_dy},
         create_build_effect_smoke = false,
         raise_built = false,
-        force = outside_entity.force
+        force = outside_entity.force,
     }
     outside_link.destructible = false
     outside_link.disabled_by_script = false
@@ -30,7 +30,7 @@ Heat.connect = function(factory, cid, cpos, outside_entity, inside_entity)
         outside_link = outside_link,
         inside_link = inside_link,
         inside = inside_entity,
-        do_tick_update = true
+        do_tick_update = true,
     }
 end
 

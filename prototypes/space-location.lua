@@ -17,7 +17,7 @@ data:extend {{
             ["decorative"] = {treat_missing_as_default = false, settings = {}},
             ["entity"] = {treat_missing_as_default = false, settings = {}},
             ["tile"] = {treat_missing_as_default = false, settings = {}},
-        }
+        },
     },
     surface_properties = mods["space-age"] and {
         gravity = -1,
@@ -62,7 +62,7 @@ local function generate_factory_floor_planet_icons(planet)
     table.insert(icons, {
         icon = "__factorissimo-2-notnotmelon__/graphics/icon/factory-subicon.png",
         icon_size = 64,
-        scale = 1
+        scale = 1,
     })
 
     return icons
@@ -86,11 +86,11 @@ local function update_surface_render_parameters(planet, factory_floor)
     local fog = {
         shape_noise_texture = {
             filename = "__core__/graphics/clouds-noise.png",
-            size = 2048
+            size = 2048,
         },
         detail_noise_texture = {
             filename = "__core__/graphics/clouds-detail-noise.png",
-            size = 2048
+            size = 2048,
         },
         color1 = color1,
         color2 = color2,
