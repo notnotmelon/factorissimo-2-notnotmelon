@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 3.12.3
+Date: 2026-08-12
+  Bugfixes:
+    - Fixed use of legacy .planet field in ambient sound definions. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/287. Resolves https://github.com/notnotmelon/factorissimo-2-notnotmelon/issues/286
+---------------------------------------------------------------------------------------------------
 Version: 3.12.2
 Date: 2026-07-02
   Bugfixes:
