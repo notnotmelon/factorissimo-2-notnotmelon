@@ -109,18 +109,29 @@ local function update_surface_render_parameters(planet, factory_floor)
 end
 
 local function add_music(planet, factory_floor)
+    local function music_matches_planet(music)
+        for _, name in pairs(music.planets or {music.planet}) do
+            if name == planet.name then return true end
+            if music.track_type == "hero-track" and music.name:find(planet.name) then return true end
+        end
+
+        return false
+    end
+
+    local new_musics = {}
     for _, music in pairs(data.raw["ambient-sound"]) do
-        if music.planet == planet.name or (music.track_type == "hero-track" and music.name:find(planet.name)) then
+        if music_matches_planet(music) then
             local new_music = table.deepcopy(music)
             new_music.name = music.name .. "-" .. factory_floor.name
-            new_music.planet = factory_floor.name
+            new_music.planets = {factory_floor.name}
             if new_music.track_type == "hero-track" then
                 new_music.track_type = "main-track"
                 new_music.weight = 10
             end
-            data:extend {new_music}
+            table.insert(new_musics, new_music)
         end
     end
+    data:extend(new_musics)
 end
 
 -- we need to copy all existing planets in order to create factory floors for them
