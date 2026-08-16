@@ -119,6 +119,7 @@ local function add_music(planet, factory_floor)
     end
 
     local new_musics = {}
+    local has_new_music = false
     for _, music in pairs(data.raw["ambient-sound"]) do
         if music_matches_planet(music) then
             local new_music = table.deepcopy(music)
@@ -129,9 +130,10 @@ local function add_music(planet, factory_floor)
                 new_music.weight = 10
             end
             table.insert(new_musics, new_music)
+            has_new_music = true
         end
     end
-    data:extend(new_musics)
+    if has_new_music then data:extend(new_musics) end
 end
 
 -- we need to copy all existing planets in order to create factory floors for them
